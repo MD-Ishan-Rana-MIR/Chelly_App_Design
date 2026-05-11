@@ -1,71 +1,78 @@
 "use client";
 
-import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import ProductCard from './ProductCard';
+import React, { useState } from "react";
+import ProductCard from "./ProductCard";
+import Image from "next/image";
 
 const ProductPage = () => {
 
-    // MOCK PRODUCTS
-    const products = Array(12).fill({
-        id: 1,
+    const products = Array.from({ length: 12 }).map((_, i) => ({
+        id: i + 1,
         name: "Organic Apples",
-        price: 4.99,
+        price: Math.floor(Math.random() * 100) + 1,
         image: "https://via.placeholder.com/300",
-        available: true
+        available: true,
+    }));
+
+    const [visibleCount, setVisibleCount] = useState(6);
+    const [sortOrder, setSortOrder] = useState("featured");
+
+    const sortedProducts = [...products].sort((a, b) => {
+        if (sortOrder === "low") return a.price - b.price;
+        if (sortOrder === "high") return b.price - a.price;
+        return 0;
     });
 
-    // SHOW ITEMS STATE
-    const [visibleCount, setVisibleCount] = useState(6);
-
-    // SHOW MORE
-    const handleShowMore = () => {
-        setVisibleCount((prev) => prev + 4);
-    };
-
-    // SHOW LESS
-    const handleShowLess = () => {
-        setVisibleCount(4);
-    };
-
     return (
-        <div className="py-8">
+        <div className=" py-14">
+            
 
-            <div className="flex flex-col md:flex-row gap-8">
+            {/* HERO HEADER */}
+            <div className="text-center mb-14 px-4">
 
-                {/* LEFT SIDE FILTER */}
-                <aside className="w-full md:w-64 flex-shrink-0">
+                <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight">
+                    Fresh Organic <span className="text-[#0b7211]">Market</span>
+                </h1>
 
-                    <div className="sticky top-24 space-y-8">
+                <p className="mt-4 text-gray-600 max-w-2xl mx-auto text-sm md:text-base">
+                    Discover handpicked organic products, premium quality, and farm-fresh delivery to your doorstep.
+                </p>
 
-                        {/* AVAILABILITY */}
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10">
+
+                {/* FILTER PANEL */}
+                <aside className="h-fit sticky top-24">
+
+                    <div className="bg-white/70 backdrop-blur-xl border border-gray-200  rounded-3xl p-6 space-y-8">
+
+                        <h2 className="text-xl font-bold text-gray-900">
+                            Filter Products
+                        </h2>
+
+                        {/* Availability */}
                         <div>
 
-                            <h3 className="text-lg font-bold mb-4">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-3">
                                 Availability
                             </h3>
 
-                            <div className="space-y-2">
+                            <div className="space-y-3">
 
-                                {['In Stock', 'Out of Stock'].map((status) => (
+                                {["In Stock", "Out of Stock"].map((status) => (
 
                                     <label
                                         key={status}
-                                        className="flex items-center space-x-3 cursor-pointer"
+                                        className="flex items-center gap-3 cursor-pointer"
                                     >
 
                                         <input
                                             type="checkbox"
-                                            className="
-                                                form-checkbox
-                                                h-4 w-4
-                                                text-green-600
-                                                rounded
-                                                border-gray-300
-                                            "
+                                            className="accent-[#0b7211] scale-110"
                                         />
 
-                                        <span className="text-gray-700">
+                                        <span className="text-gray-600 text-sm">
                                             {status}
                                         </span>
 
@@ -77,33 +84,21 @@ const ProductPage = () => {
 
                         </div>
 
-                        {/* PRICE RANGE */}
+                        {/* Price */}
                         <div>
 
-                            <h3 className="text-lg font-bold mb-4">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-3">
                                 Price Range
                             </h3>
 
-                            <div className="space-y-4">
+                            <input
+                                type="range"
+                                className="w-full accent-[#0b7211]"
+                            />
 
-                                <input
-                                    type="range"
-                                    className="
-                                        w-full
-                                        h-2
-                                        bg-gray-200
-                                        rounded-lg
-                                        appearance-none
-                                        cursor-pointer
-                                        accent-green-600
-                                    "
-                                />
-
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <span>$0</span>
-                                    <span>$100+</span>
-                                </div>
-
+                            <div className="flex justify-between text-xs text-gray-500 mt-2">
+                                <span>$0</span>
+                                <span>$100+</span>
                             </div>
 
                         </div>
@@ -112,110 +107,94 @@ const ProductPage = () => {
 
                 </aside>
 
-                {/* RIGHT SIDE */}
-                <main className="flex-1">
+                {/* PRODUCT AREA */}
+                <main>
 
-                    {/* HEADER */}
-                    <div
-                        className="
-                            flex
-                            flex-col
-                            sm:flex-row
-                            justify-between
-                            items-start
-                            sm:items-center
-                            border-b
-                            border-gray-100
-                            pb-4
-                            mb-6
-                            gap-4
-                        "
-                    >
+                    {/* TOP BAR */}
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
 
-                        <p className="text-gray-600 font-medium">
+                        <p className="text-gray-600 text-sm">
                             Showing{" "}
-                            <span className="text-black font-bold">
+                            <span className="font-bold text-gray-900">
                                 {Math.min(visibleCount, products.length)}
                             </span>{" "}
                             of{" "}
-                            <span className="text-black font-bold">
+                            <span className="font-bold text-gray-900">
                                 {products.length}
                             </span>{" "}
                             products
                         </p>
 
                         {/* SORT */}
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-3 bg-white shadow-md border rounded-2xl px-4 py-2">
 
-                            <span className="text-gray-600 text-sm">
-                                Sort By:
+                            <span className="text-sm text-gray-600">
+                                Sort:
                             </span>
 
-                            <div className="relative inline-block text-left">
+                            <select
+                                value={sortOrder}
+                                onChange={(e) => setSortOrder(e.target.value)}
+                                className="text-sm font-medium outline-none bg-transparent cursor-pointer"
+                            >
 
-                                <button
-                                    className="
-                                        flex
-                                        items-center
-                                        space-x-1
-                                        border
-                                        border-gray-200
-                                        rounded-md
-                                        px-3
-                                        py-2
-                                        text-sm
-                                        font-medium
-                                        hover:bg-gray-50
-                                        transition
-                                    "
-                                >
+                                <option value="featured">Featured</option>
+                                <option value="low">Price: Low → High</option>
+                                <option value="high">Price: High → Low</option>
 
-                                    <span>Featured</span>
-
-                                    <ChevronDown size={16} />
-
-                                </button>
-
-                            </div>
+                            </select>
 
                         </div>
 
                     </div>
 
                     {/* PRODUCT GRID */}
-                    <div
-                        className="
-                            grid
-                            grid-cols-1
-                            sm:grid-cols-2
-                            lg:grid-cols-3
-                            gap-6
-                        "
-                    >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
 
-                        {products
-                            .slice(0, visibleCount)
-                            .map((product, index) => (
+                        {sortedProducts.slice(0, visibleCount).map((product) => (
 
-                                <div key={index}>
+                            <div
+                                key={product.id}
+                                className="hover:-translate-y-2 transition duration-300"
+                            >
 
-                                    <ProductCard product={product} />
+                                <ProductCard product={product} />
 
-                                </div>
+                            </div>
 
-                            ))}
+                        ))}
 
                     </div>
 
-                    {/* BUTTONS */}
-                    <div className="flex items-center justify-center gap-4 mt-10">
+                    {/* LOAD MORE */}
+                    <div className="flex justify-center mt-14">
 
                         {visibleCount < products.length ? (
-                            <button className='  btnColor primaryText px-5 py-2.5 rounded-xl font-semibold text-sm cursor-pointer '  onClick={handleShowMore}>
-                                Show More
+                            <button
+                                onClick={() => setVisibleCount((p) => p + 4)}
+                                className="
+                                    px-8 py-3
+                                    rounded-full
+                                    btnColor
+                                    cursor-pointer
+                                    text-white font-semibold
+                                    shadow-lg
+                                    hover:scale-105 transition
+                                "
+                            >
+                                Load More Products
                             </button>
                         ) : (
-                            <button className='  btnColor primaryText px-5 py-2.5 rounded-xl font-semibold text-sm cursor-pointer ' onClick={handleShowLess}>
+                            <button
+                                onClick={() => setVisibleCount(6)}
+                                className="
+                                    px-8 py-3
+                                    rounded-full
+                                    bg-gray-200
+                                    text-gray-700 font-semibold
+                                    hover:bg-gray-300 transition
+                                "
+                            >
                                 Show Less
                             </button>
                         )}

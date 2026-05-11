@@ -52,11 +52,11 @@ const HeroFoodSection = () => {
     };
 
     return (
-        <section className="w-full h-[88vh] relative overflow-hidden">
+        <section className="w-full h-[65vh] relative overflow-hidden">
 
             {/* SLIDER WRAPPER */}
             <div
-                className="flex transition-transform duration-700 ease-in-out"
+                className="flex transition-transform duration-700 ease-in-out "
                 style={{
                     transform: `translateX(-${current * 100}%)`,
                 }}
@@ -66,7 +66,7 @@ const HeroFoodSection = () => {
 
                     <div
                         key={food.id}
-                        className="min-w-full h-[90vh] relative group"
+                        className="min-w-full h-[90vh]  relative group"
                     >
 
                         {/* IMAGE */}
@@ -116,7 +116,8 @@ const HeroFoodSection = () => {
                 onClick={prevSlide}
                 className="
           absolute  cursor-pointer left-5 top-1/2 -translate-y-1/2
-          bg-white/80 hover:bg-white
+          btnColor
+          text-white
           p-3 rounded-full
         "
             >
@@ -127,7 +128,8 @@ const HeroFoodSection = () => {
                 onClick={nextSlide}
                 className="
           absolute right-5 cursor-pointer top-1/2 -translate-y-1/2
-          bg-white/80 hover:bg-white
+          btnColor
+          text-white
           p-3 rounded-full
         "
             >

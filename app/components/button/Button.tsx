@@ -1,11 +1,11 @@
 "use client";
 
-
 type Props = {
     text: string;
     onClick?: () => void;
 
-    loading?: boolean; // ✅ add loading
+    // ✅ optional loading
+    loading?: boolean;
 
     py?: string;
     px?: string;
@@ -20,7 +20,7 @@ type Props = {
 const Button = ({
     text,
     onClick,
-    loading = false,
+    loading,
     py = "12px",
     px = "16px",
     color = "#fff",
@@ -33,7 +33,7 @@ const Button = ({
     return (
         <button
             onClick={onClick}
-            disabled={loading} // ✅ disable when loading
+            disabled={loading}
             style={{
                 width,
                 padding: `${py} ${px}`,

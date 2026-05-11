@@ -33,7 +33,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                     </button> */}
 
                     <Button
-                        text="Add to Cart"
+                        text="View Details"
                         py="7px"
                         px="12px"
                         color="#fff"

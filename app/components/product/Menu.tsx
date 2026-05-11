@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { redirect } from 'next/navigation';
+import MaxWidth from "../max-width/MaxWidth";
 
 const tabs = [
     "Breakfast",
@@ -79,7 +81,6 @@ const menuItems = [
 ];
 
 const Menu = () => {
-
     const [activeTab, setActiveTab] = useState("Breakfast");
 
     const filteredItems = menuItems.filter(
@@ -87,22 +88,43 @@ const Menu = () => {
     );
 
     return (
-        <div className=" py-10">
+        <section className=" mb-10 ">
+            <MaxWidth>
 
-            <div className="">
+                {/* TITLE & DESCRIPTION */}
+                <div className="text-center max-w-3xl mx-auto mb-14">
 
-                
+                    <span className="inline-block px-4 py-2 rounded-full bg-green-100 text-[#0b7211] text-sm font-semibold mb-4">
+                        Our Delicious Menu
+                    </span>
+
+                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                        Fresh & Tasty Meals
+                        <span className="text-[#0b7211]"> Delivered Daily</span>
+                    </h1>
+
+                    <p className="text-gray-600 mt-5 text-lg leading-8">
+                        Explore our carefully crafted menu filled with fresh
+                        ingredients, healthy recipes, and delicious flavors made
+                        for breakfast, lunch, dinner, drinks, and weekly meal
+                        plans.
+                    </p>
+
+                </div>
 
                 {/* TABS */}
-                <div className="flex flex-wrap justify-center gap-4 mb-12">
+                <div className="flex flex-wrap justify-center gap-4 mb-14">
 
                     {tabs.map((tab) => (
 
                         <button
                             key={tab}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-6 py-3 cursor-pointer rounded-md text-sm font-medium transition-all duration-300 border ${activeTab === tab ? "bg-[#0b7211] text-white border-[#0b7211] shadow-lg scale-105"
-                                : "bg-white text-gray-700 border-gray-200 hover:bg-green-50"}`}>
+                            className={`px-6 py-3 cursor-pointer rounded-xl text-sm font-semibold transition-all duration-300 border ${activeTab === tab
+                                ? "bg-[#0b7211] text-white border-[#0b7211] shadow-lg scale-105"
+                                : "bg-white text-gray-700 border-gray-200 hover:bg-green-50 hover:border-green-200"
+                                }`}
+                        >
                             {tab}
                         </button>
 
@@ -113,13 +135,13 @@ const Menu = () => {
                 {/* MENU GRID */}
                 <div
                     className="
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-            gap-8
-          "
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-3
+                        xl:grid-cols-3
+                        gap-8
+                    "
                 >
 
                     {filteredItems.map((item) => (
@@ -127,16 +149,17 @@ const Menu = () => {
                         <div
                             key={item.id}
                             className="
-                group
-                bg-white
-                rounded-3xl
-                overflow-hidden
-                shadow-sm
-                hover:shadow-2xl
-                transition-all
-                duration-300
-                hover:-translate-y-2
-              "
+                                group
+                                bg-white
+                                rounded-3xl
+                                overflow-hidden
+                                shadow-md
+                                hover:shadow-2xl
+                                transition-all
+                                duration-500
+                                hover:-translate-y-2
+                                border border-gray-100
+                            "
                         >
 
                             {/* IMAGE */}
@@ -147,51 +170,53 @@ const Menu = () => {
                                     alt={item.title}
                                     fill
                                     className="
-                    object-cover
-                    group-hover:scale-110
-                    transition-transform
-                    duration-500
-                  "
+                                        object-cover
+                                        group-hover:scale-110
+                                        transition-transform
+                                        duration-500
+                                    "
                                 />
+
+                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[#0b7211] font-bold shadow">
+                                    {item.price}
+                                </div>
 
                             </div>
 
                             {/* CONTENT */}
-                            <div className="p-5">
+                            <div className="p-6">
 
-                                <div className="flex items-center justify-between">
+                                <div className="flex items-center justify-between gap-3">
 
                                     <h2 className="text-xl font-bold text-gray-800">
                                         {item.title}
                                     </h2>
 
-                                    <span className="text-[#0b7211] font-bold">
-                                        {item.price}
-                                    </span>
-
                                 </div>
 
-                                <p className="text-gray-500 text-sm mt-2">
-                                    Delicious & freshly prepared food for you 🍽️
+                                <p className="text-gray-500 text-sm mt-3 leading-6">
+                                    Delicious & freshly prepared food with rich
+                                    flavors and premium ingredients 🍽️
                                 </p>
 
                                 <button
+                                    onClick={() => { redirect(`/food/${item?.id}`) }}
                                     className="
-                    mt-5
-                    w-full
-                    bg-[#0b7211]
-                    hover:bg-[#095c0e]
-                    text-white
-                    py-3
-                    rounded-xl
-                    font-medium
-                    transition-all
-                    duration-300
-                    hover:scale-[1.02]
-                    cursor-pointer
-                  "
+                                        mt-6
+                                        w-full
+                                        bg-[#0b7211]
+                                        hover:bg-[#095c0e]
+                                        text-white
+                                        py-3
+                                        rounded-xl
+                                        font-semibold
+                                        transition-all
+                                        duration-300
+                                        hover:scale-[1.02]
+                                        cursor-pointer
+                                    "
                                 >
-                                    Add To Cart
+                                    View Details
                                 </button>
 
                             </div>
@@ -202,9 +227,8 @@ const Menu = () => {
 
                 </div>
 
-            </div>
-
-        </div>
+            </MaxWidth>
+        </section>
     );
 };
 

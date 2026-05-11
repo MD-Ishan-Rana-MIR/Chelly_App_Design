@@ -1,16 +1,20 @@
+"use client"
 import React from 'react'
-import MaxWidth from '../max-width/MaxWidth'
+import { redirect } from 'next/navigation'
 
-const MenuCard = ({
+const CategoryCard = ({
     title,
     icon,
+    category,
 }: {
     title: string
-    icon: React.ReactNode
+    icon: React.ReactNode,
+    category: string
 }) => {
     return (
         <div className="py-4 ">
             <div
+                onClick={() => { redirect(`/category/${category}`) }}
                 className="
                     group
                     relative
@@ -87,4 +91,4 @@ const MenuCard = ({
     )
 }
 
-export default MenuCard
+export default CategoryCard

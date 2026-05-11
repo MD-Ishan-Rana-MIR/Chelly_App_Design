@@ -5,6 +5,7 @@ import Input from "@/app/components/input/Input";
 import PasswordInput from "@/app/components/input/Password";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -35,7 +36,7 @@ const LoginPage = () => {
         <div className="flex flex-col items-center mb-6">
 
           <Image
-            src="../../../public/vercel.svg"   // 👉 replace with your logo path
+            src="/logo/logo.png"   // 👉 replace with your logo path
             alt="logo"
             width={300}
             height={300}
@@ -52,7 +53,7 @@ const LoginPage = () => {
 
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
 
           {/* EMAIL */}
           <Input
@@ -86,6 +87,10 @@ const LoginPage = () => {
             }}
             error={errors.password?.message}
           />
+
+          <div  >
+            <p onClick={() => { redirect("/email-verify") }} className=" text-end font-normal text-sm cursor-pointer " >Forget password</p>
+          </div>
 
           {/* BUTTON */}
           <Button
