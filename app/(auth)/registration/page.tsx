@@ -40,12 +40,12 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className=" flex items-center justify-center">
+    <div className=" flex items-center justify-center my-10 md:my-20 ">
 
       <div
         className="
           w-full
-          max-w-3xl
+          max-w-2xl
           bg-white
           rounded-3xl
           p-8

@@ -21,7 +21,7 @@ const ProductParomaView = ({ images, alt }: Props) => {
         <div className="w-full h-[80vh] ">
 
             {/* MAIN IMAGE */}
-            <div className="relative w-full  h-[65vh]  overflow-hidden   px-4 rounded-2xl ">
+            <div className="relative w-full  h-[55vh]  overflow-hidden   px-4 rounded-2xl ">
 
                 <Image
                     src={active}

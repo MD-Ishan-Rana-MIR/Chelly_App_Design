@@ -88,11 +88,10 @@ const Menu = () => {
     );
 
     return (
-        <section className=" mb-10 ">
             <MaxWidth>
 
                 {/* TITLE & DESCRIPTION */}
-                <div className="text-center max-w-3xl mx-auto mb-14">
+                <div className="text-center  mx-auto mb-14  ">
 
                     <span className="inline-block px-4 py-2 rounded-full bg-green-100 text-[#0b7211] text-sm font-semibold mb-4">
                         Our Delicious Menu
@@ -113,7 +112,7 @@ const Menu = () => {
                 </div>
 
                 {/* TABS */}
-                <div className="flex flex-wrap justify-center gap-4 mb-14">
+                <div className="flex flex-wrap justify-center gap-x-4 mb-14">
 
                     {tabs.map((tab) => (
 
@@ -141,6 +140,8 @@ const Menu = () => {
                         lg:grid-cols-3
                         xl:grid-cols-3
                         gap-8
+                        md:mb-16
+                        mb-8
                     "
                 >
 
@@ -228,7 +229,6 @@ const Menu = () => {
                 </div>
 
             </MaxWidth>
-        </section>
     );
 };
 
