@@ -1,4 +1,5 @@
 "use client";
+
 export type CartItem = {
     id: number;
     title: string;
@@ -7,8 +8,9 @@ export type CartItem = {
     rating: number;
     image: string;
     description: string;
-    quantity: number
+    quantity: number;
 };
+
 import React, { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
@@ -19,16 +21,16 @@ import {
     FiShoppingCart,
     FiStar,
 } from "react-icons/fi";
+
 import MaxWidth from "@/app/components/max-width/MaxWidth";
 import ProductImageViewer from "@/app/components/img-view/Image360Viewer";
 import toast from "react-hot-toast";
-
 
 const foods = [
     {
         id: 1,
         title: "Classic Beef Burger",
-        category: "fast food",
+        category: "Fast Food",
         price: 8,
         rating: 4.7,
         image:
@@ -39,7 +41,7 @@ const foods = [
     {
         id: 2,
         title: "Margherita Pizza",
-        category: "pizza",
+        category: "Pizza",
         price: 10,
         rating: 4.8,
         image:
@@ -50,7 +52,7 @@ const foods = [
     {
         id: 3,
         title: "Chicken Biryani",
-        category: "rice",
+        category: "Rice",
         price: 12,
         rating: 4.9,
         image:
@@ -60,83 +62,56 @@ const foods = [
     },
     {
         id: 4,
-        title: "Creamy Pasta Alfredo",
-        category: "pasta",
-        price: 9,
-        rating: 4.6,
+        title: "Chicken Biryani",
+        category: "Rice",
+        price: 12,
+        rating: 4.9,
         image:
-            "https://images.unsplash.com/photo-1525755662778-989d0524087e",
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950",
         description:
-            "Rich creamy Alfredo sauce tossed with perfectly cooked fettuccine pasta.",
+            "Aromatic basmati rice cooked with spiced chicken and traditional herbs.",
     },
     {
         id: 5,
-        title: "Grilled Chicken Salad",
-        category: "salad",
-        price: 7,
-        rating: 4.5,
+        title: "Chicken Biryani",
+        category: "Rice",
+        price: 12,
+        rating: 4.9,
         image:
-            "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0",
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950",
         description:
-            "Healthy salad with grilled chicken, fresh greens, and light dressing.",
+            "Aromatic basmati rice cooked with spiced chicken and traditional herbs.",
     },
     {
         id: 6,
-        title: "Chocolate Milkshake",
-        category: "drinks",
-        price: 5,
-        rating: 4.8,
-        image:
-            "https://images.unsplash.com/photo-1572490122747-3968b75cc699",
-        description:
-            "Thick creamy chocolate shake topped with whipped cream and chocolate syrup.",
-    },
-    {
-        id: 7,
-        title: "Sushi Platter",
-        category: "japanese",
-        price: 15,
+        title: "Chicken Biryani",
+        category: "Rice",
+        price: 12,
         rating: 4.9,
         image:
-            "https://images.unsplash.com/photo-1553621042-f6e147245754",
+            "https://images.unsplash.com/photo-1601050690597-df0568f70950",
         description:
-            "Fresh assorted sushi rolls with salmon, tuna, and avocado.",
-    },
-    {
-        id: 8,
-        title: "French Fries",
-        category: "snacks",
-        price: 4,
-        rating: 4.4,
-        image:
-            "https://images.unsplash.com/photo-1573080496219-bb080dd4f877",
-        description:
-            "Golden crispy fries served hot with ketchup dip.",
-    },
-    {
-        id: 9,
-        title: "Doner Kebab Wrap",
-        category: "street food",
-        price: 11,
-        rating: 4.7,
-        image:
-            "https://images.unsplash.com/photo-1606755962773-d324e0a13086",
-        description:
-            "Juicy spiced meat wrapped in soft flatbread with veggies and sauce.",
+            "Aromatic basmati rice cooked with spiced chicken and traditional herbs.",
     },
 ];
 
 const FoodDetailsPage = () => {
     const router = useRouter();
     const params = useParams();
+
     const id = Number(params.id);
 
     const food = foods.find((item) => item.id === id);
+
     const [quantity, setQuantity] = useState(1);
+
+    const [selectedPlan, setSelectedPlan] = useState("Daily");
+
+    const plans = ["Daily", "Weekly", "Monthly"];
 
     if (!food) {
         return (
-            <div className="h-[40vh] flex items-center justify-center">
+            <div className="flex h-[40vh] items-center justify-center">
                 <h1 className="text-2xl font-bold text-red-500">
                     Food Not Found
                 </h1>
@@ -144,12 +119,17 @@ const FoodDetailsPage = () => {
         );
     }
 
-    const handleCart = (item: Omit<CartItem, "quantity">, qty: number = 1) => {
+    const handleCart = (
+        item: Omit<CartItem, "quantity">,
+        qty: number = 1
+    ) => {
         const cart: CartItem[] = JSON.parse(
             localStorage.getItem("cart") || "[]"
         );
 
-        const existingIndex = cart.findIndex((i) => i.id === item.id);
+        const existingIndex = cart.findIndex(
+            (i) => i.id === item.id
+        );
 
         if (existingIndex !== -1) {
             cart[existingIndex].quantity =
@@ -176,9 +156,10 @@ const FoodDetailsPage = () => {
         window.dispatchEvent(new Event("cartUpdate"));
     };
 
-
     const handleWishlist = (item: { id: number }) => {
-        const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+        const wishlist = JSON.parse(
+            localStorage.getItem("wishlist") || "[]"
+        );
 
         const existingIndex = wishlist.findIndex(
             (i: { id: number }) => i.id === item.id
@@ -187,126 +168,237 @@ const FoodDetailsPage = () => {
         let updatedWishlist;
 
         if (existingIndex !== -1) {
-            // remove from wishlist (toggle off)
-            updatedWishlist = wishlist.filter((i: { id: number }) => i.id !== item.id);
+            updatedWishlist = wishlist.filter(
+                (i: { id: number }) => i.id !== item.id
+            );
+
             toast.success("Removed from wishlist!");
         } else {
-            // add to wishlist
             updatedWishlist = [...wishlist, item];
+
             toast.success("Added to wishlist!");
         }
 
-        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
+        localStorage.setItem(
+            "wishlist",
+            JSON.stringify(updatedWishlist)
+        );
 
-        // trigger real-time update
         window.dispatchEvent(new Event("wishlistUpdate"));
     };
 
     return (
-        <section className="py-10">
-
+        <section className="bg-gray-50 py-10">
             <MaxWidth>
 
-                {/* BACK */}
+                {/* BACK BUTTON */}
                 <button
                     onClick={() => router.back()}
-                    className="mb-8 flex items-center gap-3 px-4 py-2 rounded-full bg-white shadow-sm border hover:shadow-md transition"
+                    className="mb-8 flex items-center gap-3 rounded-full border bg-white px-5 py-3 shadow-sm transition hover:shadow-md"
                 >
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-green-100 text-[#0b7211]">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-[#0b7211]">
                         <FiArrowLeft />
                     </span>
+
                     <span className="font-medium text-gray-700">
                         Back
                     </span>
                 </button>
 
                 {/* MAIN GRID */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
 
-                    {/* IMAGE */}
-                    <div className="relative bg-white p-4 rounded-3xl ">
-                        <ProductImageViewer
-                            images={[
-                                food.image,
-                                "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
-                                "https://images.unsplash.com/photo-1544025162-d76694265947",
-                            ]}
-                            alt={food.title}
-                        />
+                    {/* IMAGE SECTION */}
+                    <div className="rounded-[32px] bg-white p-5 shadow-sm">
 
-                        <span className="absolute top-6 left-6 bg-white px-4 py-2 rounded-full text-sm font-semibold text-[#0b7211] shadow">
-                            {food.category}
-                        </span>
+                        <div className="relative overflow-hidden rounded-3xl">
+                            <ProductImageViewer
+                                images={[
+                                    food.image,
+                                    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
+                                    "https://images.unsplash.com/photo-1544025162-d76694265947",
+                                ]}
+                                alt={food.title}
+                            />
+
+                            <span className="absolute left-5 top-5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b7211] shadow">
+                                {food.category}
+                            </span>
+                        </div>
+
                     </div>
 
                     {/* CONTENT */}
-                    <div className="bg-white rounded-3xlp-6 md:p-10">
+                    <div className="rounded-[32px] bg-white p-6 md:p-10 shadow-sm">
 
                         {/* TITLE */}
-                        <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
+                        <h1 className="text-3xl font-bold text-gray-900 md:text-5xl">
                             {food.title}
                         </h1>
 
                         {/* RATING */}
-                        <div className="flex items-center gap-4 mt-5">
-                            <div className="flex items-center gap-2 bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full font-semibold">
+                        <div className="mt-5 flex items-center gap-4">
+
+                            <div className="flex items-center gap-2 rounded-full bg-yellow-100 px-4 py-2 font-semibold text-yellow-700">
                                 <FiStar className="fill-yellow-500" />
                                 {food.rating}
                             </div>
 
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-sm text-gray-500">
                                 120+ reviews
                             </p>
+
                         </div>
 
                         {/* PRICE */}
-                        <h2 className="text-4xl md:text-5xl font-bold text-[#0b7211] mt-8">
+                        <h2 className="mt-8 text-4xl font-bold text-[#0b7211] md:text-5xl">
                             ${food.price}
                         </h2>
 
                         {/* DESCRIPTION */}
-                        <p className="text-gray-600 text-lg leading-8 mt-6">
+                        <p className="mt-6 text-lg leading-8 text-gray-600">
                             {food.description}
                         </p>
 
                         {/* QUANTITY */}
                         <div className="mt-8">
-                            <h3 className="font-semibold mb-3 text-gray-700">
+
+                            <h3 className="mb-4 text-lg font-semibold text-gray-800">
                                 Quantity
                             </h3>
 
-                            <div className="flex items-center border rounded-2xl w-fit overflow-hidden">
+                            <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
+
                                 <button
                                     onClick={() =>
-                                        setQuantity((q) => (q > 1 ? q - 1 : 1))
+                                        setQuantity((q) =>
+                                            q > 1 ? q - 1 : 1
+                                        )
                                     }
-                                    className="px-5 cursor-pointer py-3 hover:bg-gray-100"
+                                    className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
                                 >
                                     <FiMinus />
                                 </button>
 
-                                <span className="px-8  font-bold text-lg">
+                                <span className="px-8 text-lg font-bold">
                                     {quantity}
                                 </span>
 
                                 <button
-                                    onClick={() => setQuantity((q) => q + 1)}
-                                    className="px-5 cursor-pointer py-3 hover:bg-gray-100"
+                                    onClick={() =>
+                                        setQuantity((q) => q + 1)
+                                    }
+                                    className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
                                 >
                                     <FiPlus />
                                 </button>
+
                             </div>
+
                         </div>
 
-                        {/* BUTTONS */}
-                        <div className="flex flex-col sm:flex-row gap-4 mt-10">
+                        {/* ORDER PLAN */}
+                        <div className="mt-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
 
-                            <button onClick={() => handleCart(food, quantity)} className="flex-1  cursor-pointer flex items-center justify-center gap-3 bg-[#0b7211] hover:bg-green-700 text-white py-4 rounded-2xl font-semibold shadow-md transition">
+                            {/* HEADER */}
+                            <div className="mb-5 flex items-center justify-between">
+
+                                <div>
+                                    <h2 className="text-xl font-semibold text-gray-900">
+                                        Order Plan
+                                    </h2>
+
+                                    <p className="mt-1 text-sm text-gray-500">
+                                        Choose your delivery schedule
+                                    </p>
+                                </div>
+
+                                <div className="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-[#0b7211]">
+                                    Flexible
+                                </div>
+
+                            </div>
+
+                            {/* PLAN LIST */}
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+                                {plans.map((plan) => (
+                                    <button
+                                        key={plan}
+                                        onClick={() =>
+                                            setSelectedPlan(plan)
+                                        }
+                                        className={`group relative cursor-pointer overflow-hidden rounded-2xl border p-5 text-left transition-all duration-300
+
+                                            ${selectedPlan === plan
+                                                ? "border-[#0b7211] bg-green-50 shadow-md"
+                                                : "border-gray-200 hover:border-[#0b7211]/40 hover:shadow-sm"
+                                            }
+                                        `}
+                                    >
+
+                                        {/* ACTIVE DOT */}
+                                        <div
+                                            className={`absolute right-4 top-4 flex h-5 w-5 items-center justify-center rounded-full border
+
+                                                ${selectedPlan === plan
+                                                    ? "border-[#0b7211]"
+                                                    : "border-gray-300"
+                                                }
+                                            `}
+                                        >
+                                            {selectedPlan === plan && (
+                                                <div className="h-2.5 w-2.5 rounded-full bg-[#0b7211]" />
+                                            )}
+                                        </div>
+
+                                        {/* TEXT */}
+                                        <div>
+
+                                            <h3 className="text-base font-semibold text-gray-900">
+                                                {plan}
+                                            </h3>
+
+                                            <p className="mt-1 text-sm text-gray-500">
+                                                {plan === "Daily" &&
+                                                    "Fresh delivery every day"}
+
+                                                {plan === "Weekly" &&
+                                                    "Best for weekly routine"}
+
+                                                {plan === "Monthly" &&
+                                                    "Save more with monthly plan"}
+                                            </p>
+
+                                        </div>
+
+                                    </button>
+                                ))}
+
+                            </div>
+
+                        </div>
+
+                        {/* ACTION BUTTONS */}
+                        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+
+                            <button
+                                onClick={() =>
+                                    handleCart(food, quantity)
+                                }
+                                className="flex flex-1 cursor-pointer items-center justify-center gap-3 rounded-2xl bg-[#0b7211] py-4 font-semibold text-white shadow-md transition hover:bg-green-700"
+                            >
                                 <FiShoppingCart size={20} />
+
                                 Add To Cart
                             </button>
 
-                            <button onClick={() => handleWishlist(food)} className="w-full cursor-pointer sm:w-14 h-14 border rounded-2xl flex items-center justify-center hover:text-red-500 hover:border-red-300 transition">
+                            <button
+                                onClick={() =>
+                                    handleWishlist(food)
+                                }
+                                className="flex h-14 w-full cursor-pointer items-center justify-center rounded-2xl border transition hover:border-red-300 hover:text-red-500 sm:w-14"
+                            >
                                 <FiHeart size={20} />
                             </button>
 
@@ -317,7 +409,6 @@ const FoodDetailsPage = () => {
                 </div>
 
             </MaxWidth>
-
         </section>
     );
 };

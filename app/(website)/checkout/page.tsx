@@ -1,12 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import MaxWidth from '@/app/components/max-width/MaxWidth';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import {
     FiCreditCard,
     FiMapPin,
     FiPhone,
     FiShoppingBag,
+    FiCheckCircle,
 } from 'react-icons/fi';
 
 const cartItems = [
@@ -29,6 +32,8 @@ const cartItems = [
 ];
 
 export default function CheckoutPage() {
+    const router = useRouter();
+    const [openModal, setOpenModal] = useState(false);
 
     const subtotal = cartItems.reduce(
         (acc, item) => acc + item.price * item.quantity,
@@ -38,6 +43,15 @@ export default function CheckoutPage() {
     const deliveryFee = 5;
     const total = subtotal + deliveryFee;
 
+    const handlePlaceOrder = () => {
+        setOpenModal(true);
+    };
+
+    const handleGoHome = () => {
+        setOpenModal(false);
+        router.push('/');
+    };
+
     return (
         <section className="bg-gray-50 min-h-screen py-10">
 
@@ -45,10 +59,9 @@ export default function CheckoutPage() {
 
                 {/* TITLE */}
                 <div className="mb-10">
-                    <h1 className="text-3xl md:text-5xl font-bold text-gray-900">
+                    <h1 className="text-3xl md:text-5xl font-bold">
                         Checkout
                     </h1>
-
                     <p className="text-gray-500 mt-2">
                         Complete your order details below
                     </p>
@@ -57,202 +70,108 @@ export default function CheckoutPage() {
                 {/* MAIN GRID */}
                 <div className="grid grid-cols-1 lg:grid-cols-[1.5fr_0.8fr] gap-8">
 
-                    {/* LEFT SIDE */}
+                    {/* LEFT */}
                     <div className="space-y-8">
 
-                        {/* DELIVERY INFO */}
-                        <div className="bg-white rounded-3xl shadow-sm p-6 md:p-8">
-
+                        {/* DELIVERY */}
+                        <div className="bg-white rounded-3xl p-6 md:p-8">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center text-green-600">
-                                    <FiMapPin size={22} />
-                                </div>
-
-                                <div>
-                                    <h2 className="text-xl font-bold">
-                                        Delivery Information
-                                    </h2>
-
-                                    <p className="text-gray-500 text-sm">
-                                        Enter your delivery details
-                                    </p>
-                                </div>
+                                <FiMapPin className="text-[#0b7211]" size={22} />
+                                <h2 className="text-xl font-bold">
+                                    Delivery Information
+                                </h2>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                                <input
-                                    type="text"
-                                    placeholder="Full Name"
-                                    className="border rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-500"
-                                />
-
-                                <input
-                                    type="email"
-                                    placeholder="Email Address"
-                                    className="border rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-500"
-                                />
+                                <input className="border p-3 rounded-xl" placeholder="Full Name" />
+                                <input className="border p-3 rounded-xl" placeholder="Email" />
 
                                 <div className="md:col-span-2 relative">
                                     <FiPhone className="absolute top-4 left-4 text-gray-400" />
-
-                                    <input
-                                        type="text"
-                                        placeholder="Phone Number"
-                                        className="w-full border rounded-2xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-green-500"
-                                    />
+                                    <input className="w-full border pl-11 p-3 rounded-xl" placeholder="Phone" />
                                 </div>
 
-                                <div className="md:col-span-2">
-                                    <textarea
-                                        placeholder="Delivery Address"
-                                        rows={4}
-                                        className="w-full border rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-green-500 resize-none"
-                                    />
-                                </div>
-
+                                <textarea className="md:col-span-2 border p-3 rounded-xl" rows={4} placeholder="Address" />
                             </div>
                         </div>
 
-                        {/* PAYMENT METHOD */}
-                        <div className="bg-white rounded-3xl shadow-sm p-6 md:p-8">
-
+                        {/* PAYMENT */}
+                        <div className="bg-white rounded-3xl p-6 md:p-8">
                             <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center text-green-600">
-                                    <FiCreditCard size={22} />
-                                </div>
-
-                                <div>
-                                    <h2 className="text-xl font-bold">
-                                        Payment Method
-                                    </h2>
-
-                                    <p className="text-gray-500 text-sm">
-                                        Choose your payment option
-                                    </p>
-                                </div>
+                                <FiCreditCard className="text-[#0b7211]" size={22} />
+                                <h2 className="text-xl font-bold">
+                                    Payment Method
+                                </h2>
                             </div>
 
                             <div className="space-y-4">
-
-                                <label className="flex items-center justify-between border rounded-2xl p-4 cursor-pointer hover:border-green-500 transition">
-                                    <div className="flex items-center gap-3">
-                                        <input type="radio" name="payment" defaultChecked />
-                                        <span className="font-medium">
-                                            Cash on Delivery
-                                        </span>
-                                    </div>
-
-                                    <span className="text-green-600 font-semibold">
-                                        Recommended
-                                    </span>
+                                <label className="flex justify-between border p-4 rounded-xl">
+                                    <input type="radio" name="payment" defaultChecked />
+                                    Cash on Delivery
                                 </label>
 
-                                <label className="flex items-center justify-between border rounded-2xl p-4 cursor-pointer hover:border-green-500 transition">
-                                    <div className="flex items-center gap-3">
-                                        <input type="radio" name="payment" />
-                                        <span className="font-medium">
-                                            Credit / Debit Card
-                                        </span>
-                                    </div>
+                                <label className="flex justify-between border p-4 rounded-xl">
+                                    <input type="radio" name="payment" />
+                                    Card Payment
                                 </label>
-
-                                <label className="flex items-center justify-between border rounded-2xl p-4 cursor-pointer hover:border-green-500 transition">
-                                    <div className="flex items-center gap-3">
-                                        <input type="radio" name="payment" />
-                                        <span className="font-medium">
-                                            Mobile Banking
-                                        </span>
-                                    </div>
-                                </label>
-
                             </div>
-
                         </div>
 
                     </div>
 
-                    {/* RIGHT SIDE */}
-                    <div className="bg-white rounded-3xl shadow-sm p-6 h-fit sticky top-24">
+                    {/* RIGHT */}
+                    <div className="bg-white rounded-3xl p-6 h-fit sticky top-24">
 
-                        {/* ORDER SUMMARY */}
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-12 h-12 rounded-2xl bg-green-100 flex items-center justify-center text-green-600">
-                                <FiShoppingBag size={22} />
-                            </div>
+                            <FiShoppingBag className="text-[#0b7211]" size={22} />
+                            <h2 className="text-xl font-bold">
+                                Order Summary
+                            </h2>
+                        </div>
 
-                            <div>
-                                <h2 className="text-xl font-bold">
-                                    Order Summary
-                                </h2>
-
-                                <p className="text-gray-500 text-sm">
-                                    {cartItems.length} items selected
+                        {cartItems.map((item) => (
+                            <div key={item.id} className="flex gap-4 mb-4">
+                                <Image
+                                    src={item.image}
+                                    alt=""
+                                    width={70}
+                                    height={70}
+                                    className="rounded-xl"
+                                />
+                                <div className="flex-1">
+                                    <h3 className="font-semibold">{item.title}</h3>
+                                    <p className="text-sm text-gray-500">
+                                        Qty: {item.quantity}
+                                    </p>
+                                </div>
+                                <p className="font-bold text-[#0b7211]">
+                                    ${item.price * item.quantity}
                                 </p>
                             </div>
-                        </div>
+                        ))}
 
-                        {/* PRODUCTS */}
-                        <div className="space-y-5">
-
-                            {cartItems.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex items-center gap-4"
-                                >
-
-                                    <div className="relative w-20 h-20 rounded-2xl overflow-hidden">
-                                        <Image
-                                            src={item.image}
-                                            alt={item.title}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-
-                                    <div className="flex-1">
-                                        <h3 className="font-semibold">
-                                            {item.title}
-                                        </h3>
-
-                                        <p className="text-gray-500 text-sm">
-                                            Qty: {item.quantity}
-                                        </p>
-                                    </div>
-
-                                    <p className="font-bold text-green-600">
-                                        ${item.price * item.quantity}
-                                    </p>
-
-                                </div>
-                            ))}
-
-                        </div>
-
-                        {/* PRICE */}
-                        <div className="border-t mt-6 pt-6 space-y-4">
-
-                            <div className="flex justify-between text-gray-600">
+                        <div className="border-t pt-4 space-y-2">
+                            <div className="flex justify-between">
                                 <span>Subtotal</span>
                                 <span>${subtotal}</span>
                             </div>
 
-                            <div className="flex justify-between text-gray-600">
-                                <span>Delivery Fee</span>
+                            <div className="flex justify-between">
+                                <span>Delivery</span>
                                 <span>${deliveryFee}</span>
                             </div>
 
-                            <div className="flex justify-between text-xl font-bold">
+                            <div className="flex justify-between font-bold text-[#0b7211] text-lg">
                                 <span>Total</span>
-                                <span className="text-green-600">
-                                    ${total}
-                                </span>
+                                <span>${total}</span>
                             </div>
-
                         </div>
 
                         {/* BUTTON */}
-                        <button className="w-full mt-8 btnColor cursor-pointer hover:bg-green-700 text-white py-4 rounded-2xl font-semibold text-lg transition">
+                        <button
+                            onClick={handlePlaceOrder}
+                            className="w-full mt-6 bg-[#0b7211] cursor-pointer text-white py-4 rounded-xl font-semibold"
+                        >
                             Place Order
                         </button>
 
@@ -261,6 +180,34 @@ export default function CheckoutPage() {
                 </div>
 
             </MaxWidth>
+
+            {/* ================= SUCCESS MODAL ================= */}
+            {openModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+                    <div className="bg-white p-8 rounded-3xl text-center w-[90%] max-w-md">
+
+                        <FiCheckCircle className="mx-auto text-[#0b7211]" size={60} />
+
+                        <h2 className="text-2xl font-bold mt-4">
+                            Order Placed!
+                        </h2>
+
+                        <p className="text-gray-500 mt-2">
+                            Your order has been successfully placed.
+                        </p>
+
+                        <button
+                            onClick={handleGoHome}
+                            className="mt-6 w-full bg-[#0b7211] cursor-pointer   text-white py-3 rounded-xl font-semibold"
+                        >
+                            Go to Home
+                        </button>
+
+                    </div>
+
+                </div>
+            )}
 
         </section>
     );
