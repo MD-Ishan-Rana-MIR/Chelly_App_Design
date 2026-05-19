@@ -129,7 +129,7 @@ const ProductPage = () => {
 
     }, []);
 
-    // UNIQUE CATEGORY
+    // UNIQUE CATEGORY by product 
     const categories = useMemo(() => {
 
         const types = products
