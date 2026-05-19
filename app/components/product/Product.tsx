@@ -194,7 +194,7 @@ const ProductPage = () => {
 
     return (
 
-        <div className="py-14 min-h-screen bg-[#fafafa]">
+        <div className="py-14 min-h-screen">
 
             {/* HERO */}
             <div className="text-center mb-14 px-4">
