@@ -1,11 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { redirect } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import MaxWidth from "../max-width/MaxWidth";
 
+interface Product {
+    id: number;
+    handle: string;
+    title: string;
+    description: string;
+    price: string;
+    image: string;
+    tags: string;
+    type: string;
+    status: string;
+    category?: string;
+}
+
 const tabs = [
+    "All",
     "Breakfast",
     "Lunch",
     "Dinner",
@@ -13,222 +27,277 @@ const tabs = [
     "Drinks",
 ];
 
-const menuItems = [
-    {
-        id: 1,
-        title: "Pancake Combo",
-        category: "Breakfast",
-        price: "$12",
-        image:
-            "https://images.unsplash.com/photo-1525351484163-7529414344d8",
-    },
-    {
-        id: 2,
-        title: "Chicken Burger",
-        category: "Lunch",
-        price: "$18",
-        image:
-            "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
-    },
-    {
-        id: 3,
-        title: "Grilled Steak",
-        category: "Dinner",
-        price: "$30",
-        image:
-            "https://images.unsplash.com/photo-1544025162-d76694265947",
-    },
-    {
-        id: 4,
-        title: "Healthy Weekly Meal",
-        category: "Weekly Subscription",
-        price: "$99",
-        image:
-            "https://images.unsplash.com/photo-1547592180-85f173990554",
-    },
-    {
-        id: 5,
-        title: "Fresh Orange Juice",
-        category: "Drinks",
-        price: "$8",
-        image:
-            "https://images.unsplash.com/photo-1600271886742-f049cd451bba",
-    },
-    {
-        id: 6,
-        title: "Omelette Toast",
-        category: "Breakfast",
-        price: "$10",
-        image:
-            "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666",
-    },
-    {
-        id: 7,
-        title: "Pizza Combo",
-        category: "Lunch",
-        price: "$22",
-        image:
-            "https://images.unsplash.com/photo-1600891964092-4316c288032e",
-    },
-    {
-        id: 8,
-        title: "Cold Coffee",
-        category: "Drinks",
-        price: "$7",
-        image:
-            "https://images.unsplash.com/photo-1517701604599-bb29b565090c",
-    },
-];
+const ITEMS_PER_PAGE = 6;
 
 const Menu = () => {
-    const [activeTab, setActiveTab] = useState("Breakfast");
+    const router = useRouter();
 
-    const filteredItems = menuItems.filter(
-        (item) => item.category === activeTab
+    const [products, setProducts] = useState<Product[]>([]);
+    const [activeTab, setActiveTab] = useState("All");
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Fetch JSON
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch("/product.json");
+                const data = await response.json();
+
+                setProducts(data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchProducts();
+    }, []);
+
+    // Filter Products
+    const filteredItems = useMemo(() => {
+        if (activeTab === "All") {
+            return products;
+        }
+
+        return products.filter((item) =>
+            item.tags?.toLowerCase().includes(
+                activeTab.toLowerCase()
+            )
+        );
+    }, [products, activeTab]);
+
+    // Pagination
+    const totalPages = Math.ceil(
+        filteredItems.length / ITEMS_PER_PAGE
     );
 
+    const paginatedItems = filteredItems.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
+    // Change Tab
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
+        setCurrentPage(1);
+    };
+
     return (
-            <MaxWidth>
+        <MaxWidth>
 
-                {/* TITLE & DESCRIPTION */}
-                <div className="text-center  mx-auto mb-14  ">
+            {/* TITLE */}
+            <div className="text-center mx-auto mb-14">
 
-                    <span className="inline-block px-4 py-2 rounded-full bg-green-100 text-[#0b7211] text-sm font-semibold mb-4">
-                        Our Delicious Menu
+                <span className="inline-block px-4 py-2 rounded-full bg-green-100 text-[#0b7211] text-sm font-semibold mb-4">
+                    Our Delicious Menu
+                </span>
+
+                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+                    Fresh & Tasty Meals
+                    <span className="text-[#0b7211]">
+                        {" "}
+                        Delivered Daily
                     </span>
+                </h1>
 
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-                        Fresh & Tasty Meals
-                        <span className="text-[#0b7211]"> Delivered Daily</span>
-                    </h1>
+                <p className="text-gray-600 mt-5 text-lg leading-8">
+                    Explore our carefully crafted menu filled with
+                    fresh ingredients, healthy recipes, and delicious
+                    flavors.
+                </p>
 
-                    <p className="text-gray-600 mt-5 text-lg leading-8">
-                        Explore our carefully crafted menu filled with fresh
-                        ingredients, healthy recipes, and delicious flavors made
-                        for breakfast, lunch, dinner, drinks, and weekly meal
-                        plans.
-                    </p>
+            </div>
 
-                </div>
+            {/* TABS */}
+            <div className="flex flex-wrap justify-center gap-4 mb-14">
 
-                {/* TABS */}
-                <div className="flex flex-wrap justify-center gap-x-4 mb-14">
+                {tabs.map((tab) => (
 
-                    {tabs.map((tab) => (
-
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`px-6 py-3 cursor-pointer rounded-xl text-sm font-semibold transition-all duration-300 border ${activeTab === tab
+                    <button
+                        key={tab}
+                        onClick={() => handleTabChange(tab)}
+                        className={`px-6 py-3 cursor-pointer rounded-xl text-sm font-semibold transition-all duration-300 border
+                            
+                            ${activeTab === tab
                                 ? "bg-[#0b7211] text-white border-[#0b7211] shadow-lg scale-105"
                                 : "bg-white text-gray-700 border-gray-200 hover:bg-green-50 hover:border-green-200"
-                                }`}
-                        >
-                            {tab}
-                        </button>
+                            }`}
+                    >
+                        {tab}
+                    </button>
 
-                    ))}
+                ))}
 
-                </div>
+            </div>
 
-                {/* MENU GRID */}
-                <div
-                    className="
-                        grid
-                        grid-cols-1
-                        sm:grid-cols-2
-                        lg:grid-cols-3
-                        xl:grid-cols-3
-                        gap-8
-                        md:mb-16
-                        mb-8
-                    "
-                >
+            {/* PRODUCT GRID */}
+            <div
+                className="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    lg:grid-cols-3
+                    gap-8
+                    md:mb-16
+                    mb-8
+                "
+            >
 
-                    {filteredItems.map((item) => (
+                {paginatedItems.map((item) => (
 
-                        <div
-                            key={item.id}
-                            className="
-                                group
-                                bg-white
-                                rounded-3xl
-                                overflow-hidden
-                                shadow-md
-                                hover:shadow-2xl
-                                transition-all
-                                duration-500
-                                hover:-translate-y-2
-                                border border-gray-100
-                            "
-                        >
+                    <div
+                        key={item.id}
+                        className="
+                            group
+                            bg-white
+                            rounded-3xl
+                            overflow-hidden
+                            shadow-md
+                            hover:shadow-2xl
+                            transition-all
+                            duration-500
+                            hover:-translate-y-2
+                            border border-gray-100
+                        "
+                    >
 
-                            {/* IMAGE */}
-                            <div className="relative w-full h-60 overflow-hidden">
+                        {/* IMAGE */}
+                        <div className="relative w-full h-60 overflow-hidden">
 
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    className="
-                                        object-cover
-                                        group-hover:scale-110
-                                        transition-transform
-                                        duration-500
-                                    "
-                                />
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                fill
+                                className="
+                                    object-cover
+                                    group-hover:scale-110
+                                    transition-transform
+                                    duration-500
+                                "
+                            />
 
-                                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[#0b7211] font-bold shadow">
-                                    {item.price}
-                                </div>
-
-                            </div>
-
-                            {/* CONTENT */}
-                            <div className="p-6">
-
-                                <div className="flex items-center justify-between gap-3">
-
-                                    <h2 className="text-xl font-bold text-gray-800">
-                                        {item.title}
-                                    </h2>
-
-                                </div>
-
-                                <p className="text-gray-500 text-sm mt-3 leading-6">
-                                    Delicious & freshly prepared food with rich
-                                    flavors and premium ingredients 🍽️
-                                </p>
-
-                                <button
-                                    onClick={() => { redirect(`/food/${item?.id}`) }}
-                                    className="
-                                        mt-6
-                                        w-full
-                                        bg-[#0b7211]
-                                        hover:bg-[#095c0e]
-                                        text-white
-                                        py-3
-                                        rounded-xl
-                                        font-semibold
-                                        transition-all
-                                        duration-300
-                                        hover:scale-[1.02]
-                                        cursor-pointer
-                                    "
-                                >
-                                    View Details
-                                </button>
-
+                            {/* PRICE */}
+                            <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[#0b7211] font-bold shadow">
+                                ${item.price}
                             </div>
 
                         </div>
 
+                        {/* CONTENT */}
+                        <div className="p-6">
+
+                            {/* TYPE */}
+                            {item.type && (
+                                <p className="text-xs uppercase tracking-wide text-[#0b7211] font-semibold mb-2">
+                                    {item.type}
+                                </p>
+                            )}
+
+                            {/* TITLE */}
+                            <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
+                                {item.title}
+                            </h2>
+
+                            {/* DESCRIPTION */}
+                            <p className="text-gray-500 text-sm mt-3 leading-6 line-clamp-3">
+                                {item.description}
+                            </p>
+
+                            {/* BUTTON */}
+                            <button
+                                onClick={() =>
+                                    router.push(`/food/${item.id}`)
+                                }
+                                className="
+                                    mt-6
+                                    w-full
+                                    bg-[#0b7211]
+                                    hover:bg-[#095c0e]
+                                    text-white
+                                    py-3
+                                    rounded-xl
+                                    font-semibold
+                                    transition-all
+                                    duration-300
+                                    hover:scale-[1.02]
+                                    cursor-pointer
+                                "
+                            >
+                                View Details
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                ))}
+
+            </div>
+
+            {/* PAGINATION */}
+            {totalPages > 1 && (
+
+                <div className="flex justify-center items-center gap-3 pb-10">
+
+                    {/* PREV */}
+                    <button
+                        disabled={currentPage === 1}
+                        onClick={() =>
+                            setCurrentPage((prev) => prev - 1)
+                        }
+                        className={`
+                            px-5 py-2 rounded-xl border font-medium transition-all
+                            ${currentPage === 1
+                                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                : "bg-white hover:bg-[#0b7211] hover:text-white"
+                            }
+                        `}
+                    >
+                        Prev
+                    </button>
+
+                    {/* PAGE */}
+                    {Array.from(
+                        { length: totalPages },
+                        (_, index) => index + 1
+                    ).map((page) => (
+
+                        <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`
+                                w-10 h-10 rounded-xl font-semibold transition-all
+                                ${currentPage === page
+                                    ? "bg-[#0b7211] text-white"
+                                    : "bg-white border hover:bg-green-50"
+                                }
+                            `}
+                        >
+                            {page}
+                        </button>
+
                     ))}
+
+                    {/* NEXT */}
+                    <button
+                        disabled={currentPage === totalPages}
+                        onClick={() =>
+                            setCurrentPage((prev) => prev + 1)
+                        }
+                        className={`
+                            px-5 py-2 rounded-xl border font-medium transition-all
+                            ${currentPage === totalPages
+                                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                                : "bg-white hover:bg-[#0b7211] hover:text-white"
+                            }
+                        `}
+                    >
+                        Next
+                    </button>
 
                 </div>
 
-            </MaxWidth>
+            )}
+
+        </MaxWidth>
     );
 };
 

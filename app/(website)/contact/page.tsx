@@ -28,7 +28,7 @@ const page = () => {
                 </div>
 
                 {/* Main Content */}
-                <div className=" mx-auto px-5 py-16">
+                <div className=" mx-auto  py-16">
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
