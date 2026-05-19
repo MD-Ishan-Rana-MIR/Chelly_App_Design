@@ -1,231 +1,266 @@
 [
-    {
-        "id": 1,
-        "handle": "3-egg-omlette",
-        "title": "3 Egg Omlette",
-        "description": "Indulge in our expertly crafted 3 Egg Omelette, a protein-rich breakfast option prepared with three farm-fresh eggs for optimal fluffiness and texture. Customize your culinary experience by selecting ",
-        "price": "10.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/3_Egg_Omlette.png?v=1748119540",
-        "tags": "",
-        "type": "",
-        "status": "active",
-        "category": "Breakfast"
-    },
-    {
-        "id": 2,
-        "handle": "acai-bowl",
-        "title": "Açaí Bowl",
-        "description": "Acai bowls are a popular breakfast or snack option known for its vibrant color and nutritional benefits. It typically features a base made from acai berries, which are blended into a thick, creamy con",
-        "price": "11.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Acai_Bowl.png?v=1748119456",
-        "tags": "Açaí Bowl",
-        "type": "",
-        "status": "active",
-        "category": "Breakfast"
-    },
-    {
-        "id": 3,
-        "handle": "avocado-toast",
-        "title": "Avocado Toast",
-        "description": "The Ultimate Health BoostElevate your breakfast with our Avocado Toast, the perfect blend of taste and nutrition. Made with creamy, ripe avocados spread generously over crispy, whole-grain toast, this",
-        "price": "13.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Avocado_Toast.png?v=1748119302",
-        "tags": "Avocado Toast",
-        "type": "",
-        "status": "active",
-        "category": "Breakfast",
-        "variants": []
-    },
-    {
-        "id": 4,
-        "handle": "breakfast-burrito-with-country-gravy",
-        "title": "Breakfast Burrito with Country Gravy",
-        "description": "Our breakfast burrito is a hearty and satisfying meal that blends traditional breakfast ingredients with a side of comforting, creamy sauce. The burrito typically scrambled eggs, your choice of protei",
-        "price": "12.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Breakfast_Burrito_with_Country_Gravy.png?v=1748119177",
-        "tags": "Breakfast Burrito with Country Gravy",
-        "type": "",
-        "status": "active",
-        "category": "Breakfast"
-    },
-    {
-        "id": 5,
-        "handle": "brunch-combo",
-        "title": "Brunch Combo",
-        "description": "Brunch Combo includes choices for proteins, starches (such as pancakes, waffles, or french toast), This flexibility lets you tailor your meal to your preferences and dietary needs, making it ideal for",
-        "price": "11.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Brunch_Combo.png?v=1748118969",
-        "tags": "Brunch Combo",
-        "type": "",
-        "status": "active",
-        "category": "Lunch"
-    },
-    {
-        "id": 6,
-        "handle": "chicken-and-shrimp",
-        "title": "Chicken and Shrimp",
-        "description": "A Savory Surf and Turf DelightExperience the best of both worlds with our Chicken and Shrimp dish, a perfect fusion of land and sea. Juicy, tender chicken breasts paired with succulent, perfectly seas",
-        "price": "15.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_and_Shrimp.png?v=1748118697",
-        "tags": "Chicken and Shrimp",
-        "type": "",
-        "status": "active",
-        "category": "Lunch"
-    },
-    {
-        "id": 7,
-        "handle": "chicken-salad-sandwich",
-        "title": "Chicken Salad Sandwich",
-        "description": "This Chicken salad sandwich features a flavorful mixture of cooked chicken combined mayonnaise, celery, onions, cranberries and candied pecans. This creamy, savory filling is often seasoned with salt,",
-        "price": "14.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_Salad_Sandwich.png?v=1748117885",
-        "tags": "Chicken Salad Sandwich",
-        "type": "",
-        "status": "active",
-        "category": "Lunch"
-    },
-    {
-        "id": 8,
-        "handle": "chicken-tortilla-soup",
-        "title": "Chicken Tortilla Soup",
-        "description": "Chicken tortilla soup is a flavorful, hearty soup with a base of rich, spiced broth,made with chicken stock and seasoned with cumin, chili powder, and garlic. It includes shredded or , tomatoes, onion",
-        "price": "15.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_Tortilla_Soup.png?v=1748117340",
-        "tags": "lovelys meal plan Chicken Tortilla Soup",
-        "type": "",
-        "status": "active",
-        "category": "Lunch"
-    },
-    {
-        "id": 9,
-        "handle": "chopped-salad",
-        "title": "Chopped Salad",
-        "description": "Chopped salad is a fresh, mixed romaine salad where all ingredients are finely chopped into small, bite-sized pieces. This includes a variety of vegetables such as lettuce, tomatoes, cucumbers, Apples",
-        "price": "13.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chopped_Salad.png?v=1748117069",
-        "tags": "Chopped Salad",
-        "type": "",
-        "status": "active",
-        "category": "Dinner"
-    },
-    {
-        "id": 10,
-        "handle": "cinnamon-roll-french-toast",
-        "title": "Cinnamon Roll French Toast",
-        "description": "Indulge in the perfect fusion of flavors with our Cinnamon Roll French Toast. This exquisite breakfast delight combines the warm, spicy sweetness of cinnamon rolls with the comforting, rich texture of",
-        "price": "11.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Cinnamon_Roll_French_Toast.png?v=1748118901",
-        "tags": "Cinnamon Roll French Toast",
-        "type": "",
-        "status": "active",
-        "category": "Dinner"
-    },
-    {
-        "id": 11,
-        "handle": "crispy-rice-with-spicy-shrimp-salad",
-        "title": "Crispy rice with Spicy Shrimp Salad",
-        "description": "A Culinary Delight comes with side saladPerfect Balance of Crunch and SpiceIndulge in the exquisite flavors of our crispy rice with spicy shrimp salad, a dish that perfectly balances texture and taste",
-        "price": "20.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Crispy_rice_with_Spicy_Shrimp_Salad.png?v=1748116926",
-        "tags": "Crispy rice, Crispy rice with Spicy Shrimp, Crispy rice with Spicy Shrimp Salad, rice with Spicy Shrimp, rice with Spicy Shrimp Salad, Shrimp Salad, Spicy Shrimp Salad",
-        "type": "food",
-        "status": "active",
-        "category": "Dinner"
-    },
-    {
-        "id": 12,
-        "handle": "grilled-steak-tacos",
-        "title": "Grilled Steak Tacos",
-        "description": "Unleash the Flavors of MexicoAuthentic Taste ExperienceSavor the vibrant flavors of our grilled steak tacos, a true culinary masterpiece that brings the essence of Mexico to your table. Each taco is m",
-        "price": "15.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Grilled_Steak_Tacos.png?v=1748118625",
-        "tags": "Grilled Steak Tacos",
-        "type": "",
-        "status": "active",
-        "category": "Dinner"
-    },
-    {
-        "id": 13,
-        "handle": "item-customizations",
-        "title": "Item customizations",
-        "description": "",
-        "price": "0.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/image_2025-04-26_214502735.png?v=1745685907",
-        "tags": "",
-        "type": "",
-        "status": "active",
-        "category": "WeeklySubscription"
-    },
-    {
-        "id": 14,
-        "handle": "ocean-water-1-2-gallon",
-        "title": "Ocean Water 1/2 Gallon",
-        "description": "This refreshing Ocean Water drink combines the hydrating benefits of coconut water with the vibrant color and flavor of a blue sports drink, making it perfect for a refreshing drink before or after a ",
-        "price": "7.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Ocean_Water_1_2_Gallon.png?v=1748115834",
-        "tags": "Flavored Drinks, Fruit Drinks, Fruit Flavored, Fruit Flavored Drinks",
-        "type": "",
-        "status": "active",
-        "category": "WeeklySubscription"
-    },
-    {
-        "id": 15,
-        "handle": "salisbury-meatballs-platter",
-        "title": "Salisbury Meatballs platter",
-        "description": "Comfort Food RedefinedClassic Flavors, Modern TwistSavor the hearty and comforting taste of our Salisbury meatballs platter, a delightful twist on a beloved classic. Each meatball is crafted from prem",
-        "price": "17.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Salisbury_Meatballs_platter.png?v=1748118325",
-        "tags": "Salisbury Meatballs platter",
-        "type": "",
-        "status": "active",
-        "category": "WeeklySubscription"
-    },
-    {
-        "id": 16,
-        "handle": "salmon-bite-bowls",
-        "title": "Salmon bite bowls",
-        "description": "Delight in Every BiteBursting with FlavorIndulge in our salmon bite bowls, a delectable fusion of taste and texture. Each bowl is crafted with succulent, bite-sized pieces of salmon, marinated to perf",
-        "price": "20.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Salmon_bite_bowls.png?v=1748118279",
-        "tags": "Salmon bite bowls",
-        "type": "",
-        "status": "active",
-        "category": "WeeklySubscription"
-    },
-    {
-        "id": 17,
-        "handle": "soft-tacos-2",
-        "title": "Soft Tacos",
-        "description": "Delight in Every BiteClassic Comfort with a TwistIndulge in the timeless pleasure of our soft tacos, featuring a tender tortilla that wraps around a mouth-watering array of fillings. Whatever protein ",
-        "price": "10.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Soft_Tacos.png?v=1748118222",
-        "tags": "Soft Tacos",
-        "type": "",
-        "status": "active",
-        "category": "Drinks"
-    },
-    {
-        "id": 18,
-        "handle": "spinanch-artichoke-dip",
-        "title": "Spinanch Artichoke Dip",
-        "description": "This Slow Cooker Spinach Artichoke Dip recipe is rich and creamy, full of the best flavors, and extra-easy to eat for Lunch or snack! Comes with a side of pita chips, carrots and celery.",
-        "price": "10.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/image_2025-04-26_010341442.png?v=1745611425",
-        "tags": "",
-        "type": "Prepared meals",
-        "status": "active",
-        "category": "Drinks"
-    },
-    {
-        "id": 19,
-        "handle": "ultimate-loaded-baked-potato",
-        "title": "Ultimate Loaded Baked Potato",
-        "description": "The Ultimate Comfort Food Decadent Flavors in Every BiteExperience the ultimate indulgence with our loaded baked potato, a culinary masterpiece that combines the best of comfort food with gourmet flai",
-        "price": "10.00",
-        "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Ultimate_Loaded_Baked_Potato.png?v=1748116411",
-        "tags": "Entrées, Meals, Meals & Entrées, Prepared Entrées, Prepared Meals, Prepared Meals & Entrées",
-        "type": "Prepared meals",
-        "status": "active",
-        "category": "Drinks"
-    }
+  {
+    "id": 1,
+    "Title": "10 Meals Plan",
+    "BodyHTML": "<p>Discover our weekly meal deal, including 21 delicious products at a fantastic price. This a weekly subscription (cancel anytime) </p>\n<p><strong>How it works:</strong><br><meta charset=\"utf-8\"><span>– Add this subscription to cart</span><br><span>– Add any <meta charset=\"utf-8\">10 products to cart (price will adjust in cart) </span><br></p>",
+    "VariantPrice": 70.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/10_Meals_Plan.png?v=1748119714",
+    "Category": "WeeklySubscription"
+  },
+  {
+    "id": 2,
+    "Title": "21 Meals Plan",
+    "BodyHTML": "<div class=\"woocommerce-product-details__short-description\">\n<p>Discover our weekly meal deal, including 21 delicious products at a fantastic price. This a weekly subscription (cancel anytime) </p>\n<p><strong>How it works:</strong><br><span>- Add this subscription to cart<br>- Add any 21 products to cart (price will adjust in cart) . </span><br></p>\n</div>",
+    "VariantPrice": 130.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/21_Meals_Plan.png?v=1748119644",
+    "Category": "WeeklySubscription"
+  },
+  {
+    "id": 3,
+    "Title": "3 Egg Omlette",
+    "BodyHTML": "<p>Indulge in our expertly crafted 3 Egg Omelette, a protein-rich breakfast option prepared with three farm-fresh eggs for optimal fluffiness and texture. Customize your culinary experience by selecting your preferred protein—whether it's savory bacon, ham, sausage, or plant-based alternatives. Further enhance your omelette with an array of fresh toppings including bell peppers, onions, mushrooms, tomatoes, spinach, and premium cheeses. Each omelette is cooked to perfection, ensuring a golden exterior while maintaining a tender interior. An ideal choice for those seeking a nutritious, satisfying meal to fuel your day.</p>",
+    "VariantPrice": 10.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/3_Egg_Omlette.png?v=1748119540",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 4,
+    "Title": "Açaí Bowl",
+    "BodyHTML": "<p><span>Acai bowls are a popular breakfast or snack option known for its vibrant color and nutritional benefits. It typically features a base made from acai berries, which are blended into a thick, creamy consistency similar to a smoothie. The base is often topped with a variety of fresh fruits like bananas, berries, as well as granola, nuts, seeds, and a drizzle of honey or nut butter. Additional toppings can include coconut flakes, chia seeds, or even a sprinkle of chocolate chips. The result is a delicious and nutritious meal that combines the tartness of acai with the sweetness of fruits and the crunchiness of granola.</span></p>",
+    "VariantPrice": 11.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Acai_Bowl.png?v=1748119456",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 5,
+    "Title": "Avocado Toast",
+    "BodyHTML": "<p><span>The Ultimate Health Boost</span><br><span>Elevate your breakfast with our Avocado Toast, the perfect blend of taste and nutrition. Made with creamy, ripe avocados spread generously over crispy, whole-grain toast, this dish is a powerhouse of healthy fats, fiber, and essential vitamins. Topped with a sprinkle of sea salt, a dash of black pepper, and a hint of lemon juice, each bite is a delightful mix of flavors and textures. Ideal for those seeking a healthy, delicious start to their day, our Avocado Toast is both satisfying and nutritious.</span></p>",
+    "VariantPrice": 13.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Avocado_Toast.png?v=1748119302",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 6,
+    "Title": "Breakfast Burrito with Country Gravy",
+    "BodyHTML": "<p><span>Our breakfast burrito is a hearty and satisfying meal that blends traditional breakfast ingredients with a side of comforting, creamy sauce. The burrito typically scrambled eggs, your choice of protein like cheese, potatoes, and peppers mix, all wrapped in a warm tortilla. The distinctive feature is the addition of our country gravy, a creamy, white sauce made from seasoned with black pepper. The gravy comes to you on the side.</span></p>",
+    "VariantPrice": 12.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Breakfast_Burrito_with_Country_Gravy.png?v=1748119177",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 7,
+    "Title": "Brunch Combo",
+    "BodyHTML": "<p><span>Brunch Combo includes choices for proteins, starches (such as pancakes, waffles, or french toast), This flexibility lets you tailor your meal to your preferences and dietary needs, making it ideal for accommodating different tastes and appetites.</span></p>",
+    "VariantPrice": 11.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Brunch_Combo.png?v=1748118969",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 8,
+    "Title": "Chicken and Shrimp",
+    "BodyHTML": "<p><span>A Savory Surf and Turf Delight</span><br><span>Experience the best of both worlds with our Chicken and Shrimp dish, a perfect fusion of land and sea. Juicy, tender chicken breasts paired with succulent, perfectly seasoned shrimp create a symphony of flavors that will tantalize your taste buds. This dish is designed to offer a balanced, hearty meal that combines the rich taste of poultry with the delicate sweetness of seafood. Ideal for dinner parties, family meals, or a special night in, our Chicken and Shrimp dish promises a gourmet experience in every bite.</span></p>",
+    "VariantPrice": 15.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_and_Shrimp.png?v=1748118697",
+    "Category": "Dinner"
+  },
+  {
+    "id": 9,
+    "Title": "Chicken Salad Sandwich",
+    "BodyHTML": "<p><span>This Chicken salad sandwich features a flavorful mixture of cooked chicken combined mayonnaise, celery, onions, cranberries and candied pecans. This creamy, savory filling is often seasoned with salt, pepper, and herbs. The mixture is served between slices of 100% wheat bread. The result is a satisfying sandwich that balances the richness of the chicken salad with the crunch of the vegetables and the softness or crispiness of the bread.</span></p>",
+    "VariantPrice": 14.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_Salad_Sandwich.png?v=1748117885",
+    "Category": "Lunch"
+  },
+  {
+    "id": 10,
+    "Title": "Chicken Tortilla Soup",
+    "BodyHTML": "<p><span>Chicken tortilla soup is a flavorful, hearty soup with a base of rich, spiced broth,made with chicken stock and seasoned with cumin, chili powder, and garlic. It includes shredded or , tomatoes, onions, and corn and black beans. The soup is garnished with crispy tortilla strips, which add a satisfying crunch, and topped with fresh ingredients avocado slices, cilantro, lime wedges, and shredded cheese. It’s a comforting and vibrant dish that combines spicy, tangy, and savory elements for a well-rounded flavor experience.</span></p>",
+    "VariantPrice": 15.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_Tortilla_Soup.png?v=1748117340",
+    "Category": "Sides"
+  },
+  {
+    "id": 11,
+    "Title": "Chopped Salad",
+    "BodyHTML": "<p><span>Chopped salad is a fresh, mixed romaine salad where all ingredients are finely chopped into small, bite-sized pieces. This includes a variety of vegetables such as lettuce, tomatoes, cucumbers, Apples, and red onions, along with your choice of protein like grilled chicken, bacon, or hard-boiled eggs. It is dressed with a flavorful balsamic vinaigrette or The chopped nature of the salad ensures that every bite is a balanced mix of ingredients, making it a convenient and well-integrated dish.</span></p>",
+    "VariantPrice": 13.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chopped_Salad.png?v=1748117069",
+    "Category": "Sides"
+  },
+  {
+    "id": 12,
+    "Title": "Cinnamon Roll French Toast",
+    "BodyHTML": "<p><span>Indulge in the perfect fusion of flavors with our Cinnamon Roll French Toast. This exquisite breakfast delight combines the warm, spicy sweetness of cinnamon rolls with the comforting, rich texture of French toast. Every bite is a journey to breakfast nirvana, where the luscious cinnamon swirls and creamy icing meld seamlessly with the golden, crispy French toast. Whether it’s a special weekend brunch or a weekday morning treat, our Cinnamon Roll French Toast is designed to make every breakfast feel like a special occasion. Your Choice of Protein and Sides.</span></p>",
+    "VariantPrice": 11.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Cinnamon_Roll_French_Toast.png?v=1748118901",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 13,
+    "Title": "Crispy rice with Spicy Shrimp Salad",
+    "BodyHTML": "<p><span>A Culinary Delight comes with side salad</span><br><span>Perfect Balance of Crunch and Spice</span><br><span>Indulge in the exquisite flavors of our crispy rice with spicy shrimp salad, a dish that perfectly balances texture and taste. Each bite offers a satisfying crunch from the golden, crispy rice, paired with succulent shrimp tossed in a zesty, spicy dressing. This combination creates an irresistible culinary experience that tantalizes your taste buds and leaves you craving more.</span></p>",
+    "VariantPrice": 20.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Crispy_rice_with_Spicy_Shrimp_Salad.png?v=1748116926",
+    "Category": "Dinner"
+  },
+  {
+    "id": 14,
+    "Title": "Cucumber Lemonade 1/2 Gallon",
+    "BodyHTML": "<p class=\"MsoNormal\">Cucumber lemonade is a refreshing drink that combines the flavors of cucumber, lemon, and sometimes mint Cucumbers contain antioxidants that may help fight inflammation, while lemons can help boost the immune system and cleanse the liver.</p>\n<p class=\"MsoNormal\">Cucumber lemonade is a refreshing beverage that combines the tartness of lemonade with the cool, crisp flavor of cucumber.  The cucumber adds a subtle, earthy note that balances the sweetness and acidity of the lemonade, making it a perfect drink for hot days or outdoor gatherings. Simple, delicious and refreshing.</p>",
+    "VariantPrice": 7.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Cucumber_Lemonade_1_2_Gallon.png?v=1748116195",
+    "Category": "Drinks"
+  },
+  {
+    "id": 15,
+    "Title": "Fried Rice",
+    "BodyHTML": "<div class=\"woocommerce-product-details__short-description\">\n<p>A flavorful fried rice dish, customizable with your choice of protein, vegetables, and seasonings. Ideal for meal prep: quick, versatile, and perfect for reheating throughout the week.</p>\n<p>**Fried Rice**</p>\n<p>A classic and versatile favorite, our fried rice features perfectly cooked, tender grains of rice stir-fried to golden perfection. This dish includes a medley of fresh vegetables, such as crisp bean sprouts, peas, and crunchy carrots, combined with your choice of protein—succulent chicken, tender shrimp, flavorful steak, or savory veggie. Tossed with scrambled eggs and seasoned with soy sauce, garlic, and a hint of sesame oil, our fried rice is a delicious and satisfying meal. Enjoy it as a standalone dish or as a savory side to complement your main course.</p>\n</div>",
+    "VariantPrice": 15.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Fried_Rice.png?v=1748117780",
+    "Category": "Dinner"
+  },
+  {
+    "id": 16,
+    "Title": "Grilled Steak Tacos",
+    "BodyHTML": "<p><span>Unleash the Flavors of Mexico</span><br><span>Authentic Taste Experience</span><br><span>Savor the vibrant flavors of our grilled steak tacos, a true culinary masterpiece that brings the essence of Mexico to your table. Each taco is made with tender, marinated steak grilled to perfection, creating a succulent, juicy filling that bursts with authentic taste. Paired with fresh cilantro, onions, and a squeeze of lime, these tacos offer an irresistible, mouth-watering experience that transports you straight to the streets of Mexico.</span></p>",
+    "VariantPrice": 15.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Grilled_Steak_Tacos.png?v=1748118625",
+    "Category": "Lunch"
+  },
+  {
+    "id": 17,
+    "Title": "Gyro",
+    "BodyHTML": "<p>**Gyro**</p>\n<p>Savor the authentic flavors of our gyro, featuring tender, marinated slices of lamb or chicken or steak, expertly grilled and served in a warm, fluffy pita. Each gyro is topped with crisp lettuce, juicy tomatoes, and red onions, and generously drizzled with creamy tzatziki sauce, made from tangy Greek yogurt, fresh cucumber, and fragrant dill. Your choice of side!</p>",
+    "VariantPrice": 15.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Gyro.png?v=1748118579",
+    "Category": "Lunch"
+  },
+  {
+    "id": 18,
+    "Title": "Hawaiian BBQ chicken",
+    "BodyHTML": "<p><span>HAWAIIAN BBQ CHICKEN comes with HAWAIIAN MACARONI salad and white rice and side of teriyaki sauce</span></p>\n<p><span>Taste the Tropics<br>Exotic and Flavorful<br>Transport your taste buds to the islands with our Hawaiian BBQ chicken, a dish that captures the vibrant flavors of the tropics. Our chicken is marinated in a sweet and savory blend of pineapple juice, soy sauce, and aromatic spices, then grilled to perfection. Each bite offers a delicious balance of smoky, tangy, and sweet flavors that evoke the essence of a Hawaiian luau. Comes with Hawaiian Macaroni Salad</span><br></p>",
+    "VariantPrice": 20.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Hawaiian_BBQ_chicken.png?v=1748118530",
+    "Category": "Dinner"
+  },
+  {
+    "id": 19,
+    "Title": "Item customizations",
+    "BodyHTML": "NaN",
+    "VariantPrice": 0.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/image_2025-04-26_214502735.png?v=1745685907",
+    "Category": "Uncategorized"
+  },
+  {
+    "id": 20,
+    "Title": "Loaded Baked Potato Soup",
+    "BodyHTML": "<p>**Loaded Baked Potato Soup**</p>\n<p>Indulge in our rich and creamy loaded baked potato soup, crafted with smooth, velvety potatoes simmered to perfection in a savory broth. Each bowl is generously topped with crispy bacon bits, shredded cheddar cheese, and sliced green onions. Finished with a dollop of tangy sour cream and a sprinkle of fresh chives, this hearty soup offers a comforting blend of flavors and textures, making it the ultimate cozy dish for any time of year.</p>",
+    "VariantPrice": 15.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Loaded_Baked_Potato_Soup.png?v=1748116662",
+    "Category": "Sides"
+  },
+  {
+    "id": 21,
+    "Title": "Mushroom Burger",
+    "BodyHTML": "<div class=\"woocommerce-product-details__short-description\">\n<p>**Mushroom Burger**</p>\n<p>Experience a savory twist on a classic with our Mushroom Burger. This burger features a juicy, perfectly grilled beef patty topped with a generous portion of sautéed mushrooms, adding a rich, earthy flavor. It’s complemented by melted Swiss cheese and crisp lettuce, with a slice of ripe tomato and a smear of creamy garlic aioli. All sandwiched between a toasted, buttery brioche bun for a satisfying and flavorful bite. Enjoy this delectable burger with a side of crispy fries or a fresh salad. Your choice of side! Also avaible with black bean patty subsutitue.</p>\n</div>",
+    "VariantPrice": 18.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Mushroom_Burger.png?v=1748118476",
+    "Category": "Lunch"
+  },
+  {
+    "id": 22,
+    "Title": "Ocean Water 1/2 Gallon",
+    "BodyHTML": "<p class=\"MsoNormal\"><span>This refreshing Ocean Water drink combines the hydrating benefits of coconut water with the vibrant color and flavor of a blue sports drink, making it perfect for a refreshing drink before or after a workout. Enjoy the tropical taste! The electrolyte-rich formula helps replenish essential minerals lost during physical activity, while the natural coconut components provide sustained energy without artificial stimulants. Our proprietary blend maintains optimal hydration balance, supporting muscle recovery and reducing fatigue. Each half-gallon container delivers approximately 8 servings of this scientifically formulated beverage, designed to maximize both performance and taste.</span></p>",
+    "VariantPrice": 7.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Ocean_Water_1_2_Gallon.png?v=1748115834",
+    "Category": "Drinks"
+  },
+  {
+    "id": 23,
+    "Title": "Orange Chicken",
+    "BodyHTML": "<p><span>ORANGE CHICKEN comes with rice and green sugar peas, Pickled red onion</span></p>\n<p>**Orange Chicken** Non Breaded</p>\n<p>Delight in our Orange Chicken, featuring tender, crispy pieces of chicken coated in a zesty and sweet orange sauce. This dish combines the perfect balance of tangy citrus and rich soy flavors, enhanced with hints of garlic and ginger. Each bite offers a satisfying crunch with a succulent interior, all drizzled with a glossy, aromatic sauce. Garnished with a sprinkle of sesame seeds and sliced green onions, this dish is served with a side of steamed rice or crisp vegetables for a deliciously balanced meal.</p>",
+    "VariantPrice": 18.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Orange_Chicken.png?v=1748118432",
+    "Category": "Dinner"
+  },
+  {
+    "id": 24,
+    "Title": "Parfaits",
+    "BodyHTML": "<p><span>Discover the perfect harmony of flavors with our Parfaits, a delightful combination of creamy yogurt, fresh fruits, and crunchy granola. Each layer is thoughtfully crafted to provide a balanced and satisfying taste experience. The rich, velvety yogurt complements the natural sweetness of seasonal fruits, while the granola adds a satisfying crunch. Perfect for breakfast, a mid-day snack, or even a healthy dessert, our Parfaits are a versatile treat that will please your palate and nourish your body.</span></p>\n<p><span>Discover the perfect harmony ofr breakfast, a mid-day snack, or even a healthy dessert, our Parfaits are a versatile treat that will please your palate and nourish your body.</span></p>\n<p><br></p>",
+    "VariantPrice": 13.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Parfaits.png?v=1748118783",
+    "Category": "Breakfast"
+  },
+  {
+    "id": 25,
+    "Title": "Peach-Mango Iced Tea 1/2 Gallon",
+    "BodyHTML": "<p class=\"MsoNormal\"><span>Peach and Mango tea is </span><b>a flavoured tea infused with the essence of peach, offering a delightful combination of black, green, or herbal tea with the natural sweetness and aroma of ripe peaches and mango</b><span>. It’s often enjoyed hot or cold, providing a refreshing and flavourful beverage option.</span></p>\n<p class=\"MsoNormal\"><span>A signature drink combining sweet peach and mango flavors with green tea, garnished with fresh lemon slices.</span></p>",
+    "VariantPrice": 7.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Peach-Mango_Iced_Tea_1_2_Gallon.png?v=1748117979",
+    "Category": "Drinks"
+  },
+  {
+    "id": 26,
+    "Title": "Salisbury Meatballs platter",
+    "BodyHTML": "<p><span>Comfort Food Redefined</span><br><span>Classic Flavors, Modern Twist</span><br><span>Savor the hearty and comforting taste of our Salisbury meatballs platter, a delightful twist on a beloved classic. Each meatball is crafted from premium ground beef, perfectly seasoned and cooked to tender perfection. Smothered in a rich, savory gravy and served with a side of creamy mashed potatoes and fresh vegetables, this platter offers a nostalgic dining experience with a modern touch.</span></p>",
+    "VariantPrice": 17.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Salisbury_Meatballs_platter.png?v=1748118325",
+    "Category": "Dinner"
+  },
+  {
+    "id": 27,
+    "Title": "Salmon bite bowls",
+    "BodyHTML": "<p><span>Delight in Every Bite</span><br><span>Bursting with Flavor</span><br><span>Indulge in our salmon bite bowls, a delectable fusion of taste and texture. Each bowl is crafted with succulent, bite-sized pieces of salmon, marinated to perfection and cooked until tender. Complemented by a vibrant medley of fresh vegetables, fragrant herbs, and a drizzle of zesty dressing, every bite offers a burst of rich, savory flavors that will leave you wanting more. Bowls i</span></p>",
+    "VariantPrice": 20.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Salmon_bite_bowls.png?v=1748118279",
+    "Category": "Dinner"
+  },
+  {
+    "id": 28,
+    "Title": "Soft Tacos",
+    "BodyHTML": "<p><span>Delight in Every Bite</span><br><span>Classic Comfort with a Twist</span><br><span>Indulge in the timeless pleasure of our soft tacos, featuring a tender tortilla that wraps around a mouth-watering array of fillings. Whatever protein you choose savory seasoned beef, succulent chicken, our soft tacos promise a delicious experience in every bite. Each taco is a perfect blend of flavors and textures, offering a comforting and satisfying meal that’s sure to please everyone.</span></p>",
+    "VariantPrice": 10.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Soft_Tacos.png?v=1748118222",
+    "Category": "Lunch"
+  },
+  {
+    "id": 29,
+    "Title": "Spinanch Artichoke Dip",
+    "BodyHTML": "<p><span>This Slow Cooker Spinach Artichoke Dip recipe is rich and creamy, full of the best flavors, and extra-easy to eat for lunch or snack! Comes with a side of pita chips, carrots and celery.</span></p>",
+    "VariantPrice": 10.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/image_2025-04-26_010341442.png?v=1745611425",
+    "Category": "Sides"
+  },
+  {
+    "id": 30,
+    "Title": "Stuffed Meatloaf",
+    "BodyHTML": "<p><span>Stuffed Meatloaf comes wih mash potatoes and corn</span></p>\n<p><span>Experience Gourmet Delight<br>Indulge in our stuffed meatloaf, meticulously crafted with premium ground beef, seasoned to perfection, and filled with a delectable blend. of savory ingredients. Each slice offers a burst of rich, mouth-watering flavors that elevate your dining experience to gourmet levels.Perfect for any meal any season. Your choice of side!</span></p>",
+    "VariantPrice": 14.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Stuffed_Meatloaf.png?v=1748118173",
+    "Category": "Dinner"
+  },
+  {
+    "id": 31,
+    "Title": "Teriyaki Chicken",
+    "BodyHTML": "<p><span>Chicken Teriyaki comes with rice, carrots, cabbage, edemane, broccoli and a side of teriyaki sauce</span></p>\n<p>Your choice of protein: **Teriyaki Bowl**</p>\n<p>Savor our Teriyaki Bowl, a delightful fusion of tender, grilled protein—choose from chicken, steak, or veggie with a sweet and savory teriyaki sauce. This dish is served over a bed of fluffy steamed rice, accompanied by a vibrant mix of crisp, fresh vegetables such as broccoli, bell peppers, cabbage and carrots. Topped with a sprinkle of sesame seeds and sliced green onions, our Teriyaki Bowl offers a balanced and flavorful meal that’s both satisfying and nutritious.</p>",
+    "VariantPrice": 14.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Teriyaki_Chicken.png?v=1748118079",
+    "Category": "Dinner"
+  },
+  {
+    "id": 32,
+    "Title": "Thai Lettuce Wraps",
+    "BodyHTML": "<p><span>A dish served with crisp, cool lettuce leaves for wrapping,  these bites are complemented by a side of tangy peanut sauce and a sprinkle of fresh cilantro.</span></p>\n<p>**Thai Lettuce Wraps**</p>\n<p>Enjoy our Thai Lettuce Wraps, a fresh and flavorful appetizer or light meal featuring a savory filling of chicken,  sautéed with a blend of aromatic herbs and spices all seasoned with a zesty Thai sauce. Served with crisp, cool lettuce leaves for wrapping, these bites are complemented by a side of tangy peanut sauce and a sprinkle of fresh cilantro.</p>",
+    "VariantPrice": 14.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Thai_Lettuce_Wraps.png?v=1748117676",
+    "Category": "Lunch"
+  },
+  {
+    "id": 33,
+    "Title": "Ultimate Loaded Baked Potato",
+    "BodyHTML": "<p><span>The Ultimate Comfort Food </span><span>Decadent Flavors in Every Bite</span><br><span>Experience the ultimate indulgence with our loaded baked potato, a culinary masterpiece that combines the best of comfort food with gourmet flair. Each potato is baked to perfection, achieving a crispy skin and fluffy interior, then generously topped with your choice of protein a rich blend of cheddar cheese, corn, crispy bacon, sour cream, and fresh chives. Every bite is an explosion of creamy, savory, and satisfying flavors that will leave you craving more.</span></p>",
+    "VariantPrice": 10.0,
+    "ImageSrc": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Ultimate_Loaded_Baked_Potato.png?v=1748116411",
+    "Category": "Sides"
+  }
 ]

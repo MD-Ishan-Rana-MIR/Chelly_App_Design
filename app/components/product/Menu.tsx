@@ -7,15 +7,11 @@ import MaxWidth from "../max-width/MaxWidth";
 
 interface Product {
     id: number;
-    handle: string;
-    title: string;
-    description: string;
-    price: string;
-    image: string;
-    tags: string;
-    type: string;
-    status: string;
-    category?: string;
+    Title: string;
+    BodyHTML: string;
+    VariantPrice: number;
+    ImageSrc: string;
+    Category: string;
 }
 
 const tabs = [
@@ -43,6 +39,8 @@ const Menu = () => {
                 const response = await fetch("/product.json");
                 const data = await response.json();
 
+                console.log("Fetched Products:", data); // Debug log
+
                 setProducts(data);
             } catch (error) {
                 console.log(error);
@@ -58,7 +56,7 @@ const Menu = () => {
         }
 
         return products.filter((item) =>
-            item.category?.toLowerCase().includes(
+            item.Category?.toLowerCase().includes(
                 activeTab.toLowerCase()
             )
         );
@@ -163,8 +161,8 @@ const Menu = () => {
                         <div className="relative w-full h-60 overflow-hidden">
 
                             <Image
-                                src={item.image}
-                                alt={item.title}
+                                src={item.ImageSrc}
+                                alt={item.Title}
                                 fill
                                 className="
                                     object-cover
@@ -176,7 +174,7 @@ const Menu = () => {
 
                             {/* PRICE */}
                             <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-[#0b7211] font-bold shadow">
-                                ${item.price}
+                                ${item.VariantPrice.toFixed(2)}
                             </div>
 
                         </div>
@@ -185,20 +183,20 @@ const Menu = () => {
                         <div className="p-6">
 
                             {/* TYPE */}
-                            {item.type && (
+                            {item.Category && (
                                 <p className="text-xs uppercase tracking-wide text-[#0b7211] font-semibold mb-2">
-                                    {item.type}
+                                    {item.Category}
                                 </p>
                             )}
 
                             {/* TITLE */}
                             <h2 className="text-xl font-bold text-gray-800 line-clamp-1">
-                                {item.title}
+                                {item.Title}
                             </h2>
 
                             {/* DESCRIPTION */}
                             <p className="text-gray-500 text-sm mt-3 leading-6 line-clamp-3">
-                                {item.description}
+                                {item.BodyHTML.replace(/<\/?[^>]+(>|$)/g, "")}
                             </p>
 
                             {/* BUTTON */}

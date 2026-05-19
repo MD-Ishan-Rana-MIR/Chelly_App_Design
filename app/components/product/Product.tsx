@@ -1,64 +1,200 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
-import ProductCard from "./ProductCard";
-import productsData from "@/public/product.json";
+import React, { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+
+interface Product {
+    id: number;
+    Title: string;
+    BodyHTML: string;
+    VariantPrice: number;
+    ImageSrc: string;
+    Category: string;
+}
+
+const ProductCard = ({ product }: { product: Product }) => {
+
+    const router = useRouter();
+
+    const navigateOnClick = () => {
+        router.push(`/food/${product.id}`);
+    };
+
+    return (
+        <div
+            onClick={navigateOnClick}
+            className="
+                bg-white
+                rounded-3xl
+                overflow-hidden
+                shadow-sm
+                border
+                border-zinc-100
+                hover:shadow-xl
+                transition-all
+                duration-300
+                cursor-pointer
+                h-full
+            "
+        >
+
+            <div className="relative w-full h-[240px] overflow-hidden">
+
+                <Image
+                    src={product.ImageSrc}
+                    alt={product.Title}
+                    fill
+                    className="object-cover hover:scale-105 transition duration-500"
+                />
+
+            </div>
+
+            <div className="p-5">
+
+                <span className="inline-block px-3 py-1 rounded-full bg-green-100 text-[#0b7211] text-xs font-semibold mb-3">
+                    {product.Category}
+                </span>
+
+                <h2 className="text-lg font-bold text-gray-900 line-clamp-1">
+                    {product.Title}
+                </h2>
+
+                <div
+                    className="text-sm text-gray-500 line-clamp-2 mt-2"
+                    dangerouslySetInnerHTML={{
+                        __html: product.BodyHTML,
+                    }}
+                />
+
+                <div className="mt-5 flex items-center justify-between">
+
+                    <h3 className="text-2xl font-extrabold text-[#0b7211]">
+                        ${product.VariantPrice}
+                    </h3>
+
+                    <button
+                        className="
+                            px-4
+                            py-2
+                            rounded-full
+                            bg-[#0b7211]
+                            text-white
+                            text-sm
+                            font-semibold
+                            hover:bg-[#095c0e]
+                            transition
+                            cursor-pointer
+                        "
+                    >
+                        View
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    );
+};
 
 const ProductPage = () => {
+
     const [visibleCount, setVisibleCount] = useState(6);
     const [sortOrder, setSortOrder] = useState("featured");
-    const [selectedType, setSelectedType] = useState("all");
+    const [selectedType, setSelectedType] = useState("All");
     const [search, setSearch] = useState("");
+    const [products, setProducts] = useState<Product[]>([]);
 
-    // Unique Categories
-    const categories = useMemo(() => {
-        const types = productsData
-            .map((item: any) => item.type)
-            .filter((item: string) => item && item.trim() !== "");
+    useEffect(() => {
 
-        return ["all", ...new Set(types)];
+        const fetchProducts = async () => {
+
+            try {
+
+                const response = await fetch("/product.json");
+                const data = await response.json();
+
+                setProducts(data);
+
+            } catch (error) {
+
+                console.log(error);
+
+            }
+
+        };
+
+        fetchProducts();
+
     }, []);
 
-    // Filter + Search
+    // UNIQUE CATEGORY
+    const categories = useMemo(() => {
+
+        const types = products
+            .map((item) => item.Category?.trim())
+            .filter(Boolean);
+
+        return ["All", ...Array.from(new Set(types))];
+
+    }, [products]);
+
+    // FILTER PRODUCT
     const filteredProducts = useMemo(() => {
-        let data = [...productsData];
 
-        // Category Filter
-        if (selectedType !== "all") {
+        let data = [...products];
+
+        // CATEGORY FILTER
+        if (selectedType !== "All") {
+
             data = data.filter(
-                (item: any) =>
-                    item.type?.toLowerCase() ===
-                    selectedType.toLowerCase()
+                (item) =>
+                    item.Category?.trim().toLowerCase() ===
+                    selectedType.trim().toLowerCase()
             );
+
         }
 
-        // Search Filter
-        if (search) {
-            data = data.filter((item: any) =>
-                item.title.toLowerCase().includes(search.toLowerCase())
+        // SEARCH FILTER
+        if (search.trim()) {
+
+            data = data.filter((item) =>
+                item.Title.toLowerCase().includes(
+                    search.toLowerCase()
+                )
             );
+
         }
 
-        // Sorting
+        // SORTING
         if (sortOrder === "low") {
+
             data.sort(
-                (a: any, b: any) =>
-                    Number(a.price) - Number(b.price)
+                (a, b) =>
+                    Number(a.VariantPrice) -
+                    Number(b.VariantPrice)
             );
+
         }
 
         if (sortOrder === "high") {
+
             data.sort(
-                (a: any, b: any) =>
-                    Number(b.price) - Number(a.price)
+                (a, b) =>
+                    Number(b.VariantPrice) -
+                    Number(a.VariantPrice)
             );
+
         }
 
         return data;
-    }, [selectedType, sortOrder, search]);
+
+    }, [products, selectedType, search, sortOrder]);
 
     return (
-        <div className="py-14 bg-zinc-50 min-h-screen">
+
+        <div className="py-14 min-h-screen bg-[#fafafa]">
 
             {/* HERO */}
             <div className="text-center mb-14 px-4">
@@ -127,13 +263,14 @@ const ProductPage = () => {
 
                             <div className="space-y-3">
 
-                                {categories.map((category: any) => (
+                                {categories.map((category) => (
 
                                     <button
                                         key={category}
-                                        onClick={() =>
-                                            setSelectedType(category)
-                                        }
+                                        onClick={() => {
+                                            setSelectedType(category);
+                                            setVisibleCount(6);
+                                        }}
                                         className={`
                                             w-full
                                             text-left
@@ -150,7 +287,7 @@ const ProductPage = () => {
                                             }
                                         `}
                                     >
-                                        {category === "all"
+                                        {category === "All"
                                             ? "All Products"
                                             : category}
                                     </button>
@@ -165,7 +302,7 @@ const ProductPage = () => {
 
                 </aside>
 
-                {/* PRODUCTS */}
+                {/* PRODUCT SECTION */}
                 <main>
 
                     {/* TOPBAR */}
@@ -236,7 +373,7 @@ const ProductPage = () => {
 
                         {filteredProducts
                             .slice(0, visibleCount)
-                            .map((product: any) => (
+                            .map((product) => (
 
                                 <div
                                     key={product.id}
@@ -268,7 +405,7 @@ const ProductPage = () => {
 
                     )}
 
-                    {/* PAGINATION */}
+                    {/* LOAD MORE */}
                     {filteredProducts.length > 6 && (
 
                         <div className="flex justify-center mt-14">
@@ -326,6 +463,7 @@ const ProductPage = () => {
             </div>
 
         </div>
+
     );
 };
 
