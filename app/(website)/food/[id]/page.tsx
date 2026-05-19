@@ -11,9 +11,7 @@ import {
     FiPlus,
     FiShoppingCart,
     FiStar,
-    FiTruck,
-    FiShield,
-    FiRefreshCcw,
+    
 } from "react-icons/fi";
 
 import toast from "react-hot-toast";
@@ -34,7 +32,7 @@ const ProductDetailsPage = () => {
 
     const [selectedPlan, setSelectedPlan] = useState("Daily");
 
-    const plans = ["Daily", "Weekly", "Monthly"];
+    const plans = [ "Weekly",];
 
     const router = useRouter();
 
@@ -343,14 +341,12 @@ const ProductDetailsPage = () => {
                                             </h3>
 
                                             <p className="mt-1 text-sm text-gray-500">
-                                                {plan === "Daily" &&
-                                                    "Fresh delivery every day"}
+                                               
 
                                                 {plan === "Weekly" &&
                                                     "Best for weekly routine"}
 
-                                                {plan === "Monthly" &&
-                                                    "Save more with monthly plan"}
+                                                
                                             </p>
 
                                         </div>

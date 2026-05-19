@@ -8,7 +8,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/3_Egg_Omlette.png?v=1748119540",
         "tags": "",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Breakfast"
     },
     {
         "id": 2,
@@ -19,7 +20,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Acai_Bowl.png?v=1748119456",
         "tags": "Açaí Bowl",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Breakfast"
     },
     {
         "id": 3,
@@ -31,6 +33,7 @@
         "tags": "Avocado Toast",
         "type": "",
         "status": "active",
+        "category": "Breakfast",
         "variants": []
     },
     {
@@ -42,7 +45,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Breakfast_Burrito_with_Country_Gravy.png?v=1748119177",
         "tags": "Breakfast Burrito with Country Gravy",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Breakfast"
     },
     {
         "id": 5,
@@ -53,7 +57,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Brunch_Combo.png?v=1748118969",
         "tags": "Brunch Combo",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Lunch"
     },
     {
         "id": 6,
@@ -64,7 +69,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_and_Shrimp.png?v=1748118697",
         "tags": "Chicken and Shrimp",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Lunch"
     },
     {
         "id": 7,
@@ -75,7 +81,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_Salad_Sandwich.png?v=1748117885",
         "tags": "Chicken Salad Sandwich",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Lunch"
     },
     {
         "id": 8,
@@ -86,7 +93,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chicken_Tortilla_Soup.png?v=1748117340",
         "tags": "lovelys meal plan Chicken Tortilla Soup",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Lunch"
     },
     {
         "id": 9,
@@ -97,7 +105,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Chopped_Salad.png?v=1748117069",
         "tags": "Chopped Salad",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Dinner"
     },
     {
         "id": 10,
@@ -108,7 +117,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Cinnamon_Roll_French_Toast.png?v=1748118901",
         "tags": "Cinnamon Roll French Toast",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Dinner"
     },
     {
         "id": 11,
@@ -119,7 +129,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Crispy_rice_with_Spicy_Shrimp_Salad.png?v=1748116926",
         "tags": "Crispy rice, Crispy rice with Spicy Shrimp, Crispy rice with Spicy Shrimp Salad, rice with Spicy Shrimp, rice with Spicy Shrimp Salad, Shrimp Salad, Spicy Shrimp Salad",
         "type": "food",
-        "status": "active"
+        "status": "active",
+        "category": "Dinner"
     },
     {
         "id": 12,
@@ -130,7 +141,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Grilled_Steak_Tacos.png?v=1748118625",
         "tags": "Grilled Steak Tacos",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Dinner"
     },
     {
         "id": 13,
@@ -141,7 +153,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/image_2025-04-26_214502735.png?v=1745685907",
         "tags": "",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "WeeklySubscription"
     },
     {
         "id": 14,
@@ -152,7 +165,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Ocean_Water_1_2_Gallon.png?v=1748115834",
         "tags": "Flavored Drinks, Fruit Drinks, Fruit Flavored, Fruit Flavored Drinks",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "WeeklySubscription"
     },
     {
         "id": 15,
@@ -163,7 +177,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Salisbury_Meatballs_platter.png?v=1748118325",
         "tags": "Salisbury Meatballs platter",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "WeeklySubscription"
     },
     {
         "id": 16,
@@ -174,7 +189,8 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Salmon_bite_bowls.png?v=1748118279",
         "tags": "Salmon bite bowls",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "WeeklySubscription"
     },
     {
         "id": 17,
@@ -185,18 +201,20 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Soft_Tacos.png?v=1748118222",
         "tags": "Soft Tacos",
         "type": "",
-        "status": "active"
+        "status": "active",
+        "category": "Drinks"
     },
     {
         "id": 18,
         "handle": "spinanch-artichoke-dip",
         "title": "Spinanch Artichoke Dip",
-        "description": "This Slow Cooker Spinach Artichoke Dip recipe is rich and creamy, full of the best flavors, and extra-easy to eat for lunch or snack! Comes with a side of pita chips, carrots and celery.",
+        "description": "This Slow Cooker Spinach Artichoke Dip recipe is rich and creamy, full of the best flavors, and extra-easy to eat for Lunch or snack! Comes with a side of pita chips, carrots and celery.",
         "price": "10.00",
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/image_2025-04-26_010341442.png?v=1745611425",
         "tags": "",
         "type": "Prepared meals",
-        "status": "active"
+        "status": "active",
+        "category": "Drinks"
     },
     {
         "id": 19,
@@ -207,6 +225,7 @@
         "image": "https://cdn.shopify.com/s/files/1/0684/1060/5744/files/Ultimate_Loaded_Baked_Potato.png?v=1748116411",
         "tags": "Entrées, Meals, Meals & Entrées, Prepared Entrées, Prepared Meals, Prepared Meals & Entrées",
         "type": "Prepared meals",
-        "status": "active"
+        "status": "active",
+        "category": "Drinks"
     }
 ]

@@ -36,12 +36,12 @@ const HomePage = () => {
 
               {/* ROW 1 */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
-                <CategoryCard category = {"breakfast"}  title="Breakfast" icon={<GrLinkNext />} />
-                <CategoryCard category = {"lunch"}  title="Lunch" icon={<GrLinkNext />} />
-                <CategoryCard category = {"dinner"}  title="Dinner" icon={<GrLinkNext />} />
-                <CategoryCard category = {"weekly"}  title="Weekly Subscription" icon={<GrLinkNext />} />
-                <CategoryCard category = {"drink"}  title="Drinks" icon={<GrLinkNext />} />
-                <CategoryCard category = {"side"}  title="Sides" icon={<GrLinkNext />} />
+                <CategoryCard category = {"Breakfast"}  title="Breakfast" icon={<GrLinkNext />} />
+                <CategoryCard category = {"Lunch"}  title="Lunch" icon={<GrLinkNext />} />
+                <CategoryCard category = {"Dinner"}  title="Dinner" icon={<GrLinkNext />} />
+                <CategoryCard category = {"WeeklySubscription"}  title="Weekly Subscription" icon={<GrLinkNext />} />
+                <CategoryCard category = {"Drinks"}  title="Drinks" icon={<GrLinkNext />} />
+                <CategoryCard category = {"Sides"}  title="Sides" icon={<GrLinkNext />} />
               </div>
             </div>
 

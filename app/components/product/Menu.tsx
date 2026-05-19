@@ -23,7 +23,7 @@ const tabs = [
     "Breakfast",
     "Lunch",
     "Dinner",
-    "Weekly Subscription",
+    "WeeklySubscription",
     "Drinks",
 ];
 
@@ -58,7 +58,7 @@ const Menu = () => {
         }
 
         return products.filter((item) =>
-            item.tags?.toLowerCase().includes(
+            item.category?.toLowerCase().includes(
                 activeTab.toLowerCase()
             )
         );
