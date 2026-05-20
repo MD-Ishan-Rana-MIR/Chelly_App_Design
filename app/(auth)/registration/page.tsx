@@ -33,7 +33,6 @@ const RegisterPage = () => {
 
   const onSubmit = async (data: FormData) => {
 
-    console.log("Register Data:", data);
 
     // FAKE API DELAY
     await new Promise((resolve) => setTimeout(resolve, 1500));

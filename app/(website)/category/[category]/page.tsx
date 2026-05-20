@@ -5,6 +5,7 @@ import { redirect, useParams } from "next/navigation";
 import Image from "next/image";
 import MaxWidth from "@/app/components/max-width/MaxWidth";
 import Button from "@/app/components/button/Button";
+import toast from "react-hot-toast";
 interface Product {
     id: number;
     Title: string;
@@ -27,11 +28,11 @@ const CategoryPage = () => {
                 const response = await fetch("/product.json");
                 const data = await response.json();
 
-                console.log("Fetched Products:", data); // Debug log
 
                 setProducts(data);
-            } catch (error) {
-                console.log(error);
+            } catch (error: unknown) {
+                const msg = error instanceof Error ? error.message : String(error);
+                toast.error(`Failed to fetch products. ${msg}`);
             }
         };
         fetchProducts();

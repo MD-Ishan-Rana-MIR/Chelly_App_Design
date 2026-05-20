@@ -34,6 +34,7 @@ export default function CartPage() {
         };
     }, []);
 
+
     // UPDATE LOCALSTORAGE HELPER
     const updateCart = (updated: CartItem[]) => {
         setCart(updated);
@@ -73,7 +74,7 @@ export default function CartPage() {
         0
     );
 
-    const delivery = cart.length > 0 ? 5 : 0;
+    const delivery = cart.length > 0 ? 0 : 0;
     const total = subtotal + delivery;
 
     return (
@@ -140,7 +141,7 @@ export default function CartPage() {
                                                 onClick={() =>
                                                     decreaseQty(item.id)
                                                 }
-                                                className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+                                                className="p-2  cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
                                             >
                                                 <FiMinus />
                                             </button>
@@ -153,7 +154,7 @@ export default function CartPage() {
                                                 onClick={() =>
                                                     increaseQty(item.id)
                                                 }
-                                                className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+                                                className="p-2 cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
                                             >
                                                 <FiPlus />
                                             </button>

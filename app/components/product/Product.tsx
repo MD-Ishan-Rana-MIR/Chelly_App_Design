@@ -119,7 +119,7 @@ const ProductPage = () => {
 
             } catch (error) {
 
-                console.log(error);
+                return error;
 
             }
 
