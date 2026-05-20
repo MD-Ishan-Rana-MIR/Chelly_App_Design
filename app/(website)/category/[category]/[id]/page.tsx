@@ -41,7 +41,6 @@ const FoodDetailsPage = () => {
     const router = useRouter();
     const params = useParams();
 
-    console.log(params);
 
     const [products, setProducts] = useState<FoodItem[]>([]);
 
@@ -53,11 +52,11 @@ const FoodDetailsPage = () => {
                 const response = await fetch("/product.json");
                 const data = await response.json();
 
-                console.log("Fetched Products:", data); // Debug log
 
                 setProducts(data);
-            } catch (error) {
-                console.log(error);
+            } catch (error: unknown) {
+                const msg = error instanceof Error ? error.message : String(error);
+                toast.error(`Failed to fetch products. ${msg}`);
             }
         };
         fetchProducts();
@@ -225,40 +224,58 @@ const FoodDetailsPage = () => {
                         </p>
 
                         {/* QUANTITY */}
-                        <div className="mt-8">
+                        <div className=" flex flex-row items-center justify-between " >
+                            {/* QUANTITY */}
+                            <div className="mt-8">
 
-                            <h3 className="mb-4 text-lg font-semibold text-gray-800">
-                                Quantity
-                            </h3>
+                                <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                                    Quantity
+                                </h3>
 
-                            <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
+                                <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
 
-                                <button
-                                    onClick={() =>
-                                        setQuantity((q) =>
-                                            q > 1 ? q - 1 : 1
-                                        )
-                                    }
-                                    className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
-                                >
-                                    <FiMinus />
-                                </button>
+                                    <button
+                                        onClick={() =>
+                                            setQuantity((q) =>
+                                                q > 1 ? q - 1 : 1
+                                            )
+                                        }
+                                        className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
+                                    >
+                                        <FiMinus />
+                                    </button>
 
-                                <span className="px-8 text-lg font-bold">
-                                    {quantity}
-                                </span>
+                                    <span className="px-8 text-lg font-bold">
+                                        {quantity}
+                                    </span>
 
-                                <button
-                                    onClick={() =>
-                                        setQuantity((q) => q + 1)
-                                    }
-                                    className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
-                                >
-                                    <FiPlus />
-                                </button>
+                                    <button
+                                        onClick={() =>
+                                            setQuantity((q) => q + 1)
+                                        }
+                                        className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
+                                    >
+                                        <FiPlus />
+                                    </button>
+
+                                </div>
 
                             </div>
+                            <div className="mt-8">
 
+                                <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                                    Price
+                                </h3>
+
+                                <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
+
+                                    < span className="px-8 text-lg font-bold">
+                                        ${(food.VariantPrice * quantity).toFixed(2)}
+                                    </span>
+
+                                </div>
+
+                            </div>
                         </div>
 
                         {/* ORDER PLAN */}

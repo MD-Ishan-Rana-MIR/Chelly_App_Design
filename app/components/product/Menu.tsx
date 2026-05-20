@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MaxWidth from "../max-width/MaxWidth";
+import toast from "react-hot-toast";
 
 interface Product {
     id: number;
@@ -39,11 +40,12 @@ const Menu = () => {
                 const response = await fetch("/product.json");
                 const data = await response.json();
 
-                console.log("Fetched Products:", data); // Debug log
 
                 setProducts(data);
-            } catch (error) {
-                console.log(error);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error:any) {
+                const msg = error instanceof Error ? error.message : String(error);
+                toast.error(`Failed to fetch products. ${msg}`);
             }
         };
         fetchProducts();

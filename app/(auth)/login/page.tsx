@@ -23,7 +23,6 @@ const LoginPage = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
-    console.log("Login Data:", data);
     await new Promise((res) => setTimeout(res, 1500));
   };
 

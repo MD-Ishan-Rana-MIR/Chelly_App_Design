@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { FiLock } from "react-icons/fi";
 
 type FormData = {
@@ -28,7 +29,6 @@ const ChangePasswordPage = () => {
         setLoading(true);
 
         try {
-            console.log("Password Change Data:", data);
 
             // fake API delay
             await new Promise((res) => setTimeout(res, 1500));
@@ -37,8 +37,9 @@ const ChangePasswordPage = () => {
 
             reset();
 
-        } catch (error) {
-            console.log(error);
+        } catch (error: unknown) {
+            const msg = error instanceof Error ? error.message : String(error);
+            toast.error(`Failed to change password. ${msg}`);
         } finally {
             setLoading(false);
         }

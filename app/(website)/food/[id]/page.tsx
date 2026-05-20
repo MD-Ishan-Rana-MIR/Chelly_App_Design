@@ -41,9 +41,9 @@ const FoodDetailsPage = () => {
     const router = useRouter();
     const params = useParams();
 
-    console.log(params);
 
     const [products, setProducts] = useState<FoodItem[]>([]);
+
 
 
     // Fetch JSON
@@ -53,11 +53,11 @@ const FoodDetailsPage = () => {
                 const response = await fetch("/product.json");
                 const data = await response.json();
 
-                console.log("Fetched Products:", data); // Debug log
 
                 setProducts(data);
-            } catch (error) {
-                console.log(error);
+            } catch (error: unknown) {
+                const msg = error instanceof Error ? error.message : String(error);
+                toast.error(`Failed to fetch products. ${msg}`);
             }
         };
         fetchProducts();
@@ -67,21 +67,19 @@ const FoodDetailsPage = () => {
 
     const food = products.find((item) => item.id === id);
 
+
+
     const [quantity, setQuantity] = useState(1);
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const plans = ["Weekly",];
+    const [price, setPrice] = useState<number | undefined>(undefined);
 
-    if (!food) {
-        return (
-            <div className="flex h-[40vh] items-center justify-center">
-                <h1 className="text-2xl font-bold text-red-500">
-                    Food Not Found
-                </h1>
-            </div>
-        );
+    if (food && price !== undefined) {
+        setPrice(food.VariantPrice * quantity);
     }
+
+    const plans = ["Weekly",];
 
     const handleCart = (
         item: FoodItem,
@@ -150,6 +148,19 @@ const FoodDetailsPage = () => {
 
         window.dispatchEvent(new Event("wishlistUpdate"));
     };
+
+
+    if (!food) {
+        return (
+            <div className="flex h-[40vh] items-center justify-center">
+                <h1 className="text-2xl font-bold text-red-500">
+                    Food Not Found
+                </h1>
+            </div>
+        );
+    }
+
+
 
     return (
         <section className="bg-gray-50 py-10">
@@ -224,41 +235,58 @@ const FoodDetailsPage = () => {
                             {food.BodyHTML.replace(/<\/?[^>]+(>|$)/g, "")}
                         </p>
 
-                        {/* QUANTITY */}
-                        <div className="mt-8">
+                        <div className=" flex flex-row items-center justify-between " >
+                            {/* QUANTITY */}
+                            <div className="mt-8">
 
-                            <h3 className="mb-4 text-lg font-semibold text-gray-800">
-                                Quantity
-                            </h3>
+                                <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                                    Quantity
+                                </h3>
 
-                            <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
+                                <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
 
-                                <button
-                                    onClick={() =>
-                                        setQuantity((q) =>
-                                            q > 1 ? q - 1 : 1
-                                        )
-                                    }
-                                    className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
-                                >
-                                    <FiMinus />
-                                </button>
+                                    <button
+                                        onClick={() =>
+                                            setQuantity((q) =>
+                                                q > 1 ? q - 1 : 1
+                                            )
+                                        }
+                                        className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
+                                    >
+                                        <FiMinus />
+                                    </button>
 
-                                <span className="px-8 text-lg font-bold">
-                                    {quantity}
-                                </span>
+                                    <span className="px-8 text-lg font-bold">
+                                        {quantity}
+                                    </span>
 
-                                <button
-                                    onClick={() =>
-                                        setQuantity((q) => q + 1)
-                                    }
-                                    className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
-                                >
-                                    <FiPlus />
-                                </button>
+                                    <button
+                                        onClick={() =>
+                                            setQuantity((q) => q + 1)
+                                        }
+                                        className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
+                                    >
+                                        <FiPlus />
+                                    </button>
+
+                                </div>
 
                             </div>
+                            <div className="mt-8">
 
+                                <h3 className="mb-4 text-lg font-semibold text-gray-800">
+                                    Price
+                                </h3>
+
+                                <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
+
+                                    < span className="px-8 text-lg font-bold">
+                                        ${ (food.VariantPrice * quantity).toFixed(2) }
+                                    </span>
+
+                                </div>
+
+                            </div>
                         </div>
 
                         {/* ORDER PLAN */}
