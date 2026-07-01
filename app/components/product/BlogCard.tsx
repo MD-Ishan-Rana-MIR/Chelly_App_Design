@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import React from 'react'
-import { BlogCardType } from './../../(website)/blogs/page';
 import { redirect } from 'next/navigation';
 
 // 1. Define the colors object to prevent "undefined" errors
@@ -13,7 +12,7 @@ const categoryColors: Record<string, string> = {
     default: "bg-gray-100 text-gray-600"
 };
 
-const BlogCard = ({ blog }: { blog: BlogCardType }) => {
+const BlogCard = ({ blog }: { blog: { id: number; title: string; desc: string; image: string; date: string; category: string } }) => {
     return (
         <div
             className="
@@ -27,12 +26,13 @@ const BlogCard = ({ blog }: { blog: BlogCardType }) => {
                 <Image
                     width={400}
                     height={300}
-                    src={blog.image}
+                    src={"https://cdn.shopify.com/s/files/1/0684/1060/5744/articles/image_2025-04-26_013753719.png?v=1745661780"}
                     alt={blog.title}
+                    unoptimized
                     className="
                         w-full h-48 object-cover
                         group-hover:scale-110
-                        transition-transform duration-500
+                        transition-transform duration-500   
                     "
                 />
             </div>
@@ -57,9 +57,15 @@ const BlogCard = ({ blog }: { blog: BlogCardType }) => {
                     {blog.title}
                 </h2>
 
-                <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                    {blog.desc}
-                </p>
+
+                <p className='text-sm text-gray-500 mt-2 line-clamp-2'
+                    dangerouslySetInnerHTML={{
+                        __html:
+                            blog.desc.length > 180
+                                ? blog.desc.slice(0, 180) + "..."
+                                : blog.desc,
+                    }}
+                />
 
                 <button onClick={() => { redirect(`/blogs/${blog.id.toString()}`) }} className="mt-4 text-green-700 cursor-pointer  font-medium hover:underline">
                     Read More →

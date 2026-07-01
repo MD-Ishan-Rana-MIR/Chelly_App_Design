@@ -2,7 +2,7 @@
 
 export type CartItem = {
     id: number;
-    title: string;
+    name: string;
     category: string;
     price: number;
     // rating: number;
@@ -11,7 +11,7 @@ export type CartItem = {
     quantity: number;
 };
 
-import React, { useEffect, useState } from "react";
+import  {useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
     FiArrowLeft,
@@ -19,21 +19,15 @@ import {
     FiMinus,
     FiPlus,
     FiShoppingCart,
-    FiStar,
 } from "react-icons/fi";
 
 import MaxWidth from "@/app/components/max-width/MaxWidth";
 import ProductImageViewer from "@/app/components/img-view/Image360Viewer";
 import toast from "react-hot-toast";
+import { useFoodByIdQuery } from "@/app/redux/foodApi";
+import { FoodType } from '@/app/lib/type';
+import FoodDetailsSkeleton from "@/app/components/skeleton/FoodDetailsSkeleton";
 
-export interface FoodItem {
-    id: number;
-    Title: string;
-    BodyHTML: string;
-    VariantPrice: number;
-    ImageSrc: string;
-    Category: string;
-}
 
 
 
@@ -42,30 +36,14 @@ const FoodDetailsPage = () => {
     const params = useParams();
 
 
-    const [products, setProducts] = useState<FoodItem[]>([]);
-
-
-
-    // Fetch JSON
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch("/product.json");
-                const data = await response.json();
-
-
-                setProducts(data);
-            } catch (error: unknown) {
-                const msg = error instanceof Error ? error.message : String(error);
-                toast.error(`Failed to fetch products. ${msg}`);
-            }
-        };
-        fetchProducts();
-    }, []);
 
     const id = Number(params.id);
 
-    const food = products.find((item) => item.id === id);
+
+
+    const { data, isLoading } = useFoodByIdQuery(id);
+
+    const food: FoodType = data?.data;
 
 
 
@@ -73,21 +51,19 @@ const FoodDetailsPage = () => {
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const [price, setPrice] = useState<number | undefined>(undefined);
+    const totalPrice = Number(food?.price || 0) * quantity;
 
-    if (food && price !== undefined) {
-        setPrice(food.VariantPrice * quantity);
-    }
-
-    const plans = ["Weekly",];
+    const plans = ["Weekly"];
 
     const handleCart = (
-        item: FoodItem,
+        item: FoodType,
         qty: number = 1
     ) => {
         const cart: CartItem[] = JSON.parse(
             localStorage.getItem("cart") || "[]"
         );
+
+        console.log("|dsfdasfdsfasfdfdsaf",item);
 
         const existingIndex = cart.findIndex(
             (i) => i.id === item.id
@@ -101,12 +77,14 @@ const FoodDetailsPage = () => {
         } else {
             cart.push({
                 id: item.id,
-                title: item.Title,
-                category: item.Category,
-                price: Number(item.VariantPrice),
+                name: // prefer common field names from FoodType
+                    // fall back to any available title-like fields
+                    (item as any).name || (item as any).name || "",
+                category: (item as any).category || "",
+                price: Number((item as any).price || 0),
                 // rating: item.rating,
-                image: item.ImageSrc,
-                description: item.BodyHTML,
+                image: (item as any).image || "",
+                description: (item as any).description || "",
                 quantity: qty,
             });
 
@@ -150,14 +128,10 @@ const FoodDetailsPage = () => {
     };
 
 
-    if (!food) {
+    if (isLoading) {
         return (
-            <div className="flex h-[40vh] items-center justify-center">
-                <h1 className="text-2xl font-bold text-red-500">
-                    Food Not Found
-                </h1>
-            </div>
-        );
+            <FoodDetailsSkeleton />
+        )
     }
 
 
@@ -184,31 +158,31 @@ const FoodDetailsPage = () => {
                 <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
 
                     {/* IMAGE SECTION */}
-                    <div className="rounded-[32px] bg-white p-5 shadow-sm">
+                    <div className="rounded-4xl bg-white p-5 shadow-sm">
 
                         <div className="relative overflow-hidden rounded-3xl">
                             <ProductImageViewer
                                 images={[
-                                    food.ImageSrc,
+                                    food?.image,
                                     "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
                                     "https://images.unsplash.com/photo-1544025162-d76694265947",
                                 ]}
-                                alt={food.Title}
+                                alt={food?.name}
                             />
 
                             <span className="absolute left-5 top-5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b7211] shadow">
-                                {food.Category}
+                                {food?.category?.name}
                             </span>
                         </div>
 
                     </div>
 
                     {/* CONTENT */}
-                    <div className="rounded-[32px] bg-white p-6 md:p-10 shadow-sm">
+                    <div className="rounded-4xl bg-white p-6 md:p-10 shadow-sm">
 
                         {/* TITLE */}
                         <h1 className="text-3xl font-bold text-gray-900 md:text-5xl">
-                            {food.Title}
+                            {food?.name}
                         </h1>
 
                         {/* RATING */}
@@ -219,20 +193,20 @@ const FoodDetailsPage = () => {
                                 {food.rating}
                             </div> */}
 
-                            <p className="text-sm text-gray-500">
+                            {/* <p className="text-sm text-gray-500">
                                 120+ reviews
-                            </p>
+                            </p> */}
 
                         </div>
 
                         {/* PRICE */}
                         <h2 className="mt-8 text-4xl font-bold text-[#0b7211] md:text-5xl">
-                            ${food.VariantPrice.toFixed(2)}
+                            ${food?.price}
                         </h2>
 
                         {/* DESCRIPTION */}
                         <p className="mt-6 text-lg leading-8 text-gray-600">
-                            {food.BodyHTML.replace(/<\/?[^>]+(>|$)/g, "")}
+                            {food?.description.replace(/<\/?[^>]+(>|$)/g, "")}
                         </p>
 
                         <div className=" flex flex-row items-center justify-between " >
@@ -280,8 +254,8 @@ const FoodDetailsPage = () => {
 
                                 <div className="flex w-fit items-center overflow-hidden rounded-2xl border border-gray-200">
 
-                                    < span className="px-8 text-lg font-bold">
-                                        ${ (food.VariantPrice * quantity).toFixed(2) }
+                                    <span className="px-8 text-lg font-bold">
+                                        ${totalPrice.toFixed(2)}
                                     </span>
 
                                 </div>

@@ -1,16 +1,26 @@
+"use client";
 import React from 'react'
 import MaxWidth from './components/max-width/MaxWidth'
-import ProductPage from './components/product/Product'
-import HomeFoodGrid from './components/slider/HomeFoodGrid'
 import Menu from './components/product/Menu'
 import { GrLinkNext } from 'react-icons/gr'
 import CategoryCard from './components/card/CategoryCard'
+import { useAllCategoriesQuery } from './redux/categoryApi';
+import { CategoryType } from './lib/type';
+import CategoryCardSkeleton from './components/skeleton/CategoryCardSkeleton';
+import Banner from './components/slider/Banner';
 
 const HomePage = () => {
+  const { data, isLoading } = useAllCategoriesQuery(undefined);
+
+
+  const categories: CategoryType[] = data?.data?.data || [];
+
+
+
   return (
     <div>
       <div>
-        <HomeFoodGrid />
+        <Banner />
       </div>
       <MaxWidth>
 
@@ -32,24 +42,28 @@ const HomePage = () => {
             </div>
 
             {/* MENU GRID */}
-            <div className="flex flex-col gap-6">
-
-              {/* ROW 1 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
-                <CategoryCard category = {"Breakfast"}  title="Breakfast" icon={<GrLinkNext />} />
-                <CategoryCard category = {"Lunch"}  title="Lunch" icon={<GrLinkNext />} />
-                <CategoryCard category = {"Dinner"}  title="Dinner" icon={<GrLinkNext />} />
-                <CategoryCard category = {"WeeklySubscription"}  title="Weekly Subscription" icon={<GrLinkNext />} />
-                <CategoryCard category = {"Drinks"}  title="Drinks" icon={<GrLinkNext />} />
-                <CategoryCard category = {"Sides"}  title="Sides" icon={<GrLinkNext />} />
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-6">
+              {isLoading ? (
+                Array.from({ length: 9 }).map((_, i) => (
+                  <CategoryCardSkeleton key={i} />
+                ))
+              ) : (
+                categories?.map((item) => (
+                  <CategoryCard
+                    key={item.id}
+                    id={item.id}
+                    title={item.name}
+                    icon={<GrLinkNext />}
+                  />
+                ))
+              )}
             </div>
 
           </div>
 
         </section>
 
-   
+
 
 
         {/* <ProductPage /> */}

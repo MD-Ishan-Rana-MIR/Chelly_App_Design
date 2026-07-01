@@ -12,10 +12,22 @@ import {
 } from 'react-icons/fi';
 
 import MaxWidth from '../max-width/MaxWidth';
-import { redirect, usePathname } from 'next/navigation';
+import { redirect, usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { getToken } from '@/app/lib/token';
+import ConfirmModal from '@/app/lib/alert/ConfirmModal';
+import { useLogoutMutation } from '@/app/redux/authApi';
+import toast from 'react-hot-toast';
+import { errorMessage } from '@/app/lib/errorMsg';
+import { IoIosNotificationsOutline } from 'react-icons/io';
+import { useGetNotificationsQuery } from '@/app/redux/notificationApi';
 
 export default function Navbar() {
+
+    const token = getToken();
+
+
+
 
     const [mobileMenu, setMobileMenu] = useState(false);
     const [showSearch, setShowSearch] = useState(false);
@@ -28,9 +40,52 @@ export default function Navbar() {
         { name: 'Home', path: '/' },
         { name: 'Foods', path: '/foods' },
         { name: 'Blogs', path: '/blogs' },
-        { name: 'My Account / Sign Up', path: '/login' },
         { name: 'EBT Payment', path: '/ebt-payment' },
     ];
+
+    const [logout, { isLoading }] = useLogoutMutation();
+
+    const router = useRouter();
+
+
+    const [openPopUpModal, setOpenPopUpModal] = useState(false);
+
+    const handleLogoutConfirm = async () => {
+        if (isLoading) return;
+
+        try {
+
+            const res = await logout({}).unwrap();
+
+            if (res) {
+
+
+                toast.success(res?.message || "Logout successful");
+
+                setOpenPopUpModal(false);
+                setOpen(false);
+
+                localStorage.removeItem("auth");
+
+                return router.push("/");
+            }
+
+        } catch (error) {
+            errorMessage(error);
+        }
+    };
+
+    const handleLogoutCancel = () => {
+        if (isLoading) return;
+        setOpenPopUpModal(false);
+    };
+
+    const handlePopUpModal = () => {
+        setOpenPopUpModal(true);
+        setOpen(false);
+    }
+
+
 
     // ✅ CLOSE ON OUTSIDE CLICK
     useEffect(() => {
@@ -90,6 +145,32 @@ export default function Navbar() {
         };
     }, []);
 
+    // search functonally 
+
+    const [searchValue, setSearchValue] = useState<string>();
+
+    const handleSearchNavigate = () => {
+        if (!searchValue) return toast.error("Please enter value")
+        router.push(`/search?value=${searchValue}`)
+        return setShowSearch(false);
+    }
+
+
+    //=================================================== Notification Length =============================================
+    const { data: notificationsData } = useGetNotificationsQuery({ page: 1, perPage: 10000000 });
+
+    // 1. Safely extract the inner data array (fall back to an empty array if loading)
+    const notificationsList = notificationsData?.data || [];
+
+    // 2. Filter out only unread items safely
+    const unreadNotifications = notificationsList.filter(
+        (notification) => notification.read_at === null
+    );
+
+    // 3. Get the dynamic length of unread items on this page
+    const unreadLength = unreadNotifications.length;
+
+
     return (
         <header className="w-full border-b border-gray-200 bgColor sticky top-0 z-50">
 
@@ -111,31 +192,78 @@ export default function Navbar() {
                     {/* DESKTOP MENU */}
                     <nav className="hidden lg:flex items-center gap-8">
 
-                        {menus.map((menu) => {
+                        {/* Home */}
+                        <Link
+                            href="/"
+                            className={`relative text-[15px] font-medium group transition ${pathname === "/" ? "text-[#0b7211]" : "seconderyText"
+                                }`}
+                        >
+                            <span>Home</span>
 
-                            const isActive =
-                                menu.path === "/"
-                                    ? pathname === "/"
-                                    : pathname.startsWith(menu.path);
+                            <span
+                                className={`absolute left-0 -bottom-1 h-0.5 bg-[#0b7211] transition-all duration-300 ${pathname === "/" ? "w-full" : "w-0 group-hover:w-full"
+                                    }`}
+                            />
+                        </Link>
 
-                            return (
+                        {/* Foods */}
+                        <Link
+                            href="/foods"
+                            className={`relative text-[15px] font-medium group transition ${pathname.startsWith("/foods") ? "text-[#0b7211]" : "seconderyText"
+                                }`}
+                        >
+                            <span>Foods</span>
+
+                            <span
+                                className={`absolute left-0 -bottom-1 h-0.5 bg-[#0b7211] transition-all duration-300 ${pathname.startsWith("/foods") ? "w-full" : "w-0 group-hover:w-full"
+                                    }`}
+                            />
+                        </Link>
+
+                        {/* Blogs */}
+                        <Link
+                            href="/blogs"
+                            className={`relative text-[15px] font-medium group transition ${pathname.startsWith("/blogs") ? "text-[#0b7211]" : "seconderyText"
+                                }`}
+                        >
+                            <span>Blogs</span>
+
+                            <span
+                                className={`absolute left-0 -bottom-1 h-0.5 bg-[#0b7211] transition-all duration-300 ${pathname.startsWith("/blogs") ? "w-full" : "w-0 group-hover:w-full"
+                                    }`}
+                            />
+                        </Link>
+
+                        {
+                            !token && (
                                 <Link
-                                    key={menu.name}
-                                    href={menu.path}
-                                    className={`relative text-[15px] font-medium group transition ${isActive
-                                        ? "text-[#0b7211]"
-                                        : "seconderyText"
+                                    href="/login"
+                                    className={`relative text-[15px] font-medium group transition ${pathname.startsWith("/login") ? "text-[#0b7211]" : "seconderyText"
                                         }`}
                                 >
-                                    <span>{menu.name}</span>
+                                    <span>My Account / Sign Up</span>
 
                                     <span
-                                        className={`absolute left-0 -bottom-1 h-[2px] bg-[#0b7211] transition-all duration-300
-                                        ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                                        className={`absolute left-0 -bottom-1 h-0.5 bg-[#0b7211] transition-all duration-300 ${pathname.startsWith("/login") ? "w-full" : "w-0 group-hover:w-full"
+                                            }`}
                                     />
                                 </Link>
-                            );
-                        })}
+                            )
+                        }
+
+                        {/* EBT Payment */}
+                        <Link
+                            href="/ebt-payment"
+                            className={`relative text-[15px] font-medium group transition ${pathname.startsWith("/ebt-payment") ? "text-[#0b7211]" : "seconderyText"
+                                }`}
+                        >
+                            <span>EBT Payment</span>
+
+                            <span
+                                className={`absolute left-0 -bottom-1 h-0.5 bg-[#0b7211] transition-all duration-300 ${pathname.startsWith("/ebt-payment") ? "w-full" : "w-0 group-hover:w-full"
+                                    }`}
+                            />
+                        </Link>
 
                     </nav>
 
@@ -150,55 +278,62 @@ export default function Navbar() {
                             {showSearch ? <FiX size={22} /> : <FiSearch size={22} />}
                         </button>
 
-                        {/* USER DROPDOWN */}
-                        <div className="relative" ref={dropdownRef}>
+                        {
+                            token && (<>
+                                {/* USER DROPDOWN */}
+                                <div className="relative" ref={dropdownRef}>
 
-                            {/* USER ICON (CLICK) */}
-                            <button
-                                onClick={() => setOpen((prev) => !prev)}
-                                className="seconderyText cursor-pointer"
-                            >
-                                <FiUser size={22} />
-                            </button>
-
-                            {/* DROPDOWN */}
-                            {open && (
-                                <div className="absolute right-0 top-8 w-44 bg-white shadow-lg rounded-xl overflow-hidden z-50">
-
-                                    <Link
-                                        href="/profile"
-                                        onClick={() => setOpen(false)}
-                                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                                    >
-                                        Profile
-                                    </Link>
-
-                                    <Link
-                                        href="/orders"
-                                        onClick={() => setOpen(false)}
-                                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                                    >
-                                        My Orders
-                                    </Link>
-                                    <Link
-                                        href="/wishlist"
-                                        onClick={() => setOpen(false)}
-                                        className="block px-4 py-2 text-sm hover:bg-gray-100"
-                                    >
-                                        My Wishlist
-                                    </Link>
-
+                                    {/* USER ICON (CLICK) */}
                                     <button
-                                        onClick={() => setOpen(false)}
-                                        className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                        onClick={() => setOpen((prev) => !prev)}
+                                        className="seconderyText cursor-pointer"
                                     >
-                                        Logout
+                                        <FiUser size={22} />
                                     </button>
 
-                                </div>
-                            )}
+                                    {/* DROPDOWN */}
+                                    {open && (
+                                        <div className="absolute right-0 top-8 w-44 bg-white shadow-lg rounded-xl overflow-hidden z-50">
 
-                        </div>
+                                            <Link
+                                                href="/profile"
+                                                onClick={() => setOpen(false)}
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                                            >
+                                                Profile
+                                            </Link>
+
+                                            <Link
+                                                href="/orders"
+                                                onClick={() => setOpen(false)}
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                                            >
+                                                My Orders
+                                            </Link>
+                                            <Link
+                                                href="/wishlist"
+                                                onClick={() => setOpen(false)}
+                                                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                                            >
+                                                My Wishlist
+                                            </Link>
+
+                                            <button
+                                                onClick={() => handlePopUpModal()}
+                                                className="w-full text-left px-4 cursor-pointer py-2 text-sm text-red-500 hover:bg-gray-100"
+                                            >
+                                                Logout
+                                            </button>
+
+                                        </div>
+                                    )}
+
+                                </div>
+                            </>
+                            )
+                        }
+
+
 
                         {/* CART */}
                         <button
@@ -207,12 +342,32 @@ export default function Navbar() {
                         >
                             <FiShoppingCart size={22} />
 
-                            <span className="absolute -top-2 -right-2 btnColor text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                                {cartCount}
-                            </span>
+                            {/* ✅ শুধুমাত্র cartCount ০ এর বেশি হলেই ব্যাজটি রেন্ডার হবে */}
+                            {cartCount > 0 && (
+                                <span className="absolute -top-2 -right-2 btnColor text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                                    {cartCount}
+                                </span>
+                            )}
                         </button>
 
-                        <div onClick={()=>{redirect("/wishlist")}} className="relative cursor-pointer">
+
+                        {/* Notification */}
+
+                        <button
+                            onClick={() => redirect("/notification")}
+                            className="relative seconderyText cursor-pointer"
+                        >
+                            <IoIosNotificationsOutline size={26} />
+
+                            {/* ✅ শুধুমাত্র unreadLength ০ এর বেশি হলেই ব্যাজটি দেখাবে */}
+                            {unreadLength > 0 && (
+                                <span className="absolute -top-2 -right-2 btnColor text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                                    {unreadLength}
+                                </span>
+                            )}
+                        </button>
+
+                        <div onClick={() => { redirect("/wishlist") }} className="relative cursor-pointer">
                             <FiHeart size={22} />
 
                             {wishlistCount > 0 && (
@@ -236,14 +391,25 @@ export default function Navbar() {
 
                 {/* SEARCH BAR */}
                 <div
-                    className={`overflow-hidden transition-all duration-300 ${showSearch ? 'max-h-32 pb-4' : 'max-h-0'
+                    className={`overflow-hidden transition-all duration-300 ${showSearch ? "max-h-32 pb-4" : "max-h-0"
                         }`}
                 >
-                    <input
-                        type="text"
-                        placeholder="Search food..."
-                        className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none"
-                    />
+                    <div className="flex items-center gap-2">
+                        <input
+                            type="text"
+                            placeholder="Search food..."
+                            value={searchValue || ""}
+                            onChange={(e) => setSearchValue(e.target.value)}
+                            className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none"
+                        />
+
+                        <button
+                            onClick={() => { handleSearchNavigate() }}
+                            className="bg-[#0b7211] text-white px-5 cursor-pointer py-3 rounded-xl hover:bg-green-700 transition"
+                        >
+                            Search
+                        </button>
+                    </div>
                 </div>
 
             </MaxWidth>
@@ -279,7 +445,16 @@ export default function Navbar() {
 
                 </div>
             </div>
+            <ConfirmModal
+                open={openPopUpModal}
+                title="Are you sure you want to logout?"
+                description="You will need to login again to access your dashboard."
+                confirmText={isLoading ? "Logging out..." : "Yes, Logout"}
+                cancelText="Cancel"
+                onConfirm={handleLogoutConfirm}
+                onCancel={handleLogoutCancel}
+            />
 
-        </header>
+        </header >
     );
 }

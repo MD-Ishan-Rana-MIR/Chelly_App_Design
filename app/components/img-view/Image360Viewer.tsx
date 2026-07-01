@@ -14,6 +14,8 @@ const ProductParomaView = ({ images, alt }: Props) => {
     const [active, setActive] = useState(images?.[0]);
     const [scale, setScale] = useState(1);
 
+    console.log("images1",images)
+
     const zoomIn = () => setScale((p) => Math.min(p + 0.2, 2.5));
     const zoomOut = () => setScale((p) => Math.max(p - 0.2, 1));
 
@@ -27,6 +29,7 @@ const ProductParomaView = ({ images, alt }: Props) => {
                     src={active}
                     alt={alt}
                     fill
+                    unoptimized
                     className="object-cover transition-all duration-300"
                     style={{
                         transform: `scale(${scale})`,

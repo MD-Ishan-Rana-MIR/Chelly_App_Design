@@ -1,4 +1,3 @@
-import { getStatusStyle } from "@/app/(website)/orders/page";
 import React from "react";
 import jsPDF from "jspdf";
 
@@ -73,9 +72,9 @@ const OrderDetails = ({ order }: Props) => {
 
                 <div className="flex justify-between items-center">
                     <span className="text-gray-500">Status</span>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(order.status)}`}>
+                    {/* <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusStyle(order.status)}`}>
                         {order.status}
-                    </span>
+                    </span> */}
                 </div>
 
                 <div className="flex justify-between">

@@ -5,16 +5,16 @@ import { redirect } from 'next/navigation'
 const CategoryCard = ({
     title,
     icon,
-    category,
+    id,
 }: {
     title: string
     icon: React.ReactNode,
-    category: string
+    id: number
 }) => {
     return (
         <div className="py-4 ">
             <div
-                onClick={() => { redirect(`/category/${category}`) }}
+                onClick={() => { redirect(`/category/${id}`) }}
                 className="
                     group
                     relative

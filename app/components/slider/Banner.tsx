@@ -3,45 +3,29 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useGetAllBannerQuery } from "@/app/redux/bannerApi";
+import { BannerType } from "@/app/lib/type";
+import HeroBannerSkeleton from "../skeleton/BannerSkeleton";
 
-const foods = [
-    {
-        id: 1,
-        title: "Cheese Burger",
-        image:
-            "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
-    },
-    {
-        id: 2,
-        title: "Chicken Pizza",
-        image:
-            "https://images.unsplash.com/photo-1600891964092-4316c288032e",
-    },
-    {
-        id: 3,
-        title: "Grilled Steak",
-        image:
-            "https://images.unsplash.com/photo-1544025162-d76694265947",
-    },
-    {
-        id: 4,
-        title: "Fresh Salad",
-        image:
-            "https://images.unsplash.com/photo-1551892374-ecf8754cf8b0",
-    },
-];
-
-const HeroFoodSection = () => {
+const Banner = () => {
     const [current, setCurrent] = useState(0);
 
-    // AUTO SLIDE
+    const { data, isLoading } = useGetAllBannerQuery(undefined);
+
+
+    const foods = data?.data?.data || [];
+
+    const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_URL;
+
     useEffect(() => {
+        if (!foods.length) return;
+
         const interval = setInterval(() => {
             setCurrent((prev) => (prev + 1) % foods.length);
         }, 4000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [foods.length]);
 
     const prevSlide = () => {
         setCurrent((prev) => (prev === 0 ? foods.length - 1 : prev - 1));
@@ -51,74 +35,61 @@ const HeroFoodSection = () => {
         setCurrent((prev) => (prev + 1) % foods.length);
     };
 
-    return (
-        <section className="w-full h-[65vh] relative overflow-hidden">
+    if (isLoading) {
+        return (
+            <HeroBannerSkeleton/>
+        );
+    }
 
+    if (!foods.length) {
+        return null;
+    }
+
+    return (
+        <section className="w-full h-[70vh] relative overflow-hidden">
             {/* SLIDER WRAPPER */}
             <div
-                className="flex transition-transform duration-700 ease-in-out "
+                className="flex transition-transform duration-700 ease-in-out"
                 style={{
                     transform: `translateX(-${current * 100}%)`,
                 }}
             >
-
-                {foods.map((food) => (
-
+                {foods.map((food: BannerType) => (
                     <div
                         key={food.id}
-                        className="min-w-full h-[90vh]  relative group"
+                        className="min-w-full h-[70vh] relative group"
                     >
-
-                        {/* IMAGE */}
                         <Image
-                            src={food.image}
+                            src={`${imageBaseUrl}/${food.image}`}
                             alt={food.title}
                             fill
+                            priority
+                            unoptimized
                             className="object-cover group-hover:scale-105 transition duration-700"
                         />
 
-                        {/* OVERLAY */}
                         <div className="absolute inset-0 bg-black/40" />
 
-                        {/* CONTENT */}
                         <div className="absolute bottom-16 left-10">
-
                             <h1 className="text-white text-4xl font-bold">
                                 {food.title}
                             </h1>
 
-                            <button
-                                className="
-                  mt-4
-                  px-6
-                  py-3
-                  bg-[#0b7211]
-                  text-white
-                  rounded-xl
-                  hover:bg-[#095c0e]
-                  transition
-                  cursor-pointer
-                "
-                            >
+                            {/* <button className=" mt-4 px-6 py-3 bg-[#0b7211] text-white rounded-xl hover:bg-[#095c0e] transition  cursor-pointer  " >
                                 Order Now
-                            </button>
-
+                            </button> */}
                         </div>
-
                     </div>
-
                 ))}
-
             </div>
 
             {/* CONTROLS */}
             <button
                 onClick={prevSlide}
                 className="
-          absolute  cursor-pointer left-5 top-1/2 -translate-y-1/2
-          btnColor
-          text-white
-          p-3 rounded-full
+          absolute left-5 top-1/2 -translate-y-1/2
+          btnColor text-white p-3 rounded-full
+          cursor-pointer
         "
             >
                 <ChevronLeft />
@@ -127,10 +98,9 @@ const HeroFoodSection = () => {
             <button
                 onClick={nextSlide}
                 className="
-          absolute right-5 cursor-pointer top-1/2 -translate-y-1/2
-          btnColor
-          text-white
-          p-3 rounded-full
+          absolute right-5 top-1/2 -translate-y-1/2
+          btnColor text-white p-3 rounded-full
+          cursor-pointer
         "
             >
                 <ChevronRight />
@@ -138,9 +108,7 @@ const HeroFoodSection = () => {
 
             {/* DOTS */}
             <div className="absolute bottom-6 w-full flex justify-center gap-2">
-
-                {foods.map((_, index) => (
-
+                {foods.map((_: number, index: number) => (
                     <div
                         key={index}
                         onClick={() => setCurrent(index)}
@@ -149,13 +117,10 @@ const HeroFoodSection = () => {
               ${current === index ? "bg-white" : "bg-white/50"}
             `}
                     />
-
                 ))}
-
             </div>
-
         </section>
     );
 };
 
-export default HeroFoodSection;
+export default Banner;
