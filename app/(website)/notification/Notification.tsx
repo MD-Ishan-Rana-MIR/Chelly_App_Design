@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import { useState, useEffect } from 'react';
 import Pagination from '../../components/pagination/Pagination';
@@ -10,7 +11,7 @@ import { errorMessage } from '@/app/lib/errorMsg';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import ConfirmModal from '@/app/lib/alert/ConfirmModal';
 
-
+export const dynamic = 'force-dynamic';
 export default function Notification() {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
@@ -19,7 +20,7 @@ export default function Notification() {
     const { data, isFetching, refetch } = useGetNotificationsQuery({ page, perPage });
     const [markSingleNotificationAsRead] = useMarkSingleNotificationAsReadMutation();
     const [markAllNotificationsAsRead] = useMarkAllNotificationsAsReadMutation();
-    const [deleteNotification,{isLoading:deletLoading}] = useDeleteNotificationMutation();
+    const [deleteNotification, { isLoading: deletLoading }] = useDeleteNotificationMutation();
 
     const notificationsList: NotificationItem[] = data?.data || [];
 
@@ -41,11 +42,12 @@ export default function Notification() {
         const channelName = `App.Models.User.${userId}`;
         console.log(channelName);
 
+        if (!echo) return;
+
         echo.private(channelName)
             .notification((notification: any) => {
                 console.log('Real-time Notification Received: ', notification);
 
-                // HTML টেস্ট ফাইলের কন্ডিশনাল টোস্ট লজিক রিঅ্যাক্ট-হট-টোস্ট অনুযায়ী কনভার্ট করা হলো:
                 if (notification.type === 'new_order') {
                     toast.success(notification.message || 'New private alert received', { icon: '🎉' });
                 } else if (notification.type === 'refunded') {
@@ -57,14 +59,11 @@ export default function Notification() {
                 } else {
                     toast(notification.message || 'New private alert received', { icon: '🔔' });
                 }
-
-                // লাইভ ডেটা আপডেট করার জন্য RTK Query রিফেচ ট্রিগার
                 refetch();
             });
 
-        // মেমোরি লিক এড়াতে কম্পোনেন্ট আনমাউন্ট হলে লিসেনার লিভ করবে
         return () => {
-            echo.leave(channelName);
+            if (echo) echo.leave(channelName);
         };
     }, [userId, refetch]);
 
@@ -80,7 +79,7 @@ export default function Notification() {
 
     };
 
-    const closeModal = ()=>{
+    const closeModal = () => {
         setId(null);
         setOpenPopUpModal(false)
     }

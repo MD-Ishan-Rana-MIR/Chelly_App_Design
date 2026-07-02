@@ -180,7 +180,7 @@ const ProductPage = () => {
                                             setSelectedType(cat);
                                             handleFilterReset();
                                         }}
-                                        className={`w-full text-left px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer ${typeof selectedType !== "All" && selectedType.id === cat.id
+                                        className={`w-full text-left px-4 py-3 rounded-xl border transition-all duration-300 cursor-pointer ${selectedType !== "All" && selectedType.id === cat.id
                                                 ? "bg-[#0b7211] text-white border-[#0b7211]"
                                                 : "bg-white border-zinc-200 text-gray-700 hover:bg-green-50"
                                             }`}

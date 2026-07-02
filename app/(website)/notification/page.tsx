@@ -1,4 +1,4 @@
-import React from 'react'
+"use client"
 import Notification from './Notification'
 
 const Page = () => {
