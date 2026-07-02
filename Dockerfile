@@ -38,6 +38,7 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 RUN npm run build
 
+
 # Stage 3: Final Production Image (Runner)
 FROM node:22-alpine AS runner
 WORKDIR /app
