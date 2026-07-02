@@ -94,7 +94,7 @@ export default function Notification() {
         if (notification.read_at) return;
 
         try {
-            await markSingleNotificationAsRead(notification.id.toString()).unwrap();
+            await markSingleNotificationAsRead(String(notification.id.toString())).unwrap();
             toast.success('Notification marked as read');
         } catch (error) {
             console.error("Failed handling single status updating context event:", error);
