@@ -228,7 +228,9 @@ export default function CheckOutPage() {
                                         </div>
                                         <div className="flex-1">
                                             <h3 className="font-semibold text-sm line-clamp-1">{item.name}</h3>
-                                            <p className="text-xs text-gray-400 font-medium">{item.category?.name || 'Food'}</p>
+                                            <p className="text-xs text-gray-400 font-medium">
+                                                {typeof item.category === 'object' ? (item.category as any)?.name : item.category || 'Food'}
+                                            </p>
                                             <p className="text-sm text-gray-500 font-medium">Qty: {item.quantity}</p>
                                         </div>
                                         <p className="font-bold text-[#0b7211] text-sm">${(item.price * item.quantity).toFixed(2)}</p>
