@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MaxWidth from "../max-width/MaxWidth";
 import { useFoodWithoutSearchQuery } from "@/app/redux/foodApi";
+import { FoodType } from "@/app/lib/type";
 
 const tabs = [
     "All",
@@ -26,7 +27,7 @@ const Menu = () => {
     const [currentPage, setCurrentPage] = useState(1);
 
     // 2. Safe extraction of array rows out of paginated response envelope
-    const products: Product[] = foodResponse?.data?.data || [];
+    const products: FoodType[] = foodResponse?.data?.data || [];
 
     // 3. Filter criteria matching categories
     const filteredItems = useMemo(() => {
