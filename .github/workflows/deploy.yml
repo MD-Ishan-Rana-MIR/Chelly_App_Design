@@ -43,7 +43,6 @@ jobs:
             NEXT_PUBLIC_REVERB_SCHEME=${{ secrets.NEXT_PUBLIC_REVERB_SCHEME }}
             NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
 
-
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@master
         with:
