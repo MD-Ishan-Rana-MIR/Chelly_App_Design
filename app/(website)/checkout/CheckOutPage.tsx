@@ -191,10 +191,10 @@ export default function CheckOutPage() {
                                 <h2 className="text-xl font-bold">Payment Method</h2>
                             </div>
                             <div className="space-y-4">
-                                <label className="flex items-center gap-3 border p-4 rounded-xl cursor-pointer hover:bg-gray-50">
+                                {/* <label className="flex items-center gap-3 border p-4 rounded-xl cursor-pointer hover:bg-gray-50">
                                     <input type="radio" value="cash_on_delivery" {...register('payment_method')} className="w-4 h-4 accent-[#0b7211]" />
                                     <span>Cash on Delivery</span>
-                                </label>
+                                </label> */}
                                 <label className="flex items-center gap-3 border p-4 rounded-xl cursor-pointer hover:bg-gray-50">
                                     <input type="radio" value="card" {...register('payment_method')} className="w-4 h-4 accent-[#0b7211]" />
                                     <span>Card Payment</span>

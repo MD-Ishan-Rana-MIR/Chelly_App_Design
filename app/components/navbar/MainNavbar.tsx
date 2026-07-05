@@ -353,19 +353,21 @@ export default function Navbar() {
 
                         {/* Notification */}
 
-                        <button
-                            onClick={() => redirect("/notification")}
-                            className="relative seconderyText cursor-pointer"
-                        >
-                            <IoIosNotificationsOutline size={26} />
-
-                            {/* ✅ শুধুমাত্র unreadLength ০ এর বেশি হলেই ব্যাজটি দেখাবে */}
-                            {unreadLength > 0 && (
-                                <span className="absolute -top-2 -right-2 btnColor text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                                    {unreadLength}
-                                </span>
-                            )}
-                        </button>
+                        {
+                            token && (
+                                <button
+                                    onClick={() => redirect("/notification")}
+                                    className="relative seconderyText cursor-pointer"
+                                >
+                                    <IoIosNotificationsOutline size={26} />
+                                    {unreadLength > 0 && (
+                                        <span className="absolute -top-2 -right-2 btnColor text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                                            {unreadLength}
+                                        </span>
+                                    )}
+                                </button>
+                            )
+                        }
 
                         <div onClick={() => { redirect("/wishlist") }} className="relative cursor-pointer">
                             <FiHeart size={22} />

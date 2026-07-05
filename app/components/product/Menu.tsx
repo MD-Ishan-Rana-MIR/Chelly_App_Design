@@ -130,7 +130,7 @@ const Menu = () => {
 
                                 {/* DESCRIPTION */}
                                 <p className="text-gray-500 text-sm mt-3 leading-6 line-clamp-3">
-                                    {item.description.replace(/<\/?[^>]+(>|$)/g, "")}
+                                    {item?.description?.replace(/<\/?[^>]+(>|$)/g, "")}
                                 </p>
 
                                 {/* BUTTON */}

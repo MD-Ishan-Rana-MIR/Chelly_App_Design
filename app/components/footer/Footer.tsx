@@ -1,10 +1,7 @@
 "use client";
-
-import React from "react";
 import { usePathname } from "next/navigation";
 import { FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
 import MaxWidth from "../max-width/MaxWidth";
-import Button from "../button/Button";
 import Link from "next/link";
 import { useGetAllContactInformationQuery } from "@/app/redux/settingApi";
 
