@@ -113,7 +113,7 @@ const OtpVerify = () => {
             // =========================
             // 🔥 REGISTRATION FLOW
             // =========================
-            if (pageName === "register") {
+            if (pageName === "registration") {
                 const res = await otpVerify(payload).unwrap();
 
                 const token = res?.data?.access_token;

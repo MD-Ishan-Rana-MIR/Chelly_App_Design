@@ -43,6 +43,12 @@ export const categoryApi = baseApi.injectEndpoints({
         return queryString;
       },
     }),
+    twoMealApi : builder.query({
+      query : ()=>({
+        url: `/foods?include=category&page=1&per_page=2`,
+      })
+      
+    })
   }),
 });
 
@@ -51,5 +57,6 @@ export const {
   useFoodByIdQuery,
   useFoodSearchQuery,
   useFoodWithoutSearchQuery,
-  useGetFoodsQuery
+  useGetFoodsQuery,
+  useTwoMealApiQuery
 } = categoryApi;

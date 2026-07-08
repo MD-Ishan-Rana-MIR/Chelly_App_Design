@@ -228,3 +228,27 @@ export interface NotificationItem {
   created_at: string;
   updated_at: string;
 }
+export interface CollectionItem {
+    id: number;
+    name: string;
+    status: 'active' | 'inactive' | string; // Highly recommended to literal-type your statuses
+    created_at: string; // ISO 8601 Date String
+    updated_at: string; // ISO 8601 Date String
+}
+
+export interface CollectionFoodItem {
+  id: number;
+  category_id: number;
+  name: string;
+  description: string;
+  price: string;
+  stock: number;
+  image: string;
+  status: "available" | "unavailable";
+  created_at: string;
+  updated_at: string;
+  pivot: {
+    collection_id: number;
+    food_id: number;
+  };
+}

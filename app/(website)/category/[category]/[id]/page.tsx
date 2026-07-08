@@ -19,7 +19,6 @@ import {
     FiMinus,
     FiPlus,
     FiShoppingCart,
-    FiStar,
 } from "react-icons/fi";
 
 import MaxWidth from "@/app/components/max-width/MaxWidth";

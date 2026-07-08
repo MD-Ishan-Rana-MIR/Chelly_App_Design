@@ -127,8 +127,8 @@ export default function NewsPage() {
                                 key={i + 1}
                                 onClick={() => setCurrentPage(i + 1)}
                                 className={`w-9 h-9 text-sm font-semibold rounded-lg transition-all duration-200 ${currentPage === i + 1
-                                    ? 'bg-[#33654a] text-white shadow-sm'
-                                    : 'text-[#33654a] hover:bg-[#f0f5f2]'
+                                        ? 'bg-[#33654a] text-white shadow-sm'
+                                        : 'text-[#33654a] hover:bg-[#f0f5f2]'
                                     }`}
                             >
                                 {i + 1}

@@ -36,7 +36,7 @@ const Footer = () => {
                         {/* BRAND */}
                         <div>
                             <h2 className="text-2xl font-bold text-green-700">
-                                FoodExpress 🍔
+                                Lovelys Meal Plans 🍔
                             </h2>
                             <p className="text-sm text-gray-500 mt-3 leading-relaxed">
                                 Fast, fresh & delicious food delivered to your doorstep within minutes.

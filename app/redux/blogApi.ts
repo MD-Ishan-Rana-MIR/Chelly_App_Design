@@ -16,7 +16,14 @@ export const blogApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Blog"],
     }),
+    getFourBlog: builder.query({
+      query: ({ page = 1 }) => ({
+        url: `/blogs?page=${page}&per_page=4`,
+        method: "GET",
+      }),
+      providesTags: ["Blog"],
+    }),
   }),
 });
 
-export const { useGetBlogsQuery, useBlogDetailsQuery } = blogApi;
+export const { useGetBlogsQuery, useBlogDetailsQuery,useGetFourBlogQuery } = blogApi;
