@@ -66,9 +66,8 @@ export default function Subscriber() {
                 </form>
 
                 {/* Success Message Block */}
-                {isSubscribed && (
+                {/* {isSubscribed && (
                     <div className="flex items-center gap-2 mt-2 text-white/90 animate-fadeIn select-none">
-                        {/* Micro Checkmark Icon */}
                         <svg 
                             viewBox="0 0 20 20" 
                             fill="currentColor" 
@@ -80,7 +79,7 @@ export default function Subscriber() {
                             Thanks for subscribing
                         </span>
                     </div>
-                )}
+                )} */}
                 
             </div>
         </section>

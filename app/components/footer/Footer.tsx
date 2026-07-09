@@ -51,7 +51,6 @@ const Footer = () => {
 
                                 {[
                                     { name: "Home", path: "/" },
-                                    { name: "Foods", path: "/foods" },
                                     { name: "Blogs", path: "/blogs" },
                                 ].map((item) => (
                                     <li key={item.path}>

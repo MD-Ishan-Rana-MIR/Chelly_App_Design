@@ -60,6 +60,7 @@ export default function LunchtimeElevated() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {breakfastData.map((item) => (
                     <div
+                    onClick={()=>router.push(`/food/${item?.id}`)}
                         key={item.id}
                         className="group bg-[#f7f9f6] rounded-2xl p-4 flex flex-col justify-between border border-black/[0.02] shadow-sm transition-all duration-300 ease-in-out hover:bg-white hover:shadow-md hover:border-black/[0.05] cursor-pointer"
                     >

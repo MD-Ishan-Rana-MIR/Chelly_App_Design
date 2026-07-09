@@ -11,7 +11,7 @@ import CollectionByProduct from '@/app/components/product/CollectionByProduct';
 export default function CategoryGrid() {
   const params = useParams();
 
-  console.log("params is",params);
+  
 
   const { data, isLoading, error } = useGetAllCollectionQuery({});
   const collectionData: CollectionItem[] = data?.data || [];

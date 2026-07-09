@@ -1,13 +1,11 @@
 "use client";
-import React from 'react'
 import MaxWidth from './components/max-width/MaxWidth'
 import Menu from './components/product/Menu'
 import { useAllCategoriesQuery } from './redux/categoryApi';
 import { CategoryType } from './lib/type';
 import Banner from './components/slider/Banner';
 import Button from './components/button/Button';
-import Link from 'next/link';
-import Image from 'next/image';
+
 import BreakfastProduct from './components/product/BreakfastProduct';
 import LunchtimeElevated from './components/product/LunchtimeElevated';
 import CoolCrisp from './components/product/CoolCrisp';
@@ -42,7 +40,7 @@ const HomePage = () => {
           </div>
 
           <div className=' flex justify-center mt-3 md:mt-6' >
-            <Button text="Start Shooping" onClick={() => { router.push(`/collections/${-1}`) }} />
+            <Button text="Start Shooping" onClick={() => { router.push(`/collections/${2}`) }} />
           </div>
         </div>
 

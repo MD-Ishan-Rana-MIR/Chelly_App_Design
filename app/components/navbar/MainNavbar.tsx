@@ -38,7 +38,7 @@ export default function Navbar() {
 
     const menus = [
         { name: 'Home', path: '/' },
-        { name: 'Foods', path: '/foods' },
+        // { name: 'Foods', path: '/foods' },
         { name: 'Blogs', path: '/blogs' },
         { name: 'EBT Payment', path: '/ebt-payment' },
     ];
@@ -206,19 +206,7 @@ export default function Navbar() {
                             />
                         </Link>
 
-                        {/* Foods */}
-                        <Link
-                            href="/foods"
-                            className={`relative text-[15px] font-medium group transition ${pathname.startsWith("/foods") ? "text-[#0b7211]" : "seconderyText"
-                                }`}
-                        >
-                            <span>Foods</span>
-
-                            <span
-                                className={`absolute left-0 -bottom-1 h-0.5 bg-[#0b7211] transition-all duration-300 ${pathname.startsWith("/foods") ? "w-full" : "w-0 group-hover:w-full"
-                                    }`}
-                            />
-                        </Link>
+                  
 
                         {/* Blogs */}
                         <Link

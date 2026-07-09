@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import React from "react";
 import CheckOutPage from "./CheckOutPage";
 
 export const metadata: Metadata = {
@@ -13,7 +12,7 @@ export const metadata: Metadata = {
 const Page = () => {
     return (
         <div>
-            <CheckOutPage />
+            <CheckOutPage/>
         </div>
     );
 };

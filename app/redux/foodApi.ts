@@ -48,7 +48,8 @@ export const categoryApi = baseApi.injectEndpoints({
         url: `/foods?include=category&page=1&per_page=2`,
       })
       
-    })
+    }),
+    
   }),
 });
 

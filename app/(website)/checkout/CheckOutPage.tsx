@@ -20,6 +20,8 @@ import ConfirmModal from '@/app/lib/alert/ConfirmModal';
 import toast from 'react-hot-toast';
 
 export default function CheckOutPage() {
+    // const token = localStorage.getItem("token");
+
     const router = useRouter();
 
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -121,6 +123,10 @@ export default function CheckOutPage() {
         }
     };
 
+    // if (!token) {
+    //     return router.push("/login")
+    // }
+
     return (
         <section className="bg-gray-50 min-h-screen py-10">
             <MaxWidth>
@@ -218,7 +224,7 @@ export default function CheckOutPage() {
                             ) : (
                                 cartItems.map((item) => (
                                     <div key={item.id} className="flex gap-4 mb-4 items-center">
-                                        <div className="relative w-[70px] h-[70px] min-w-[70px]">
+                                        <div className="relative w-17.5 h-17.5 min-w-17.5">
                                             <Image
                                                 src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c'}
                                                 alt={item.name}

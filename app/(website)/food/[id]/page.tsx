@@ -11,7 +11,7 @@ export type CartItem = {
     quantity: number;
 };
 
-import  {useState } from "react";
+import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
     FiArrowLeft,
@@ -63,7 +63,7 @@ const FoodDetailsPage = () => {
             localStorage.getItem("cart") || "[]"
         );
 
-        console.log("|dsfdasfdsfasfdfdsaf",item);
+        console.log("|dsfdasfdsfasfdfdsaf", item);
 
         const existingIndex = cart.findIndex(
             (i) => i.id === item.id
@@ -205,9 +205,10 @@ const FoodDetailsPage = () => {
                         </h2>
 
                         {/* DESCRIPTION */}
-                        <p className="mt-6 text-lg leading-8 text-gray-600">
-                            {food?.description.replace(/<\/?[^>]+(>|$)/g, "")}
-                        </p>
+                        <p
+                            className="mt-6 text-lg leading-8 text-gray-600 wrap-break-word whitespace-normal"
+                            dangerouslySetInnerHTML={{ __html: food?.description || '' }}
+                        />
 
                         <div className=" flex flex-row items-center justify-between " >
                             {/* QUANTITY */}
