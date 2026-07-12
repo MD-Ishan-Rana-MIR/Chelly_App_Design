@@ -123,9 +123,7 @@ export default function CheckOutPage() {
         }
     };
 
-    // if (!token) {
-    //     return router.push("/login")
-    // }
+    
 
     return (
         <section className="bg-gray-50 min-h-screen py-10">

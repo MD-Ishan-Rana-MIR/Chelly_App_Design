@@ -45,6 +45,8 @@ const FoodDetailsPage = () => {
 
     const food: FoodType = data?.data;
 
+    console.log("single food is",food)
+
 
 
     const [quantity, setQuantity] = useState(1);

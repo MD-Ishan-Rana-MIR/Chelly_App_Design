@@ -28,6 +28,7 @@ export const categoryApi = baseApi.injectEndpoints({
         },
       }),
     }),
+    // category,variants,variantsCounts
     getFoods: builder.query({
       query: ({ page = 1, categoryId, search, perPage }) => {
         let queryString = `foods?include=category&per_page=${perPage}&page=${page}`;

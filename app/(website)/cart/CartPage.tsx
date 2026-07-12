@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 
 type CartItem = {
     id: number;
-    title: string;
+    name: string;
     price: number;
     image: string;
     quantity: number;
@@ -16,6 +16,8 @@ type CartItem = {
 
 export default function CartPage() {
     const [cart, setCart] = useState<CartItem[]>([]);
+
+    console.log("cart",cart);
 
     // LOAD FROM LOCALSTORAGE
     useEffect(() => {
@@ -118,7 +120,7 @@ export default function CartPage() {
                                     <div className="relative w-24 h-24 rounded-xl overflow-hidden">
                                         <Image
                                             src={item.image}
-                                            alt={item.title}
+                                            alt={item.name}
                                             fill
                                             className="object-cover"
                                         />
@@ -127,7 +129,7 @@ export default function CartPage() {
                                     {/* INFO */}
                                     <div className="flex-1">
                                         <h2 className="font-bold text-lg">
-                                            {item.title}
+                                            {item.name}
                                         </h2>
 
                                         <p className="text-[#0b7211] font-semibold mt-1">
