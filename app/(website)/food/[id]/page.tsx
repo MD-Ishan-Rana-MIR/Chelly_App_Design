@@ -192,8 +192,8 @@ const FoodDetailsPage = () => {
                             <ProductImageViewer
                                 images={[
                                     food?.image,
-                                    "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
-                                    "https://images.unsplash.com/photo-1544025162-d76694265947",
+                                    // "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
+                                    // "https://images.unsplash.com/photo-1544025162-d76694265947",
                                 ]}
                                 alt={food?.name}
                             />
