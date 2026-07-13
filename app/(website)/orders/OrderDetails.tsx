@@ -36,6 +36,10 @@ export interface OrderItem {
 }
 
 export interface Order {
+    full_name: string; 
+    email: string; 
+    phone: string; 
+    address: string;
     id: number;
     user_id: number;
     order_number: string;
@@ -83,8 +87,8 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
 
     return (
         <div>
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm print:absolute print:inset-0 print:bg-white print:p-0 print:backdrop-blur-none">
-                <div className="bg-white w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden border border-gray-100 print:border-none print:shadow-none">
+            <div className="fixed  inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto backdrop-blur-sm print:absolute print:inset-0 print:bg-white print:p-0 print:backdrop-blur-none">
+                <div className="bg-white w-full h-[90vh] overflow-y-scroll max-w-2xl rounded-2xl shadow-xl overflow-hidden border border-gray-100 print:border-none print:shadow-none">
 
                     {/* MODAL ACTION BAR - HIDDEN DURING DOWNLOAD/PRINT */}
                     <div className="flex justify-between items-center bg-gray-50 px-6 py-4 border-b border-gray-100 print:hidden">
@@ -110,7 +114,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
                         {/* Invoice Header Branding */}
                         <div className="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-gray-100 pb-6">
                             <div>
-                                <h3 className="text-2xl font-black text-[#0b7211] tracking-tight">FOODAPP 🍔</h3>
+                                <h3 className="text-2xl font-black text-[#0b7211] tracking-tight">Lovelys Meal Plans</h3>
                                 <p className="text-sm text-gray-400 mt-1">Order Transaction Invoice</p>
                             </div>
                             <div className="sm:text-right">
@@ -203,6 +207,61 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+
+                        {/* delivery details  */}
+
+                        <div className="w-full rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                            <div className="mb-5 flex items-center justify-between">
+                                <h2 className="text-xl font-semibold text-slate-900">
+                                    Delivery Address
+                                </h2>
+                                <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+                                    Active
+                                </span>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                                        Name
+                                    </p>
+                                    <p className="mt-1 text-base font-medium text-slate-900">
+                                        {
+                                            selectedOrder?.full_name
+                                        }
+                                    </p>
+                                </div>
+
+                                <div className="grid gap-4 sm:grid-cols-2">
+                                    <div>
+                                        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                                            Email
+                                        </p>
+                                        <p className="mt-1 text-sm text-slate-700">{selectedOrder?.email}</p>
+                                    </div>
+
+                                    <div>
+                                        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                                            Phone
+                                        </p>
+                                        <p className="mt-1 text-sm text-slate-700">{selectedOrder?.phone}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                                        Address
+                                    </p>
+                                    <p className="mt-1 text-sm leading-6 text-slate-700">
+                                        {selectedOrder?.address}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+
                         </div>
 
                         {/* Total Calculation & Footer Notes */}

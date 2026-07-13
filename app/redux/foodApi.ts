@@ -4,7 +4,7 @@ export const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     allFoods: builder.query({
       query: () => ({
-        url: `/foods?include=category&page=2&per_page=6`,
+        url: `/foods?include=category,variants,variantsCount&page=2&per_page=6`,
         method: "GET",
       }),
     }),

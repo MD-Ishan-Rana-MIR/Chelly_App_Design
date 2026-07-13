@@ -32,6 +32,32 @@ import FoodDetailsSkeleton from "@/app/components/skeleton/FoodDetailsSkeleton";
 
 
 const FoodDetailsPage = () => {
+
+
+    // State to track selected items for each category
+    const [selectedProtein, setSelectedProtein] = useState("Pancakes (+$2.00)");
+    const [selectedSide, setSelectedSide] = useState("2 Eggs and turkey Bacon");
+
+    const proteinOptions = [
+        "Pancakes (+$2.00)",
+        "French Toast (+$2.00)",
+        "Waffles (+$2.00)"
+    ];
+
+    const sideOptions = [
+        "2 Eggs and turkey Bacon",
+        "2 Eggs and Regular Bacon",
+        "Potato Wedges",
+        "Parfait",
+        "Oats",
+        "Fruit Bowl",
+        "Acai Bowl",
+        "Breakfast Scrambled"
+    ];
+
+
+
+
     const router = useRouter();
     const params = useParams();
 
@@ -45,7 +71,7 @@ const FoodDetailsPage = () => {
 
     const food: FoodType = data?.data;
 
-    console.log("single food is",food)
+    console.log("single food is", food)
 
 
 
@@ -183,7 +209,7 @@ const FoodDetailsPage = () => {
                     <div className="rounded-4xl bg-white p-6 md:p-10 shadow-sm">
 
                         {/* TITLE */}
-                        <h1 className="text-3xl font-bold text-gray-900 md:text-5xl">
+                        <h1 className="text-3xl font-bold text-[#0b7211] md:text-5xl">
                             {food?.name}
                         </h1>
 
@@ -205,6 +231,52 @@ const FoodDetailsPage = () => {
                         <h2 className="mt-8 text-4xl font-bold text-[#0b7211] md:text-5xl">
                             ${food?.price}
                         </h2>
+
+                        <div className="p-6 max-w-xl bg-white rounded-xl space-y-6 select-none font-sans">
+
+                            {/* --- Dynamic Options Loop --- */}
+                            <div className="space-y-6">
+                                {
+                                    food?.options && food?.options.map((optionGroup) => {
+                                        // Determine which state and setter to use based on the group name
+                                        const isProtein = optionGroup.name === "Protein";
+                                        const currentSelection = isProtein ? selectedProtein : selectedSide;
+                                        const setSelection = isProtein ? setSelectedProtein : setSelectedSide;
+
+                                        return (
+                                            <div key={optionGroup.id}>
+                                                <h3 className="text-[#599A55] text-base font-normal mb-3">
+                                                    {optionGroup.name}
+                                                </h3>
+                                                <div className="flex flex-wrap gap-3">
+                                                    {optionGroup.values.map((value) => {
+                                                        const isSelected = currentSelection === value;
+
+                                                        // Subtle visual distinction for extra charge items like "Steak (+$3.00)"
+                                                        const hasExtraCharge = value.includes("+$");
+
+                                                        return (
+                                                            <button
+                                                                key={value}
+                                                                onClick={() => setSelection(value)}
+                                                                className={`px-5 py-2.5 text-sm rounded-full border transition-all duration-200 ${isSelected
+                                                                    ? 'bg-[#106B13] border-[#106B13] text-white font-medium'
+                                                                    : hasExtraCharge
+                                                                        ? 'bg-[#F4FAF4] border-[#599A55] text-[#106B13] hover:bg-[#E6F3E6]'
+                                                                        : 'bg-white border-[#E6F3E6] text-[#599A55] hover:bg-[#F4FAF4]'
+                                                                    }`}
+                                                            >
+                                                                {value}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                            </div>
+
+                        </div>
 
                         {/* DESCRIPTION */}
                         <p

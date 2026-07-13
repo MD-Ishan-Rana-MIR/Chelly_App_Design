@@ -16,7 +16,7 @@ const ProductCard = ({ product }: { product: FoodType }) => {
     const router = useRouter();
     const navigateOnClick = () => {
         // Implement navigation logic here, e.g., using Next.js router
-        router.push(`/food/${product.id}`);
+        router.push(`/food/${product?.id}`);
     }
 
     return (

@@ -13,6 +13,8 @@ export default function CollectionByProduct({ id }: { id: number | null }) {
 
     const collectionFoodData: CollectionFoodItem[] = data?.data?.foods?.data || [];
 
+    
+
     return (
         <section className="mx-auto font-sans my-16 md:my-32 md:mb-18 mb-8">
 

@@ -15,6 +15,14 @@ export type Blog = {
   slug: string;
 };
 
+export interface ProductOption {
+  id: number;
+  name: string;
+  values: string[];
+  position: number;
+  product_id: number;
+}
+
 export interface CategoryType {
   id: number;
   name: string;
@@ -36,6 +44,7 @@ export interface FoodType {
   created_at: string;
   updated_at: string;
   category: CategoryType;
+  options : ProductOption[]
 }
 
 export interface BannerType {
@@ -124,6 +133,10 @@ export interface OrderItem {
 }
 
 export interface Order {
+  full_name : string;
+  email : string;
+  phone : string;
+  address : string;
   id: number;
   user_id: number;
   order_number: string;

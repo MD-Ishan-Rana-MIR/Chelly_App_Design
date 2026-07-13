@@ -245,7 +245,7 @@ const OrdersPage = () => {
 
             {/* MODAL CONTAINER & UNIQUE INVOICE DISPLAY */}
             {selectedOrder && (
-                <OrderDetails selectedOrder={selectedOrder} handleDownloadPDF={handleDownloadPDF} setSelectedOrder={setSelectedOrder} />
+                <OrderDetails selectedOrder={selectedOrder} handleDownloadPDF={handleDownloadPDF} setSelectedOrder={(order) => setSelectedOrder(order)} />
             )}
             <ConfirmModal
                 open={openPopUp}
