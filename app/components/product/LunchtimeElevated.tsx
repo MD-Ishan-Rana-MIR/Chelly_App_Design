@@ -74,9 +74,13 @@ export default function LunchtimeElevated() {
                             />
 
                             {/* "Sold out" Badge */}
-                            <span className="absolute top-3 left-3 z-10 bg-white/95 text-[#5ea36c] text-[11px] font-medium px-2.5 py-1 rounded-full shadow-sm">
-                                Sold out
-                            </span>
+                            {
+                                (item?.status?.toLowerCase() !== "available" && item?.status?.toLowerCase() !== "active") || (item?.stock !== undefined && item?.stock <= 0) ? (
+                                    <span className="absolute top-3 left-3 z-10 bg-white/95 text-[#5ea36c] text-[11px] font-medium px-2.5 py-1 rounded-full shadow-sm">
+                                        Sold out
+                                    </span>
+                                ) : null
+                            }
 
 
                         </div>

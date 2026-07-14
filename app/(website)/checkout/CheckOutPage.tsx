@@ -13,7 +13,18 @@ import {
     FiShoppingBag,
     FiCheckCircle,
 } from 'react-icons/fi';
-import { CartItem, CheckoutFormData } from '@/app/lib/type';
+import { CheckoutFormData } from '@/app/lib/type';
+
+export type CartItem = {
+    id: number;
+    cartItemId: string;
+    name: string;
+    category: string;
+    price: number;
+    image: string;
+    quantity: number;
+    options?: Record<string, string>;
+};
 import { usePaymentApiMutation } from '@/app/redux/orderApi';
 import { errorMessage } from '@/app/lib/errorMsg';
 import ConfirmModal from '@/app/lib/alert/ConfirmModal';
@@ -221,7 +232,7 @@ export default function CheckOutPage() {
                                 <p className="text-sm text-gray-400 py-4 text-center">Your cart is empty.</p>
                             ) : (
                                 cartItems.map((item) => (
-                                    <div key={item.id} className="flex gap-4 mb-4 items-center">
+                                    <div key={item.cartItemId} className="flex gap-4 mb-4 items-center">
                                         <div className="relative w-17.5 h-17.5 min-w-17.5">
                                             <Image
                                                 src={item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c'}
@@ -235,6 +246,11 @@ export default function CheckOutPage() {
                                             <p className="text-xs text-gray-400 font-medium">
                                                 {typeof item.category === 'object' ? (item.category as any)?.name : item.category || 'Food'}
                                             </p>
+                                            {item.options && (
+                                                <div className="text-xs text-gray-500 mt-0.5 space-y-0.5">
+                                                    <p>{Object.values(item.options).join(" | ")}</p>
+                                                </div>
+                                            )}
                                             <p className="text-sm text-gray-500 font-medium">Qty: {item.quantity}</p>
                                         </div>
                                         <p className="font-bold text-[#0b7211] text-sm">${(item.price * item.quantity).toFixed(2)}</p>

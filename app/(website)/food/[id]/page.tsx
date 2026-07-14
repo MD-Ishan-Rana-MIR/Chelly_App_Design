@@ -2,6 +2,7 @@
 
 export type CartItem = {
     id: number;
+    cartItemId: string;
     name: string;
     category: string;
     price: number;
@@ -9,9 +10,10 @@ export type CartItem = {
     image: string;
     description: string;
     quantity: number;
+    options?: Record<string, string>;
 };
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
     FiArrowLeft,
@@ -35,25 +37,8 @@ const FoodDetailsPage = () => {
 
 
     // State to track selected items for each category
-    const [selectedProtein, setSelectedProtein] = useState("Pancakes (+$2.00)");
-    const [selectedSide, setSelectedSide] = useState("2 Eggs and turkey Bacon");
+    const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
 
-    const proteinOptions = [
-        "Pancakes (+$2.00)",
-        "French Toast (+$2.00)",
-        "Waffles (+$2.00)"
-    ];
-
-    const sideOptions = [
-        "2 Eggs and turkey Bacon",
-        "2 Eggs and Regular Bacon",
-        "Potato Wedges",
-        "Parfait",
-        "Oats",
-        "Fruit Bowl",
-        "Acai Bowl",
-        "Breakfast Scrambled"
-    ];
 
 
 
@@ -73,13 +58,40 @@ const FoodDetailsPage = () => {
 
     console.log("single food is", food)
 
+    // Initialize defaults from API
+    useEffect(() => {
+        if (food?.options) {
+            const initialOptions: Record<string, string> = {};
+            food.options.forEach((group) => {
+                if (group.values && group.values.length > 0) {
+                    initialOptions[group.name] = group.values[0];
+                }
+            });
+            setSelectedOptions(initialOptions);
+        }
+    }, [food]);
+
 
 
     const [quantity, setQuantity] = useState(1);
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const totalPrice = Number(food?.price || 0) * quantity;
+    const selectedVariant = food?.variants?.find((variant) => {
+        if (!food.options) return false;
+        return food.options.every((optionGroup) => {
+            const position = optionGroup.position;
+            const selectedValue = selectedOptions[optionGroup.name];
+            const variantOptionKey = `option${position}`;
+            return (variant as any)[variantOptionKey] === selectedValue;
+        });
+    });
+
+    const basePrice = selectedVariant && selectedVariant.price 
+        ? Number(selectedVariant.price) 
+        : Number(food?.price || 0);
+        
+    const totalPrice = basePrice * quantity;
 
     const plans = ["Weekly"];
 
@@ -91,10 +103,16 @@ const FoodDetailsPage = () => {
             localStorage.getItem("cart") || "[]"
         );
 
-        console.log("|dsfdasfdsfasfdfdsaf", item);
+        const options = {
+            ...selectedOptions,
+            Plan: selectedPlan
+        };
+
+        const optionsKey = Object.values(options).join("-");
+        const cartItemId = `${item.id}-${optionsKey}`;
 
         const existingIndex = cart.findIndex(
-            (i) => i.id === item.id
+            (i) => i.cartItemId === cartItemId
         );
 
         if (existingIndex !== -1) {
@@ -105,15 +123,15 @@ const FoodDetailsPage = () => {
         } else {
             cart.push({
                 id: item.id,
-                name: // prefer common field names from FoodType
-                    // fall back to any available title-like fields
-                    (item as any).name || (item as any).name || "",
-                category: (item as any).category || "",
-                price: Number((item as any).price || 0),
+                cartItemId: cartItemId,
+                name: (item as any).name || "",
+                category: (item as any).category?.name || (item as any).category || "",
+                price: basePrice, // Use variant base price
                 // rating: item.rating,
                 image: (item as any).image || "",
                 description: (item as any).description || "",
                 quantity: qty,
+                options: options
             });
 
             toast.success("Added to cart!");
@@ -238,14 +256,17 @@ const FoodDetailsPage = () => {
                             <div className="space-y-6">
                                 {
                                     food?.options && food?.options.map((optionGroup) => {
-                                        // Determine which state and setter to use based on the group name
-                                        const isProtein = optionGroup.name === "Protein";
-                                        const currentSelection = isProtein ? selectedProtein : selectedSide;
-                                        const setSelection = isProtein ? setSelectedProtein : setSelectedSide;
+                                        const currentSelection = selectedOptions[optionGroup.name];
+                                        const setSelection = (val: string) => {
+                                            setSelectedOptions(prev => ({
+                                                ...prev,
+                                                [optionGroup.name]: val
+                                            }));
+                                        };
 
                                         return (
                                             <div key={optionGroup.id}>
-                                                <h3 className="text-[#599A55] text-base font-normal mb-3">
+                                                <h3 className="text-[#599A55] text-base font-normal mb-3 capitalize">
                                                     {optionGroup.name}
                                                 </h3>
                                                 <div className="flex flex-wrap gap-3">
@@ -259,11 +280,9 @@ const FoodDetailsPage = () => {
                                                             <button
                                                                 key={value}
                                                                 onClick={() => setSelection(value)}
-                                                                className={`px-5 py-2.5 text-sm rounded-full border transition-all duration-200 ${isSelected
-                                                                    ? 'bg-[#106B13] border-[#106B13] text-white font-medium'
-                                                                    : hasExtraCharge
-                                                                        ? 'bg-[#F4FAF4] border-[#599A55] text-[#106B13] hover:bg-[#E6F3E6]'
-                                                                        : 'bg-white border-[#E6F3E6] text-[#599A55] hover:bg-[#F4FAF4]'
+                                                                className={`px-6 py-2.5 text-sm rounded-full border-2 transition-all duration-300 ${isSelected
+                                                                    ? 'bg-[#0b7211] border-[#0b7211] text-white font-semibold shadow-md shadow-[#0b7211]/30 scale-105'
+                                                                    : 'bg-white border-gray-200 text-gray-700 hover:border-[#0b7211] hover:text-[#0b7211] hover:bg-[#0b7211]/5'
                                                                     }`}
                                                             >
                                                                 {value}

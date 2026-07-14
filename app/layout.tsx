@@ -35,7 +35,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
 
-      <body className="">
+      <body className="" suppressHydrationWarning>
         <StickySliderNavbar />
 
         <div className=" min-h-[calc(100vh-564px)]">

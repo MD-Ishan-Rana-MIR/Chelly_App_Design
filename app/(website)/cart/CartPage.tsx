@@ -8,10 +8,16 @@ import { redirect } from "next/navigation";
 
 type CartItem = {
     id: number;
+    cartItemId: string;
     name: string;
     price: number;
     image: string;
     quantity: number;
+    options?: {
+        protein: string;
+        side: string;
+        plan: string;
+    };
 };
 
 export default function CartPage() {
@@ -45,9 +51,9 @@ export default function CartPage() {
     };
 
     // INCREASE
-    const increaseQty = (id: number) => {
+    const increaseQty = (cartItemId: string) => {
         const updated = cart.map((item) =>
-            item.id === id
+            item.cartItemId === cartItemId
                 ? { ...item, quantity: item.quantity + 1 }
                 : item
         );
@@ -55,9 +61,9 @@ export default function CartPage() {
     };
 
     // DECREASE
-    const decreaseQty = (id: number) => {
+    const decreaseQty = (cartItemId: string) => {
         const updated = cart.map((item) =>
-            item.id === id && item.quantity > 1
+            item.cartItemId === cartItemId && item.quantity > 1
                 ? { ...item, quantity: item.quantity - 1 }
                 : item
         );
@@ -65,8 +71,8 @@ export default function CartPage() {
     };
 
     // REMOVE
-    const removeItem = (id: number) => {
-        const updated = cart.filter((item) => item.id !== id);
+    const removeItem = (cartItemId: string) => {
+        const updated = cart.filter((item) => item.cartItemId !== cartItemId);
         updateCart(updated);
     };
 
@@ -112,7 +118,7 @@ export default function CartPage() {
                         ) : (
                             cart.map((item) => (
                                 <div
-                                    key={item.id}
+                                    key={item.cartItemId}
                                     className="flex items-center gap-5 bg-white p-5 rounded-2xl shadow hover:shadow-md transition"
                                 >
 
@@ -132,8 +138,16 @@ export default function CartPage() {
                                             {item.name}
                                         </h2>
 
+                                        {item.options && (
+                                            <div className="text-sm text-gray-500 mt-1 space-y-0.5">
+                                                {Object.entries(item.options).map(([key, val]) => (
+                                                    <p key={key}>{key}: {val}</p>
+                                                ))}
+                                            </div>
+                                        )}
+
                                         <p className="text-[#0b7211] font-semibold mt-1">
-                                            ${item.price}
+                                            ${item.price.toFixed(2)}
                                         </p>
 
                                         {/* QTY */}
@@ -141,7 +155,7 @@ export default function CartPage() {
 
                                             <button
                                                 onClick={() =>
-                                                    decreaseQty(item.id)
+                                                    decreaseQty(item.cartItemId)
                                                 }
                                                 className="p-2  cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
                                             >
@@ -154,7 +168,7 @@ export default function CartPage() {
 
                                             <button
                                                 onClick={() =>
-                                                    increaseQty(item.id)
+                                                    increaseQty(item.cartItemId)
                                                 }
                                                 className="p-2 cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
                                             >
@@ -166,7 +180,7 @@ export default function CartPage() {
 
                                     {/* REMOVE */}
                                     <button
-                                        onClick={() => removeItem(item.id)}
+                                        onClick={() => removeItem(item.cartItemId)}
                                         className="text-red-500 cursor-pointer hover:bg-red-50 p-3 rounded-xl transition"
                                     >
                                         <FiTrash2 size={20} />
@@ -191,19 +205,19 @@ export default function CartPage() {
 
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>${subtotal}</span>
+                                        <span>${subtotal.toFixed(2)}</span>
                                     </div>
 
                                     <div className="flex justify-between">
                                         <span>Delivery</span>
-                                        <span>${delivery}</span>
+                                        <span>${delivery.toFixed(2)}</span>
                                     </div>
 
                                     <hr />
 
                                     <div className="flex justify-between font-bold text-lg text-gray-900">
                                         <span>Total</span>
-                                        <span>${total}</span>
+                                        <span>${total.toFixed(2)}</span>
                                     </div>
 
                                 </div>
