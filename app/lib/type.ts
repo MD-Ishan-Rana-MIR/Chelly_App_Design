@@ -44,7 +44,9 @@ export interface FoodType {
   created_at: string;
   updated_at: string;
   category: CategoryType;
-  options : ProductOption[]
+  options?: ProductOption[];
+  variants?: FoodVariant[];
+  images?: FoodImage[];
 }
 
 export interface BannerType {
@@ -201,26 +203,21 @@ export interface CheckoutFormData {
   payment_method: string;
 }
 
-export interface CategoryType {
+export interface FoodVariant {
   id: number;
-  name: string;
-  image: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface FoodType {
-  id: number;
-  category_id: number;
-  name: string;
-  description: string;
+  food_id: number;
+  title: string;
   price: string;
   stock: number;
-  image: string;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  category: CategoryType;
+  option1: string | null;
+  option2: string | null;
+  option3: string | null;
+}
+
+export interface FoodImage {
+  id: number;
+  food_id: number;
+  image_path: string;
 }
 
 export interface NotificationInnerData {
