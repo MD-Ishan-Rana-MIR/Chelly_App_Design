@@ -2,6 +2,7 @@
 
 export type CartItem = {
     id: number;
+    cartItemId: string;
     name: string;
     category: string;
     price: number;
@@ -9,9 +10,10 @@ export type CartItem = {
     image: string;
     description: string;
     quantity: number;
+    options?: Record<string, string>;
 };
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
     FiArrowLeft,
@@ -35,25 +37,8 @@ const FoodDetailsPage = () => {
 
 
     // State to track selected items for each category
-    const [selectedProtein, setSelectedProtein] = useState("Pancakes (+$2.00)");
-    const [selectedSide, setSelectedSide] = useState("2 Eggs and turkey Bacon");
+    const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
 
-    const proteinOptions = [
-        "Pancakes (+$2.00)",
-        "French Toast (+$2.00)",
-        "Waffles (+$2.00)"
-    ];
-
-    const sideOptions = [
-        "2 Eggs and turkey Bacon",
-        "2 Eggs and Regular Bacon",
-        "Potato Wedges",
-        "Parfait",
-        "Oats",
-        "Fruit Bowl",
-        "Acai Bowl",
-        "Breakfast Scrambled"
-    ];
 
 
 
@@ -73,13 +58,37 @@ const FoodDetailsPage = () => {
 
     console.log("single food is", food)
 
+    // Initialize defaults from API
+    useEffect(() => {
+        if (food?.options) {
+            const initialOptions: Record<string, string> = {};
+            food.options.forEach((group) => {
+                if (group.values && group.values.length > 0) {
+                    initialOptions[group.name] = group.values[0];
+                }
+            });
+            setSelectedOptions(initialOptions);
+        }
+    }, [food]);
+
 
 
     const [quantity, setQuantity] = useState(1);
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const totalPrice = Number(food?.price || 0) * quantity;
+    const parsePrice = (option: string) => {
+        if (!option) return 0;
+        const match = option.match(/\(\+\$(\d+\.\d+)\)/);
+        return match ? parseFloat(match[1]) : 0;
+    };
+
+    let extraPrice = 0;
+    Object.values(selectedOptions).forEach(val => {
+        extraPrice += parsePrice(val);
+    });
+    
+    const totalPrice = (Number(food?.price || 0) + extraPrice) * quantity;
 
     const plans = ["Weekly"];
 
@@ -93,8 +102,16 @@ const FoodDetailsPage = () => {
 
         console.log("|dsfdasfdsfasfdfdsaf", item);
 
+        const options = {
+            ...selectedOptions,
+            Plan: selectedPlan
+        };
+
+        const optionsKey = Object.values(options).join("-");
+        const cartItemId = `${item.id}-${optionsKey}`;
+
         const existingIndex = cart.findIndex(
-            (i) => i.id === item.id
+            (i) => i.cartItemId === cartItemId
         );
 
         if (existingIndex !== -1) {
@@ -103,17 +120,19 @@ const FoodDetailsPage = () => {
 
             toast.success("Cart updated!");
         } else {
+            const unitPrice = Number((item as any).price || 0) + extraPrice;
+
             cart.push({
                 id: item.id,
-                name: // prefer common field names from FoodType
-                    // fall back to any available title-like fields
-                    (item as any).name || (item as any).name || "",
-                category: (item as any).category || "",
-                price: Number((item as any).price || 0),
+                cartItemId: cartItemId,
+                name: (item as any).name || "",
+                category: (item as any).category?.name || (item as any).category || "",
+                price: unitPrice,
                 // rating: item.rating,
                 image: (item as any).image || "",
                 description: (item as any).description || "",
                 quantity: qty,
+                options: options
             });
 
             toast.success("Added to cart!");
@@ -238,10 +257,13 @@ const FoodDetailsPage = () => {
                             <div className="space-y-6">
                                 {
                                     food?.options && food?.options.map((optionGroup) => {
-                                        // Determine which state and setter to use based on the group name
-                                        const isProtein = optionGroup.name === "Protein";
-                                        const currentSelection = isProtein ? selectedProtein : selectedSide;
-                                        const setSelection = isProtein ? setSelectedProtein : setSelectedSide;
+                                        const currentSelection = selectedOptions[optionGroup.name];
+                                        const setSelection = (val: string) => {
+                                            setSelectedOptions(prev => ({
+                                                ...prev,
+                                                [optionGroup.name]: val
+                                            }));
+                                        };
 
                                         return (
                                             <div key={optionGroup.id}>
