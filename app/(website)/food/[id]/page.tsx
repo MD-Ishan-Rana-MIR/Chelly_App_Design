@@ -207,14 +207,23 @@ const FoodDetailsPage = () => {
                     <div className="rounded-4xl bg-white p-5 shadow-sm">
 
                         <div className="relative overflow-hidden rounded-3xl">
-                            <ProductImageViewer
-                                images={[
-                                    food?.image,
-                                    // "https://images.unsplash.com/photo-1568901346375-23c9450c58cd",
-                                    // "https://images.unsplash.com/photo-1544025162-d76694265947",
-                                ]}
-                                alt={food?.name}
-                            />
+                            {(() => {
+                                const allImages = food?.image ? [food.image] : [];
+                                if (food?.images && food.images.length > 0) {
+                                    food.images.forEach((img: any) => {
+                                        if (img.image_path) {
+                                            allImages.push(img.image_path);
+                                        }
+                                    });
+                                }
+                                
+                                return (
+                                    <ProductImageViewer
+                                        images={allImages}
+                                        alt={food?.name}
+                                    />
+                                );
+                            })()}
 
                             <span className="absolute left-5 top-5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b7211] shadow">
                                 {food?.category?.name}
