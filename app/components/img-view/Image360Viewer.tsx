@@ -60,7 +60,7 @@ const ProductParomaView = ({ images, alt }: Props) => {
             {/* THUMBNAILS (IMPORTANT FIX HERE) */}
             <div className="flex gap-3 mt-5 h-[90vh] overflow-x-auto w-full  ">
 
-                {images?.map((img, i) => (
+                {images?.filter(img => img).map((img, i) => (
 
                     <div
                         key={i}
@@ -85,12 +85,13 @@ const ProductParomaView = ({ images, alt }: Props) => {
                         `}
                     >
 
-                        <Image
-                            src={img}
-                            alt="thumb"
-                            fill
-                            className="object-cover"
-                        />
+                            <Image
+                                src={img}
+                                alt="thumb"
+                                fill
+                                unoptimized
+                                className="object-cover"
+                            />
 
                     </div>
 

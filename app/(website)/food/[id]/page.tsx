@@ -77,18 +77,21 @@ const FoodDetailsPage = () => {
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const parsePrice = (option: string) => {
-        if (!option) return 0;
-        const match = option.match(/\(\+\$(\d+\.\d+)\)/);
-        return match ? parseFloat(match[1]) : 0;
-    };
-
-    let extraPrice = 0;
-    Object.values(selectedOptions).forEach(val => {
-        extraPrice += parsePrice(val);
+    const selectedVariant = food?.variants?.find((variant) => {
+        if (!food.options) return false;
+        return food.options.every((optionGroup) => {
+            const position = optionGroup.position;
+            const selectedValue = selectedOptions[optionGroup.name];
+            const variantOptionKey = `option${position}`;
+            return (variant as any)[variantOptionKey] === selectedValue;
+        });
     });
-    
-    const totalPrice = (Number(food?.price || 0) + extraPrice) * quantity;
+
+    const basePrice = selectedVariant && selectedVariant.price 
+        ? Number(selectedVariant.price) 
+        : Number(food?.price || 0);
+        
+    const totalPrice = basePrice * quantity;
 
     const plans = ["Weekly"];
 
@@ -99,8 +102,6 @@ const FoodDetailsPage = () => {
         const cart: CartItem[] = JSON.parse(
             localStorage.getItem("cart") || "[]"
         );
-
-        console.log("|dsfdasfdsfasfdfdsaf", item);
 
         const options = {
             ...selectedOptions,
@@ -120,14 +121,12 @@ const FoodDetailsPage = () => {
 
             toast.success("Cart updated!");
         } else {
-            const unitPrice = Number((item as any).price || 0) + extraPrice;
-
             cart.push({
                 id: item.id,
                 cartItemId: cartItemId,
                 name: (item as any).name || "",
                 category: (item as any).category?.name || (item as any).category || "",
-                price: unitPrice,
+                price: basePrice, // Use variant base price
                 // rating: item.rating,
                 image: (item as any).image || "",
                 description: (item as any).description || "",
@@ -267,7 +266,7 @@ const FoodDetailsPage = () => {
 
                                         return (
                                             <div key={optionGroup.id}>
-                                                <h3 className="text-[#599A55] text-base font-normal mb-3">
+                                                <h3 className="text-[#599A55] text-base font-normal mb-3 capitalize">
                                                     {optionGroup.name}
                                                 </h3>
                                                 <div className="flex flex-wrap gap-3">
@@ -281,11 +280,9 @@ const FoodDetailsPage = () => {
                                                             <button
                                                                 key={value}
                                                                 onClick={() => setSelection(value)}
-                                                                className={`px-5 py-2.5 text-sm rounded-full border transition-all duration-200 ${isSelected
-                                                                    ? 'bg-[#106B13] border-[#106B13] text-white font-medium'
-                                                                    : hasExtraCharge
-                                                                        ? 'bg-[#F4FAF4] border-[#599A55] text-[#106B13] hover:bg-[#E6F3E6]'
-                                                                        : 'bg-white border-[#E6F3E6] text-[#599A55] hover:bg-[#F4FAF4]'
+                                                                className={`px-6 py-2.5 text-sm rounded-full border-2 transition-all duration-300 ${isSelected
+                                                                    ? 'bg-[#0b7211] border-[#0b7211] text-white font-semibold shadow-md shadow-[#0b7211]/30 scale-105'
+                                                                    : 'bg-white border-gray-200 text-gray-700 hover:border-[#0b7211] hover:text-[#0b7211] hover:bg-[#0b7211]/5'
                                                                     }`}
                                                             >
                                                                 {value}
