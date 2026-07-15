@@ -78,7 +78,7 @@ const FoodDetailsPage = () => {
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
     const selectedVariant = food?.variants?.find((variant) => {
-        if (!food.options) return false;
+        if (!food?.options) return false;
         return food.options.every((optionGroup) => {
             const position = optionGroup.position;
             const selectedValue = selectedOptions[optionGroup.name];

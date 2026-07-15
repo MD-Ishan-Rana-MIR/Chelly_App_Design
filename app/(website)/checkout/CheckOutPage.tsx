@@ -70,7 +70,63 @@ export default function CheckOutPage() {
     // Watch the live form value directly instead of pushing it through state
     const selectedPaymentMethod = watch('payment_method');
 
-    const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const calculateSubtotal = (items: CartItem[]) => {
+        let allItems: CartItem[] = [];
+        items.forEach(item => {
+            for (let i = 0; i < item.quantity; i++) {
+                allItems.push({ ...item, quantity: 1 });
+            }
+        });
+
+        allItems.sort((a, b) => b.price - a.price);
+
+        let total = 0;
+        let remainingQty = allItems.length;
+        let index = 0;
+        
+        const breakdown = [];
+
+        while (remainingQty > 0) {
+            if (remainingQty >= 21) {
+                total += 120;
+                breakdown.push({ label: "21-Meal Bundle", amount: 120 });
+                index += 21;
+                remainingQty -= 21;
+            } else if (remainingQty >= 10) {
+                total += 70;
+                breakdown.push({ label: "10-Meal Bundle", amount: 70 });
+                index += 10;
+                remainingQty -= 10;
+            } else {
+                let singleItem = allItems[index];
+                total += singleItem.price;
+                breakdown.push({ label: `1x ${singleItem.name}`, amount: singleItem.price });
+                index += 1;
+                remainingQty -= 1;
+            }
+        }
+        
+        let consolidatedBreakdown = [];
+        let regularTotal = 0;
+        let regularCount = 0;
+        
+        breakdown.forEach(item => {
+            if (item.label.includes("Bundle")) {
+                consolidatedBreakdown.push(item);
+            } else {
+                regularTotal += item.amount;
+                regularCount += 1;
+            }
+        });
+        
+        if (regularCount > 0) {
+            consolidatedBreakdown.push({ label: `${regularCount}x Additional Meals`, amount: regularTotal });
+        }
+
+        return { total, breakdown: consolidatedBreakdown };
+    };
+
+    const { total: subtotal, breakdown: priceBreakdown } = calculateSubtotal(cartItems);
     const total = subtotal;
 
     const handleLogoutCancel = () => {
@@ -259,10 +315,12 @@ export default function CheckOutPage() {
                             )}
 
                             <div className="border-t pt-4 space-y-2">
-                                <div className="flex justify-between text-sm text-gray-600">
-                                    <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)}</span>
-                                </div>
+                                {priceBreakdown.map((item, idx) => (
+                                    <div key={idx} className="flex justify-between text-sm text-gray-600">
+                                        <span>{item.label}</span>
+                                        <span>${item.amount.toFixed(2)}</span>
+                                    </div>
+                                ))}
                                 <div className="flex justify-between font-bold text-[#0b7211] text-lg pt-2 border-t border-dashed">
                                     <span>Total</span>
                                     <span>${total.toFixed(2)}</span>
