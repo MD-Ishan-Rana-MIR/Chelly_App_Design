@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import MaxWidth from "../max-width/MaxWidth";
 import { OfferType } from "@/app/lib/type";
 import OfferSliderSkeleton from "../skeleton/OfferSliderSkeleton";
 import { errorMessage } from "@/app/lib/errorMsg";
+import Link from "next/link";
 
 export default function StickySliderNavbar() {
     const [index, setIndex] = useState(0);
-    const [announcements, setAnnouncements] = useState<string[]>([]);
+    const [announcements, setAnnouncements] = useState<{ title: string, link: string | null }[]>([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchOffers = async () => {
@@ -21,12 +22,13 @@ export default function StickySliderNavbar() {
 
                 const data = await res.json();
 
-                const titles =
-                    data?.data?.data?.map((item: OfferType) =>
-                        item.title.replace(/<[^>]*>/g, "")
-                    ) || [];
+                const items =
+                    data?.data?.data?.map((item: OfferType) => ({
+                        title: item.title.replace(/<[^>]*>/g, ""),
+                        link: item.link || null
+                    })) || [];
 
-                setAnnouncements(titles);
+                setAnnouncements(items);
             } catch (error) {
                 return errorMessage(error); 
             } finally {
@@ -76,16 +78,23 @@ export default function StickySliderNavbar() {
 
                     <div className="flex-1 flex justify-center items-center h-6 overflow-hidden">
                         <AnimatePresence mode="wait">
-                            <motion.p
+                            <motion.div
                                 key={index}
                                 initial={{ y: 20, opacity: 0 }}
                                 animate={{ y: 0, opacity: 1 }}
                                 exit={{ y: -20, opacity: 0 }}
                                 transition={{ duration: 0.4 }}
-                                className="text-white text-sm md:text-base font-medium absolute"
+                                className="text-white text-sm md:text-base font-medium absolute text-center"
                             >
-                                {announcements[index]}
-                            </motion.p>
+                                {announcements[index]?.link ? (
+                                    <Link href={announcements[index].link} className="flex items-center gap-1.5 group cursor-pointer">
+                                        <span className="underline underline-offset-4">{announcements[index].title}</span>
+                                        <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                                    </Link>
+                                ) : (
+                                    <span>{announcements[index]?.title}</span>
+                                )}
+                            </motion.div>
                         </AnimatePresence>
                     </div>
 
