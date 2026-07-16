@@ -1,6 +1,7 @@
 export interface OfferType {
   id: number;
   title: string;
+  link?: string | null;
   status: "active" | "inactive" | string;
   created_at: string;
   updated_at: string;
