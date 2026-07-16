@@ -285,7 +285,7 @@ const OrdersPage = () => {
         <OrderDetails
           selectedOrder={selectedOrder}
           handleDownloadPDF={handleDownloadPDF}
-          setSelectedOrder={(order) => setSelectedOrder(order)}
+          setSelectedOrder={(order) => setSelectedOrder(order as Order | null)}
         />
       )}
       <ConfirmModal
