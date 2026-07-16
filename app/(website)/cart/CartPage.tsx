@@ -5,290 +5,284 @@ import Image from "next/image";
 import { FiMinus, FiPlus, FiTrash2, FiShoppingBag } from "react-icons/fi";
 import MaxWidth from "@/app/components/max-width/MaxWidth";
 import { redirect } from "next/navigation";
+import { getToken } from "@/app/lib/token";
 
 type CartItem = {
-    id: number;
-    cartItemId: string;
-    name: string;
-    price: number;
-    image: string;
-    quantity: number;
-    options?: {
-        protein: string;
-        side: string;
-        plan: string;
-    };
+  id: number;
+  cartItemId: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+  options?: {
+    protein: string;
+    side: string;
+    plan: string;
+  };
 };
 
 export default function CartPage() {
-    const [cart, setCart] = useState<CartItem[]>([]);
-
-    console.log("cart",cart);
-
-    // LOAD FROM LOCALSTORAGE
-    useEffect(() => {
-        const loadCart = () => {
-            const stored = JSON.parse(localStorage.getItem("cart") || "[]");
-            setCart(stored);
-        };
-
-        loadCart();
-
-        // real-time sync
-        window.addEventListener("cartUpdate", loadCart);
-
-        return () => {
-            window.removeEventListener("cartUpdate", loadCart);
-        };
-    }, []);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
 
-    // UPDATE LOCALSTORAGE HELPER
-    const updateCart = (updated: CartItem[]) => {
-        setCart(updated);
-        localStorage.setItem("cart", JSON.stringify(updated));
-        window.dispatchEvent(new Event("cartUpdate"));
+  // LOAD FROM LOCALSTORAGE
+  useEffect(() => {
+    const loadCart = () => {
+      const stored = JSON.parse(localStorage.getItem("cart") || "[]");
+      setCart(stored);
     };
 
-    // INCREASE
-    const increaseQty = (cartItemId: string) => {
-        const updated = cart.map((item) =>
-            item.cartItemId === cartItemId
-                ? { ...item, quantity: item.quantity + 1 }
-                : item
-        );
-        updateCart(updated);
+    loadCart();
+
+    // real-time sync
+    window.addEventListener("cartUpdate", loadCart);
+
+    return () => {
+      window.removeEventListener("cartUpdate", loadCart);
     };
+  }, []);
 
-    // DECREASE
-    const decreaseQty = (cartItemId: string) => {
-        const updated = cart.map((item) =>
-            item.cartItemId === cartItemId && item.quantity > 1
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-        );
-        updateCart(updated);
-    };
+  // UPDATE LOCALSTORAGE HELPER
+  const updateCart = (updated: CartItem[]) => {
+    setCart(updated);
+    localStorage.setItem("cart", JSON.stringify(updated));
+    window.dispatchEvent(new Event("cartUpdate"));
+  };
 
-    // REMOVE
-    const removeItem = (cartItemId: string) => {
-        const updated = cart.filter((item) => item.cartItemId !== cartItemId);
-        updateCart(updated);
-    };
-
-    // TOTAL
-    const calculateSubtotal = (cartItems: CartItem[]) => {
-        let allItems: CartItem[] = [];
-        cartItems.forEach(item => {
-            for (let i = 0; i < item.quantity; i++) {
-                allItems.push({ ...item, quantity: 1 });
-            }
-        });
-
-        allItems.sort((a, b) => b.price - a.price);
-
-        let total = 0;
-        let remainingQty = allItems.length;
-        let index = 0;
-        
-        const breakdown = [];
-
-        while (remainingQty > 0) {
-            if (remainingQty >= 21) {
-                total += 120;
-                breakdown.push({ label: "21-Meal Bundle", amount: 120 });
-                index += 21;
-                remainingQty -= 21;
-            } else if (remainingQty >= 10) {
-                total += 70;
-                breakdown.push({ label: "10-Meal Bundle", amount: 70 });
-                index += 10;
-                remainingQty -= 10;
-            } else {
-                let singleItem = allItems[index];
-                total += singleItem.price;
-                breakdown.push({ label: `1x ${singleItem.name}`, amount: singleItem.price });
-                index += 1;
-                remainingQty -= 1;
-            }
-        }
-        
-        // consolidate regular items if there are multiple
-        let consolidatedBreakdown = [];
-        let regularTotal = 0;
-        let regularCount = 0;
-        
-        breakdown.forEach(item => {
-            if (item.label.includes("Bundle")) {
-                consolidatedBreakdown.push(item);
-            } else {
-                regularTotal += item.amount;
-                regularCount += 1;
-            }
-        });
-        
-        if (regularCount > 0) {
-            consolidatedBreakdown.push({ label: `${regularCount}x Additional Meals`, amount: regularTotal });
-        }
-
-        return { total, breakdown: consolidatedBreakdown };
-    };
-
-    const { total: subtotal, breakdown: priceBreakdown } = calculateSubtotal(cart);
-
-    const delivery = cart.length > 0 ? 0 : 0;
-    const total = subtotal + delivery;
-
-    return (
-        <section className=" py-10">
-            <MaxWidth>
-
-                {/* HEADER */}
-                <div className="flex items-center gap-3 mb-10">
-                    <FiShoppingBag size={28} className="text-[#0b7211]" />
-                    <h1 className="text-3xl md:text-4xl font-bold">
-                        Your Cart
-                    </h1>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
-
-                    {/* CART ITEMS */}
-                    <div className="space-y-5">
-
-                        {cart.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-2xl shadow">
-                                <FiShoppingBag
-                                    size={60}
-                                    className="mx-auto text-gray-400"
-                                />
-                                <h2 className="text-xl font-semibold mt-4">
-                                    Your cart is empty
-                                </h2>
-                                <p className="text-gray-500 mt-2">
-                                    Add some delicious food 🍔
-                                </p>
-                            </div>
-                        ) : (
-                            cart.map((item) => (
-                                <div
-                                    key={item.cartItemId}
-                                    className="flex items-center gap-5 bg-white p-5 rounded-2xl shadow hover:shadow-md transition"
-                                >
-
-                                    {/* IMAGE */}
-                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden">
-                                        <Image
-                                            src={item.image}
-                                            alt={item.name}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-
-                                    {/* INFO */}
-                                    <div className="flex-1">
-                                        <h2 className="font-bold text-lg">
-                                            {item.name}
-                                        </h2>
-
-                                        {item.options && (
-                                            <div className="text-sm text-gray-500 mt-1 space-y-0.5">
-                                                {Object.entries(item.options).map(([key, val]) => (
-                                                    <p key={key}>{key}: {val}</p>
-                                                ))}
-                                            </div>
-                                        )}
-
-                                        <p className="text-[#0b7211] font-semibold mt-1">
-                                            ${item.price.toFixed(2)}
-                                        </p>
-
-                                        {/* QTY */}
-                                        <div className="flex items-center gap-3 mt-3">
-
-                                            <button
-                                                onClick={() =>
-                                                    decreaseQty(item.cartItemId)
-                                                }
-                                                className="p-2  cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
-                                            >
-                                                <FiMinus />
-                                            </button>
-
-                                            <span className="font-semibold">
-                                                {item.quantity}
-                                            </span>
-
-                                            <button
-                                                onClick={() =>
-                                                    increaseQty(item.cartItemId)
-                                                }
-                                                className="p-2 cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
-                                            >
-                                                <FiPlus />
-                                            </button>
-
-                                        </div>
-                                    </div>
-
-                                    {/* REMOVE */}
-                                    <button
-                                        onClick={() => removeItem(item.cartItemId)}
-                                        className="text-red-500 cursor-pointer hover:bg-red-50 p-3 rounded-xl transition"
-                                    >
-                                        <FiTrash2 size={20} />
-                                    </button>
-
-                                </div>
-                            ))
-                        )}
-
-                    </div>
-
-                    {/* SUMMARY */}
-                    {
-                        cart.length >0 && (
-                            <div className="bg-white p-6 rounded-2xl shadow-lg h-fit">
-
-                                <h2 className="text-xl font-bold mb-5">
-                                    Order Summary
-                                </h2>
-
-                                <div className="space-y-3 text-gray-600">
-
-                                    {priceBreakdown.map((item, idx) => (
-                                        <div key={idx} className="flex justify-between text-sm">
-                                            <span>{item.label}</span>
-                                            <span>${item.amount.toFixed(2)}</span>
-                                        </div>
-                                    ))}
-
-                                    <div className="flex justify-between text-sm">
-                                        <span>Delivery</span>
-                                        <span>${delivery.toFixed(2)}</span>
-                                    </div>
-
-                                    <hr />
-
-                                    <div className="flex justify-between font-bold text-lg text-gray-900">
-                                        <span>Total</span>
-                                        <span>${total.toFixed(2)}</span>
-                                    </div>
-
-                                </div>
-
-                                <button onClick={() => { redirect("/checkout") }} className="w-full mt-6 btnColor cursor-pointer hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition">
-                                    Proceed to Checkout
-                                </button>
-
-                            </div>
-                        )
-                    }
-
-                </div>
-
-            </MaxWidth>
-        </section>
+  // INCREASE
+  const increaseQty = (cartItemId: string) => {
+    const updated = cart.map((item) =>
+      item.cartItemId === cartItemId
+        ? { ...item, quantity: item.quantity + 1 }
+        : item,
     );
+    updateCart(updated);
+  };
+
+  // DECREASE
+  const decreaseQty = (cartItemId: string) => {
+    const updated = cart.map((item) =>
+      item.cartItemId === cartItemId && item.quantity > 1
+        ? { ...item, quantity: item.quantity - 1 }
+        : item,
+    );
+    updateCart(updated);
+  };
+
+  // REMOVE
+  const removeItem = (cartItemId: string) => {
+    const updated = cart.filter((item) => item.cartItemId !== cartItemId);
+    updateCart(updated);
+  };
+
+  // TOTAL
+  const calculateSubtotal = (cartItems: CartItem[]) => {
+    let allItems: CartItem[] = [];
+    cartItems.forEach((item) => {
+      for (let i = 0; i < item.quantity; i++) {
+        allItems.push({ ...item, quantity: 1 });
+      }
+    });
+
+    allItems.sort((a, b) => b.price - a.price);
+
+    let total = 0;
+    let remainingQty = allItems.length;
+    let index = 0;
+
+    const breakdown = [];
+
+    while (remainingQty > 0) {
+      if (remainingQty >= 21) {
+        total += 120;
+        breakdown.push({ label: "21-Meal Bundle", amount: 120 });
+        index += 21;
+        remainingQty -= 21;
+      } else if (remainingQty >= 10) {
+        total += 70;
+        breakdown.push({ label: "10-Meal Bundle", amount: 70 });
+        index += 10;
+        remainingQty -= 10;
+      } else {
+        let singleItem = allItems[index];
+        total += singleItem.price;
+        breakdown.push({
+          label: `1x ${singleItem.name}`,
+          amount: singleItem.price,
+        });
+        index += 1;
+        remainingQty -= 1;
+      }
+    }
+
+    // consolidate regular items if there are multiple
+    let consolidatedBreakdown = [];
+    let regularTotal = 0;
+    let regularCount = 0;
+
+    breakdown.forEach((item) => {
+      if (item.label.includes("Bundle")) {
+        consolidatedBreakdown.push(item);
+      } else {
+        regularTotal += item.amount;
+        regularCount += 1;
+      }
+    });
+
+    if (regularCount > 0) {
+      consolidatedBreakdown.push({
+        label: `${regularCount}x Additional Meals`,
+        amount: regularTotal,
+      });
+    }
+
+    return { total, breakdown: consolidatedBreakdown };
+  };
+
+  const { total: subtotal, breakdown: priceBreakdown } =
+    calculateSubtotal(cart);
+
+  const delivery = cart.length > 0 ? 0 : 0;
+  const total = subtotal + delivery;
+
+  const [userToken, setUserToken] = useState<string | null>(null);
+
+  const token = getToken();
+  useEffect(() => {
+    setUserToken(token);
+  }, [token]);
+
+
+  const navigateCheckoutPage = () => {
+    if (userToken) {
+      redirect("/checkout");
+    } else {
+      redirect("/login");
+    }
+  };
+
+  return (
+    <section className=" py-10">
+      <MaxWidth>
+        {/* HEADER */}
+        <div className="flex items-center gap-3 mb-10">
+          <FiShoppingBag size={28} className="text-[#0b7211]" />
+          <h1 className="text-3xl md:text-4xl font-bold">Your Cart</h1>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-10">
+          {/* CART ITEMS */}
+          <div className="space-y-5">
+            {cart.length === 0 ? (
+              <div className="text-center py-20 bg-white rounded-2xl shadow">
+                <FiShoppingBag size={60} className="mx-auto text-gray-400" />
+                <h2 className="text-xl font-semibold mt-4">
+                  Your cart is empty
+                </h2>
+                <p className="text-gray-500 mt-2">Add some delicious food 🍔</p>
+              </div>
+            ) : (
+              cart.map((item) => (
+                <div
+                  key={item.cartItemId}
+                  className="flex items-center gap-5 bg-white p-5 rounded-2xl shadow hover:shadow-md transition"
+                >
+                  {/* IMAGE */}
+                  <div className="relative w-24 h-24 rounded-xl overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+
+                  {/* INFO */}
+                  <div className="flex-1">
+                    <h2 className="font-bold text-lg">{item.name}</h2>
+
+                    {item.options && (
+                      <div className="text-sm text-gray-500 mt-1 space-y-0.5">
+                        {Object.entries(item.options).map(([key, val]) => (
+                          <p key={key}>
+                            {key}: {val}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+
+                    <p className="text-[#0b7211] font-semibold mt-1">
+                      ${item.price.toFixed(2)}
+                    </p>
+
+                    {/* QTY */}
+                    <div className="flex items-center gap-3 mt-3">
+                      <button
+                        onClick={() => decreaseQty(item.cartItemId)}
+                        className="p-2  cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
+                      >
+                        <FiMinus />
+                      </button>
+
+                      <span className="font-semibold">{item.quantity}</span>
+
+                      <button
+                        onClick={() => increaseQty(item.cartItemId)}
+                        className="p-2 cursor-pointer bg-gray-100 rounded-lg hover:bg-gray-200"
+                      >
+                        <FiPlus />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* REMOVE */}
+                  <button
+                    onClick={() => removeItem(item.cartItemId)}
+                    className="text-red-500 cursor-pointer hover:bg-red-50 p-3 rounded-xl transition"
+                  >
+                    <FiTrash2 size={20} />
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* SUMMARY */}
+          {cart.length > 0 && (
+            <div className="bg-white p-6 rounded-2xl shadow-lg h-fit">
+              <h2 className="text-xl font-bold mb-5">Order Summary</h2>
+
+              <div className="space-y-3 text-gray-600">
+                {priceBreakdown.map((item, idx) => (
+                  <div key={idx} className="flex justify-between text-sm">
+                    <span>{item.label}</span>
+                    <span>${item.amount.toFixed(2)}</span>
+                  </div>
+                ))}
+
+                <div className="flex justify-between text-sm">
+                  <span>Delivery</span>
+                  <span>${delivery.toFixed(2)}</span>
+                </div>
+
+                <hr />
+
+                <div className="flex justify-between font-bold text-lg text-gray-900">
+                  <span>Total</span>
+                  <span>${total.toFixed(2)}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={navigateCheckoutPage}
+                className="w-full mt-6 btnColor cursor-pointer hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
+              >
+                Proceed to Checkout
+              </button>
+            </div>
+          )}
+        </div>
+      </MaxWidth>
+    </section>
+  );
 }

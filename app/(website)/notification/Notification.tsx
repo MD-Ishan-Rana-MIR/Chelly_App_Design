@@ -40,13 +40,11 @@ export default function Notification() {
         if (!userId) return;
 
         const channelName = `App.Models.User.${userId}`;
-        console.log(channelName);
 
         if (!echo) return;
 
         echo.private(channelName)
             .notification((notification: any) => {
-                console.log('Real-time Notification Received: ', notification);
 
                 if (notification.type === 'new_order') {
                     toast.success(notification.message || 'New private alert received', { icon: '🎉' });
@@ -198,7 +196,6 @@ export default function Notification() {
                             {notificationsList.map((notification) => {
                                 const styles = getNotificationBadgeStyle(notification.data.type);
 
-                                // console.log("styles",styles,notification?.data?.type)
                                 const isUnread = !notification.read_at;
 
                                 return (

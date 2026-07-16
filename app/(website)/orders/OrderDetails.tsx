@@ -3,7 +3,7 @@ import React from 'react'
 import { FaDownload } from 'react-icons/fa'
 
 // ============================================= TYPE DEFINITIONS =======================================================
-export type OrderStatus = "pending" | "processing" | "completed" | "cancelled";
+export type OrderStatus = "pending" | "processing" | "completed" | "cancelled" | "payment_status";
 export type PaymentStatus = "pending" | "paid" | "failed" | "refunded";
 export type FoodStatus = "available" | "unavailable" | "out_of_stock";
 export type PlanType = "regular" | "weekly" | "monthly";
@@ -134,6 +134,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
                                     {selectedOrder.status}
                                 </span>
                             </div>
+                            
                             <div>
                                 <span className="block text-xs font-semibold text-gray-400 uppercase">Payment</span>
                                 <span className="text-sm font-bold text-gray-700 block mt-1 uppercase tracking-wide">

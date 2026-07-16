@@ -21,7 +21,6 @@ export default function UnifiedEbtOrderForm() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Complete EBT Order Submitted:', formData);
     };
 
     return (

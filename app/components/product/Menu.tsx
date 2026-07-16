@@ -217,7 +217,6 @@ const Menu = () => {
     const collectionData : CollectionItem[] = data?.data || []
 
 
-    console.log("collectionData",collectionData)
 
     
 

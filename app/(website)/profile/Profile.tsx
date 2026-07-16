@@ -25,7 +25,6 @@ export default function ProfilePage() {
     // ===============================================
     const { data, isLoading: profileLoading } = useUserProfileQuery(undefined);
 
-    console.log("user data", data)
 
     // ===============================================
     // Profile Update API
@@ -57,7 +56,6 @@ export default function ProfilePage() {
         }
     }, [data]);
 
-    console.log(form)
 
     // ===============================================
     // Handle Input Change

@@ -56,7 +56,6 @@ const FoodDetailsPage = () => {
 
     const food: FoodType = data?.data;
 
-    console.log("single food is", food)
 
     const validOptions = useMemo(() => {
         return food?.options?.filter((opt: any) => 

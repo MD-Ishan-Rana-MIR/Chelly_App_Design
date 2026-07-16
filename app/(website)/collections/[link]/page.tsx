@@ -24,8 +24,6 @@ export default function CategoryGrid() {
     return null;
   });
 
-  console.log("Current active ID:", id);
-
   // Error state layout fallback
   if (error) {
     return (

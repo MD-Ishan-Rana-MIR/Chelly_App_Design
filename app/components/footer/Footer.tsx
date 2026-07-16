@@ -12,7 +12,6 @@ const Footer = () => {
 
     const { data } = useGetAllContactInformationQuery("");
 
-    console.log(data?.data?.youtube_url);
 
     const socials = [
         { Icon: FaTiktok, link: data?.data?.tiktok_url },
