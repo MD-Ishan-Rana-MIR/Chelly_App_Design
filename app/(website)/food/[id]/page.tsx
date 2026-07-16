@@ -284,7 +284,7 @@ const FoodDetailsPage = () => {
                                                     {optionGroup.name}
                                                 </h3>
                                                 <div className="flex flex-wrap gap-3">
-                                                    {optionGroup.values.map((value) => {
+                                                    {optionGroup.values.map((value: string) => {
                                                         const isSelected = currentSelection === value;
 
                                                         // Subtle visual distinction for extra charge items like "Steak (+$3.00)"
