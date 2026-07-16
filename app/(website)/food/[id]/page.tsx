@@ -13,7 +13,7 @@ export type CartItem = {
     options?: Record<string, string>;
 };
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
     FiArrowLeft,
@@ -58,18 +58,24 @@ const FoodDetailsPage = () => {
 
     console.log("single food is", food)
 
+    const validOptions = useMemo(() => {
+        return food?.options?.filter((opt: any) => 
+            !(opt.name === 'Title' && opt.values?.length === 1 && opt.values[0] === 'Default Title')
+        ) || [];
+    }, [food?.options]);
+
     // Initialize defaults from API
     useEffect(() => {
-        if (food?.options) {
+        if (validOptions.length > 0) {
             const initialOptions: Record<string, string> = {};
-            food.options.forEach((group) => {
+            validOptions.forEach((group: any) => {
                 if (group.values && group.values.length > 0) {
                     initialOptions[group.name] = group.values[0];
                 }
             });
             setSelectedOptions(initialOptions);
         }
-    }, [food]);
+    }, [validOptions]);
 
 
 
@@ -77,13 +83,12 @@ const FoodDetailsPage = () => {
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const selectedVariant = food?.variants?.find((variant) => {
-        if (!food?.options) return false;
-        return food.options.every((optionGroup) => {
+    const selectedVariant = food?.variants?.find((variant: any) => {
+        return validOptions.every((optionGroup: any) => {
             const position = optionGroup.position;
             const selectedValue = selectedOptions[optionGroup.name];
             const variantOptionKey = `option${position}`;
-            return (variant as any)[variantOptionKey] === selectedValue;
+            return variant[variantOptionKey] === selectedValue;
         });
     });
 
@@ -264,7 +269,7 @@ const FoodDetailsPage = () => {
                             {/* --- Dynamic Options Loop --- */}
                             <div className="space-y-6">
                                 {
-                                    food?.options && food?.options.map((optionGroup) => {
+                                    validOptions.map((optionGroup: any) => {
                                         const currentSelection = selectedOptions[optionGroup.name];
                                         const setSelection = (val: string) => {
                                             setSelectedOptions(prev => ({
