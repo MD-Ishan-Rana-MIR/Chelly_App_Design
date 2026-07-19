@@ -1,8 +1,10 @@
 "use client"
 
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function UnifiedEbtOrderForm() {
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -19,8 +21,46 @@ export default function UnifiedEbtOrderForm() {
         permissionSelect: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (formData.permissionSelect !== 'yes') {
+            toast.error('You must give permission to charge your EBT card in order to place this order.');
+            return;
+        }
+
+        if (formData.meal70Select !== 'yes' && formData.meal130Select !== 'yes') {
+            toast.error('Please select a meal plan.');
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/ebt-orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                toast.success('Thank you! Your EBT order has been placed successfully.');
+                setFormData({
+                    firstName: '', lastName: '', email: '', address1: '', address2: '', city: '', state: '', zipCode: '', cardNumber: '', pin: '', meal70Select: '', meal130Select: '', permissionSelect: '',
+                });
+            } else {
+                toast.error(data.message || 'Failed to place EBT order. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error submitting EBT order:', error);
+            toast.error('An error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -34,7 +74,7 @@ export default function UnifiedEbtOrderForm() {
                         EBT Order Form
                     </h1>
                     <p className="text-[#666666] text-sm md:text-base leading-relaxed font-normal">
-                        This form is used to process EBT payments. You will receive a promo code to complete your order once you complete the form.
+                        This form is used to process EBT payments securely. Please fill out your details to place your EBT order.
                     </p>
                 </div>
 
@@ -273,9 +313,10 @@ export default function UnifiedEbtOrderForm() {
                     <div className="pt-6">
                         <button
                             type="submit"
-                            className="w-full bg-[#333333] hover:bg-[#222222] text-white font-sans font-bold text-lg py-3.5 transition-colors duration-200 shadow-sm rounded-xs cursor-pointer"
+                            disabled={isSubmitting}
+                            className={`w-full bg-[#333333] hover:bg-[#222222] text-white font-sans font-bold text-lg py-3.5 transition-colors duration-200 shadow-sm rounded-xs cursor-pointer ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                         >
-                            Submit
+                            {isSubmitting ? 'Processing...' : 'Submit'}
                         </button>
                     </div>
 
