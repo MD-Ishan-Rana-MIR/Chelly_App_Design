@@ -104,6 +104,12 @@ export default function UnifiedEbtOrderForm() {
             return;
         }
 
+        const rawCardNumber = formData.cardNumber.replace(/\D/g, "");
+        if (rawCardNumber.length < 16 || rawCardNumber.length > 19) {
+            toast.error('EBT Card Number must be between 16 and 19 digits.');
+            return;
+        }
+
         setIsSubmitting(true);
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/ebt-orders`, {
@@ -114,6 +120,7 @@ export default function UnifiedEbtOrderForm() {
                 },
                 body: JSON.stringify({
                     ...formData,
+                    cardNumber: rawCardNumber, // Strip spaces before sending
                     // If no packages exist, bypass package validation by passing dummy value or just omit
                     package_id: packages.length === 0 ? undefined : formData.package_id
                 }),
@@ -286,8 +293,10 @@ export default function UnifiedEbtOrderForm() {
                         </div>
                     </div>
 
+
+
                     {/* SECTION 3: Select Package */}
-                    {packages.length > 0 && (
+                    {packages.length > 0 ? (
                         <div className="space-y-6 pt-4">
                             <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
                                 <PackageSearch className="text-[#1e3a61] w-5 h-5" />
@@ -322,6 +331,16 @@ export default function UnifiedEbtOrderForm() {
                                 ))}
                             </div>
                         </div>
+                    ) : (
+                        <div className="space-y-6 pt-4">
+                            <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
+                                <PackageSearch className="text-[#1e3a61] w-5 h-5" />
+                                <h2 className="text-xl font-semibold text-gray-800">EBT Packages</h2>
+                            </div>
+                            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-5 text-sm text-yellow-800">
+                                <strong>Note:</strong> There are no predefined EBT packages available right now. However, you can still securely authorize your card, and our team will manually process your custom order.
+                            </div>
+                        </div>
                     )}
 
                     {/* SECTION 4: EBT Payment Details */}
@@ -336,10 +355,15 @@ export default function UnifiedEbtOrderForm() {
                                 <label className="text-gray-700 text-sm font-medium flex items-center gap-1">EBT (SNAP) Card Number <Lock className="w-3 h-3 text-gray-400"/></label>
                                 <input
                                     type="text"
-                                    maxLength={19}
+                                    maxLength={23} // 19 digits + 4 spaces max
                                     required
                                     value={formData.cardNumber}
-                                    onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value.replace(/\D/g, "") })}
+                                    onChange={(e) => {
+                                        let value = e.target.value.replace(/\D/g, "");
+                                        if (value.length > 19) value = value.slice(0, 19);
+                                        let formattedValue = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+                                        setFormData({ ...formData, cardNumber: formattedValue });
+                                    }}
                                     className="w-full h-12 px-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1e3a61]/30 focus:border-[#1e3a61] text-gray-800 font-mono tracking-wider transition-all"
                                     placeholder="0000 0000 0000 0000"
                                 />
@@ -367,7 +391,7 @@ export default function UnifiedEbtOrderForm() {
                                 onChange={(e) => setFormData({ ...formData, permissionSelect: e.target.checked ? "yes" : "no" })}
                                 className="mt-1 w-5 h-5 text-[#1e3a61] rounded focus:ring-[#1e3a61] cursor-pointer"
                             />
-                            <label htmlFor="permissionSelect" className="text-sm text-gray-700 cursor-pointer">
+                            <label htmlFor="permissionSelect" className="text-sm text-gray-700 cursor-pointer select-none">
                                 I confirm and authorize Lovely's to securely charge my EBT card for the total amount of the selected package. I understand this action is final once processed.
                             </label>
                         </div>
@@ -377,8 +401,8 @@ export default function UnifiedEbtOrderForm() {
                     <div className="pt-8">
                         <button
                             type="submit"
-                            disabled={isSubmitting}
-                            className="w-full relative overflow-hidden bg-gradient-to-r from-[#1e3a61] to-[#2a5288] hover:from-[#172c4a] hover:to-[#1e3a61] text-white font-bold text-lg py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
+                            disabled={isSubmitting || formData.permissionSelect !== "yes"}
+                            className="w-full relative overflow-hidden bg-gradient-to-r from-[#1e3a61] to-[#2a5288] hover:from-[#172c4a] hover:to-[#1e3a61] text-white font-bold text-lg py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                         >
                             {isSubmitting ? (
                                 <span className="flex items-center justify-center gap-2">

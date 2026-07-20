@@ -77,64 +77,36 @@ export default function CartPage() {
 
   // TOTAL
   const calculateSubtotal = (cartItems: CartItem[]) => {
-    let allItems: CartItem[] = [];
-    cartItems.forEach((item) => {
-      for (let i = 0; i < item.quantity; i++) {
-        allItems.push({ ...item, quantity: 1 });
-      }
-    });
-
-    allItems.sort((a, b) => b.price - a.price);
-
     let total = 0;
-    let remainingQty = allItems.length;
-    let index = 0;
+    const consolidatedBreakdown: { label: string; amount: number }[] = [];
 
-    const breakdown = [];
+    cartItems.forEach((item) => {
+      let qty = item.quantity;
+      let itemTotal = 0;
 
-    while (remainingQty > 0) {
-      if (remainingQty >= 21) {
-        total += 120;
-        breakdown.push({ label: "21-Meal Bundle", amount: 120 });
-        index += 21;
-        remainingQty -= 21;
-      } else if (remainingQty >= 10) {
-        total += 70;
-        breakdown.push({ label: "10-Meal Bundle", amount: 70 });
-        index += 10;
-        remainingQty -= 10;
-      } else {
-        let singleItem = allItems[index];
-        total += singleItem.price;
-        breakdown.push({
-          label: `1x ${singleItem.name}`,
-          amount: singleItem.price,
-        });
-        index += 1;
-        remainingQty -= 1;
+      // Apply 21-Meal Bundle pricing only if the user added 21 of the SAME item
+      // AND the normal price is more than the bundle price ($120 for 21)
+      while (qty >= 21 && (21 * item.price > 120)) {
+        itemTotal += 120;
+        consolidatedBreakdown.push({ label: `21-Meal Bundle (${item.name})`, amount: 120 });
+        qty -= 21;
       }
-    }
-
-    // consolidate regular items if there are multiple
-    let consolidatedBreakdown = [];
-    let regularTotal = 0;
-    let regularCount = 0;
-
-    breakdown.forEach((item) => {
-      if (item.label.includes("Bundle")) {
-        consolidatedBreakdown.push(item);
-      } else {
-        regularTotal += item.amount;
-        regularCount += 1;
+      
+      // Apply 10-Meal Bundle pricing only if the user added 10 of the SAME item
+      // AND the normal price is more than the bundle price ($70 for 10)
+      while (qty >= 10 && (10 * item.price > 70)) {
+        itemTotal += 70;
+        consolidatedBreakdown.push({ label: `10-Meal Bundle (${item.name})`, amount: 70 });
+        qty -= 10;
       }
+      
+      if (qty > 0) {
+        itemTotal += qty * item.price;
+        consolidatedBreakdown.push({ label: `${qty}x ${item.name}`, amount: qty * item.price });
+      }
+      
+      total += itemTotal;
     });
-
-    if (regularCount > 0) {
-      consolidatedBreakdown.push({
-        label: `${regularCount}x Additional Meals`,
-        amount: regularTotal,
-      });
-    }
 
     return { total, breakdown: consolidatedBreakdown };
   };

@@ -169,42 +169,65 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-100 text-gray-600">
-                                        {selectedOrder.items?.map((item) => (
-                                            <tr key={item.id} className="align-middle">
-                                                <td className="px-4 py-3">
-                                                    <div className="flex items-center gap-3">
-                                                        {item.food?.image && (
-                                                            <Image
-                                                                src={item.food.image}
-                                                                alt={item.food.name}
-                                                                unoptimized
-                                                                width={100}
-                                                                height={100}
-                                                                className="w-10 h-10 object-cover rounded-lg border border-gray-100 print:hidden"
-                                                            />
-                                                        )}
-                                                        <div>
-                                                            <p className="font-semibold text-gray-800">{item.food?.name || "Item Missing"}</p>
-                                                            <p
-                                                                className="text-xs text-gray-400 italic max-w-45 truncate"
-                                                                dangerouslySetInnerHTML={{ __html: item.food?.description || '' }}
-                                                            />
+                                        {selectedOrder.items?.map((item) => {
+                                            let qty = item.quantity || 1;
+                                            let price = Number(item.unit_price || item.food?.price || 0);
+                                            let itemTotal = 0;
+                                            let bundleText = '';
+                                            
+                                            let remainingQty = qty;
+                                            while (remainingQty >= 21 && (21 * price > 120)) {
+                                                itemTotal += 120;
+                                                remainingQty -= 21;
+                                                bundleText = ' (Includes 21-Meal Bundle)';
+                                            }
+                                            while (remainingQty >= 10 && (10 * price > 70)) {
+                                                itemTotal += 70;
+                                                remainingQty -= 10;
+                                                bundleText = bundleText ? bundleText : ' (Includes 10-Meal Bundle)';
+                                            }
+                                            itemTotal += remainingQty * price;
+
+                                            return (
+                                                <tr key={item.id} className="align-middle">
+                                                    <td className="px-4 py-3">
+                                                        <div className="flex items-center gap-3">
+                                                            {item.food?.image && (
+                                                                <Image
+                                                                    src={item.food.image}
+                                                                    alt={item.food.name}
+                                                                    unoptimized
+                                                                    width={100}
+                                                                    height={100}
+                                                                    className="w-10 h-10 object-cover rounded-lg border border-gray-100 print:hidden"
+                                                                />
+                                                            )}
+                                                            <div>
+                                                                <p className="font-semibold text-gray-800">
+                                                                    {item.food?.name || "Item Missing"}
+                                                                    {bundleText && <span className="text-emerald-600 text-[10px] ml-1 uppercase font-bold block sm:inline">{bundleText}</span>}
+                                                                </p>
+                                                                <p
+                                                                    className="text-xs text-gray-400 italic max-w-45 truncate"
+                                                                    dangerouslySetInnerHTML={{ __html: item.food?.description || '' }}
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-3 text-center capitalize">
-                                                    <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-md">
-                                                        {item.plan_type} ({item.total_days}d)
-                                                    </span>
-                                                </td>
-                                                <td className="px-4 py-3 text-center font-mono text-gray-500">
-                                                    {item.quantity} × ${parseFloat(item.unit_price).toFixed(2)}
-                                                </td>
-                                                <td className="px-4 py-3 text-right font-semibold font-mono text-gray-800">
-                                                    ${parseFloat(item.subtotal).toFixed(2)}
-                                                </td>
-                                            </tr>
-                                        ))}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-center capitalize">
+                                                        <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-md">
+                                                            {item.plan_type} ({item.total_days}d)
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-4 py-3 text-center font-mono text-gray-500">
+                                                        {item.quantity} × ${price.toFixed(2)}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right font-semibold font-mono text-gray-800">
+                                                        ${itemTotal.toFixed(2)}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>
