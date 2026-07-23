@@ -15,6 +15,7 @@ type CartItem = {
   image: string;
   quantity: number;
   stock?: number;
+  variant_id?: number;
   options?: {
     protein: string;
     side: string;
@@ -291,7 +292,7 @@ export default function CartPage() {
               {!isCheckoutAllowed && (
                 <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm text-center">
                   {allowedDays.length > 0 
-                    ? `Checkout is only available on ${allowedDays.join(" and ")}.` 
+                    ? `Checkout is only available on ${allowedDays.length > 2 ? allowedDays.slice(0, -1).join(", ") + " and " + allowedDays[allowedDays.length - 1] : allowedDays.join(" and ")}.` 
                     : "Checkout is currently disabled."}
                 </div>
               )}

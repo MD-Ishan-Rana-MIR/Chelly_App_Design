@@ -11,6 +11,7 @@ export type CartItem = {
     description: string;
     quantity: number;
     stock?: number;
+    variant_id?: number;
     options?: Record<string, string>;
 };
 
@@ -115,6 +116,8 @@ const FoodDetailsPage = () => {
 
         const optionsKey = Object.values(options).join("-");
         const cartItemId = `${item.id}-${optionsKey}`;
+        
+        const availableStock = selectedVariant ? selectedVariant.stock : item.stock;
 
         const existingIndex = cart.findIndex(
             (i) => i.cartItemId === cartItemId
@@ -122,16 +125,16 @@ const FoodDetailsPage = () => {
 
         if (existingIndex !== -1) {
             const newQty = (cart[existingIndex].quantity || 1) + qty;
-            if (newQty > item.stock) {
-                toast.error(`Cannot add more. Only ${item.stock} in stock.`);
+            if (newQty > availableStock) {
+                toast.error(`Cannot add more. Only ${availableStock} in stock.`);
                 return;
             }
             cart[existingIndex].quantity = newQty;
 
             toast.success("Cart updated!");
         } else {
-            if (qty > item.stock) {
-                toast.error(`Cannot add more. Only ${item.stock} in stock.`);
+            if (qty > availableStock) {
+                toast.error(`Cannot add more. Only ${availableStock} in stock.`);
                 return;
             }
             cart.push({
@@ -144,7 +147,8 @@ const FoodDetailsPage = () => {
                 image: (item as any).image || "",
                 description: (item as any).description || "",
                 quantity: qty,
-                stock: item.stock,
+                stock: availableStock,
+                variant_id: selectedVariant?.id,
                 options: options
             });
 
@@ -354,8 +358,9 @@ const FoodDetailsPage = () => {
                                     <button
                                         onClick={() =>
                                             setQuantity((q) => {
-                                                if (q >= (food?.stock || 1)) {
-                                                    import("react-hot-toast").then(mod => mod.default.error(`Cannot add more. Only ${food?.stock} in stock.`));
+                                                const maxStock = selectedVariant ? selectedVariant.stock : (food?.stock || 1);
+                                                if (q >= maxStock) {
+                                                    import("react-hot-toast").then(mod => mod.default.error(`Cannot add more. Only ${maxStock} in stock.`));
                                                     return q;
                                                 }
                                                 return q + 1;
@@ -475,9 +480,9 @@ const FoodDetailsPage = () => {
                                 onClick={() =>
                                     handleCart(food, quantity)
                                 }
-                                disabled={food?.stock === 0}
+                                disabled={selectedVariant ? selectedVariant.stock === 0 : food?.stock === 0}
                                 className={`flex flex-1 items-center justify-center gap-3 rounded-2xl py-4 font-semibold text-white shadow-md transition
-                                    ${food?.stock === 0 
+                                    ${(selectedVariant ? selectedVariant.stock === 0 : food?.stock === 0)
                                         ? 'bg-gray-400 cursor-not-allowed opacity-70' 
                                         : 'bg-[#0b7211] hover:bg-green-700 cursor-pointer'
                                     }
@@ -485,7 +490,7 @@ const FoodDetailsPage = () => {
                             >
                                 <FiShoppingCart size={20} />
 
-                                {food?.stock === 0 ? "Out of Stock" : "Add To Cart"}
+                                {(selectedVariant ? selectedVariant.stock === 0 : food?.stock === 0) ? "Out of Stock" : "Add To Cart"}
                             </button>
 
                             <button
