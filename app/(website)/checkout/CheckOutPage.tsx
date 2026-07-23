@@ -23,6 +23,7 @@ export type CartItem = {
     price: number;
     image: string;
     quantity: number;
+    variant_id?: number;
     options?: Record<string, string>;
 };
 import { usePaymentApiMutation } from '@/app/redux/orderApi';

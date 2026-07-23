@@ -178,6 +178,7 @@ export type CartItem = {
   image: string;
   description: string;
   quantity: number;
+  variant_id?: number;
 };
 
 // Strongly types the wrapper response often returned by standard REST APIs or Axios/RTK queries

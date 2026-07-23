@@ -9,6 +9,7 @@ export type CartItem = {
     image: string;
     description: string;
     quantity: number;
+    variant_id?: number;
 };
 
 import React, { useEffect, useState } from "react";
