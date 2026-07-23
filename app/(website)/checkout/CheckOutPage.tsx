@@ -150,6 +150,7 @@ export default function CheckOutPage() {
             full_name: pendingFormData?.full_name,
             items: cartItems.map((item) => ({
                 food_id: item.id,
+                variant_id: item.variant_id,
                 quantity: item.quantity,
                 plan_type: "weekly"
             }))
