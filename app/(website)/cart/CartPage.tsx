@@ -23,6 +23,42 @@ type CartItem = {
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [allowedDays, setAllowedDays] = useState<string[]>([]);
+  const [isCheckoutAllowed, setIsCheckoutAllowed] = useState(true);
+
+  // LOAD CHECKOUT SETTINGS
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings/allowed_checkout_days`);
+        const result = await res.json();
+        
+        if ((result?.ok || result?.success) && result?.data && result.data.allowed_checkout_days !== undefined) {
+          const days = typeof result.data.allowed_checkout_days === 'string' 
+             ? JSON.parse(result.data.allowed_checkout_days) 
+             : result.data.allowed_checkout_days;
+          
+          if (Array.isArray(days)) {
+            setAllowedDays(days);
+            
+            // If empty array, no days are allowed -> checkout completely disabled
+            if (days.length === 0) {
+               setIsCheckoutAllowed(false);
+            } else {
+               const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+               setIsCheckoutAllowed(days.includes(today));
+            }
+          }
+        } else {
+           // If setting doesn't exist, allow by default
+           setIsCheckoutAllowed(true);
+        }
+      } catch (error) {
+        console.error("Failed to fetch checkout settings", error);
+      }
+    };
+    fetchSettings();
+  }, []);
 
 
   // LOAD FROM LOCALSTORAGE
@@ -245,9 +281,18 @@ export default function CartPage() {
                 </div>
               </div>
 
+              {!isCheckoutAllowed && (
+                <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm text-center">
+                  {allowedDays.length > 0 
+                    ? `Checkout is only available on ${allowedDays.join(" and ")}.` 
+                    : "Checkout is currently disabled."}
+                </div>
+              )}
+
               <button
                 onClick={navigateCheckoutPage}
-                className="w-full mt-6 btnColor cursor-pointer hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
+                disabled={!isCheckoutAllowed}
+                className="w-full mt-6 btnColor cursor-pointer hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Proceed to Checkout
               </button>

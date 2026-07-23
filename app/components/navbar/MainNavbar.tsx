@@ -24,7 +24,11 @@ import { useGetNotificationsQuery } from '@/app/redux/notificationApi';
 
 export default function Navbar() {
 
-    const token = getToken();
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        setToken(getToken());
+    }, []);
 
 
 
