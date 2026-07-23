@@ -10,6 +10,7 @@ export type CartItem = {
     image: string;
     description: string;
     quantity: number;
+    stock?: number;
     options?: Record<string, string>;
 };
 
@@ -120,11 +121,19 @@ const FoodDetailsPage = () => {
         );
 
         if (existingIndex !== -1) {
-            cart[existingIndex].quantity =
-                (cart[existingIndex].quantity || 1) + qty;
+            const newQty = (cart[existingIndex].quantity || 1) + qty;
+            if (newQty > item.stock) {
+                toast.error(`Cannot add more. Only ${item.stock} in stock.`);
+                return;
+            }
+            cart[existingIndex].quantity = newQty;
 
             toast.success("Cart updated!");
         } else {
+            if (qty > item.stock) {
+                toast.error(`Cannot add more. Only ${item.stock} in stock.`);
+                return;
+            }
             cart.push({
                 id: item.id,
                 cartItemId: cartItemId,
@@ -135,6 +144,7 @@ const FoodDetailsPage = () => {
                 image: (item as any).image || "",
                 description: (item as any).description || "",
                 quantity: qty,
+                stock: item.stock,
                 options: options
             });
 
@@ -343,7 +353,13 @@ const FoodDetailsPage = () => {
 
                                     <button
                                         onClick={() =>
-                                            setQuantity((q) => q + 1)
+                                            setQuantity((q) => {
+                                                if (q >= (food?.stock || 1)) {
+                                                    import("react-hot-toast").then(mod => mod.default.error(`Cannot add more. Only ${food?.stock} in stock.`));
+                                                    return q;
+                                                }
+                                                return q + 1;
+                                            })
                                         }
                                         className="cursor-pointer px-5 py-4 transition hover:bg-gray-100"
                                     >
@@ -459,11 +475,17 @@ const FoodDetailsPage = () => {
                                 onClick={() =>
                                     handleCart(food, quantity)
                                 }
-                                className="flex flex-1 cursor-pointer items-center justify-center gap-3 rounded-2xl bg-[#0b7211] py-4 font-semibold text-white shadow-md transition hover:bg-green-700"
+                                disabled={food?.stock === 0}
+                                className={`flex flex-1 items-center justify-center gap-3 rounded-2xl py-4 font-semibold text-white shadow-md transition
+                                    ${food?.stock === 0 
+                                        ? 'bg-gray-400 cursor-not-allowed opacity-70' 
+                                        : 'bg-[#0b7211] hover:bg-green-700 cursor-pointer'
+                                    }
+                                `}
                             >
                                 <FiShoppingCart size={20} />
 
-                                Add To Cart
+                                {food?.stock === 0 ? "Out of Stock" : "Add To Cart"}
                             </button>
 
                             <button

@@ -14,6 +14,7 @@ type CartItem = {
   price: number;
   image: string;
   quantity: number;
+  stock?: number;
   options?: {
     protein: string;
     side: string;
@@ -87,6 +88,12 @@ export default function CartPage() {
 
   // INCREASE
   const increaseQty = (cartItemId: string) => {
+    const item = cart.find(i => i.cartItemId === cartItemId);
+    if (item && item.stock !== undefined && item.quantity >= item.stock) {
+      import("react-hot-toast").then(mod => mod.default.error(`Cannot add more. Only ${item.stock} in stock.`));
+      return;
+    }
+    
     const updated = cart.map((item) =>
       item.cartItemId === cartItemId
         ? { ...item, quantity: item.quantity + 1 }
