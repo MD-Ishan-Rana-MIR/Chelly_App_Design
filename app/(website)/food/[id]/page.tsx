@@ -84,14 +84,16 @@ const FoodDetailsPage = () => {
 
     const [selectedPlan, setSelectedPlan] = useState("Weekly");
 
-    const selectedVariant = food?.variants?.find((variant: any) => {
-        return validOptions.every((optionGroup: any) => {
-            const position = optionGroup.position;
-            const selectedValue = selectedOptions[optionGroup.name];
-            const variantOptionKey = `option${position}`;
-            return variant[variantOptionKey] === selectedValue;
-        });
-    });
+    const selectedVariant = validOptions.length > 0 
+        ? food?.variants?.find((variant: any) => {
+            return validOptions.every((optionGroup: any) => {
+                const position = optionGroup.position;
+                const selectedValue = selectedOptions[optionGroup.name];
+                const variantOptionKey = `option${position}`;
+                return variant[variantOptionKey] === selectedValue;
+            });
+        })
+        : undefined;
 
     const basePrice = selectedVariant && selectedVariant.price 
         ? Number(selectedVariant.price) 
