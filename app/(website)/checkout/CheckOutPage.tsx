@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import MaxWidth from '@/app/components/max-width/MaxWidth';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -42,6 +42,13 @@ export default function CheckOutPage() {
     const [openPopUpModal, setOpenPopUpModal] = useState(false);
     const [pendingFormData, setPendingFormData] = useState<CheckoutFormData | null>(null);
 
+    const [shippingFee, setShippingFee] = useState(0);
+    const [shippingDistanceText, setShippingDistanceText] = useState("");
+    const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
+
+    const addressInputRef = useRef<HTMLInputElement>(null);
+    const [isGoogleApiLoaded, setIsGoogleApiLoaded] = useState(false);
+
     const [paymentApi, { isLoading }] = usePaymentApiMutation();
 
     useEffect(() => {
@@ -63,6 +70,7 @@ export default function CheckOutPage() {
         register,
         handleSubmit,
         watch,
+        setValue,
         formState: { errors },
     } = useForm<CheckoutFormData>({
         defaultValues: { payment_method: 'cash_on_delivery' },
@@ -70,6 +78,69 @@ export default function CheckOutPage() {
 
     // Watch the live form value directly instead of pushing it through state
     const selectedPaymentMethod = watch('payment_method');
+    const addressValue = watch('address');
+
+    useEffect(() => {
+        if (!addressValue || addressValue.length < 5) return;
+        
+        const delayDebounceFn = setTimeout(async () => {
+            setIsCalculatingShipping(true);
+            try {
+                // Ensure NEXT_PUBLIC_API_URL is properly constructed or fallback
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+                const res = await fetch(`${apiUrl}/calculate-shipping`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ destination_address: addressValue })
+                });
+                const data = await res.json();
+                if (data?.ok || data?.success) {
+                    setShippingFee(data.data.shipping_fee);
+                    setShippingDistanceText(data.data.distance_text);
+                }
+            } catch (error) {
+                console.error("Shipping calculation failed", error);
+            } finally {
+                setIsCalculatingShipping(false);
+            }
+        }, 1500);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [addressValue]);
+
+    // Load Google Maps API Script
+    useEffect(() => {
+        if (typeof window !== 'undefined' && !document.querySelector('#google-maps-script')) {
+            const script = document.createElement('script');
+            script.id = 'google-maps-script';
+            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyC3TRoubZFEw0_dXpa8-tSAy-Ar53vuRmQ&libraries=places`;
+            script.async = true;
+            script.onload = () => setIsGoogleApiLoaded(true);
+            document.head.appendChild(script);
+        } else if (typeof window !== 'undefined' && window.google) {
+            setIsGoogleApiLoaded(true);
+        }
+    }, []);
+
+    // Initialize Google Places Autocomplete
+    useEffect(() => {
+        if (isGoogleApiLoaded && addressInputRef.current && window.google) {
+            const autocomplete = new window.google.maps.places.Autocomplete(addressInputRef.current, {
+                fields: ['formatted_address'],
+            });
+
+            const listener = autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+                if (place.formatted_address) {
+                    setValue('address', place.formatted_address, { shouldValidate: true, shouldDirty: true });
+                }
+            });
+
+            return () => {
+                window.google.maps.event.removeListener(listener);
+            };
+        }
+    }, [isGoogleApiLoaded, setValue]);
 
     const calculateSubtotal = (items: CartItem[]) => {
         let total = 0;
@@ -107,7 +178,7 @@ export default function CheckOutPage() {
     };
 
     const { total: subtotal, breakdown: priceBreakdown } = calculateSubtotal(cartItems);
-    const total = subtotal;
+    const total = subtotal + shippingFee;
 
     const handleLogoutCancel = () => {
         setOpenPopUpModal(false);
@@ -154,7 +225,8 @@ export default function CheckOutPage() {
                 variant_id: item.variant_id,
                 quantity: item.quantity,
                 plan_type: "weekly"
-            }))
+            })),
+            shipping_fee: shippingFee
         };
 
         try {
@@ -225,11 +297,16 @@ export default function CheckOutPage() {
                                 </div>
 
                                 <div className="md:col-span-2 flex flex-col gap-1">
-                                    <textarea
+                                    <input
                                         {...register('address', { required: 'Address is required' })}
+                                        ref={(e) => {
+                                            register('address').ref(e);
+                                            addressInputRef.current = e;
+                                        }}
+                                        type="text"
                                         className={`w-full border p-3 rounded-xl focus:outline-none focus:ring-2 ${errors.address ? 'border-red-500 focus:ring-red-200' : 'focus:ring-green-200'}`}
-                                        rows={4}
-                                        placeholder="Address"
+                                        placeholder="Start typing your address..."
+                                        autoComplete="off"
                                     />
                                     {errors.address && <span className="text-red-500 text-xs pl-1">{errors.address.message}</span>}
                                 </div>
@@ -302,6 +379,12 @@ export default function CheckOutPage() {
                                         <span>${item.amount.toFixed(2)}</span>
                                     </div>
                                 ))}
+                                {addressValue && addressValue.length >= 5 && (
+                                    <div className="flex justify-between text-sm text-gray-600 border-t pt-2 mt-2">
+                                        <span>Shipping {isCalculatingShipping ? '(calculating...)' : (shippingDistanceText ? `(${shippingDistanceText})` : '')}</span>
+                                        <span>{shippingFee === 0 ? 'Free' : `$${shippingFee.toFixed(2)}`}</span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between font-bold text-[#0b7211] text-lg pt-2 border-t border-dashed">
                                     <span>Total</span>
                                     <span>${total.toFixed(2)}</span>
